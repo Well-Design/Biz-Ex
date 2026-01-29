@@ -1,14 +1,28 @@
-function switchTab(tabName, element) {
-    document.getElementById('mission-content').style.display = 'none';
-    document.getElementById('list-content').style.display = 'none';
-    const tabs = document.querySelectorAll('.panel-tab');
-    tabs.forEach(tab => tab.classList.remove('active'));
-    document.getElementById(tabName + '-content').style.display = 'block';
-    element.classList.add('active');
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Biz-Ex Audio System Initializing...');
+    console.log('Biz-Ex Scaling System Initializing...');
+
+    const stage = document.getElementById('app-stage');
+    const baseWidth = 1920;
+    const baseHeight = 1080;
+
+    function updateScale() {
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+
+        // Calculate scale to fit both width and height (Letterbox)
+        const scale = Math.min(windowWidth / baseWidth, windowHeight / baseHeight);
+
+        if (stage) {
+            stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+            document.documentElement.style.setProperty('--scale-factor', scale);
+        }
+    }
+
+    // Initial scale
+    updateScale();
+
+    // Update scale on window resize
+    window.addEventListener('resize', updateScale);
 
     let audioCtx;
     const bgm = document.getElementById('home-bgm');
