@@ -1,28 +1,14 @@
+function switchTab(tabName, element) {
+    document.getElementById('mission-content').style.display = 'none';
+    document.getElementById('list-content').style.display = 'none';
+    const tabs = document.querySelectorAll('.panel-tab');
+    tabs.forEach(tab => tab.classList.remove('active'));
+    document.getElementById(tabName + '-content').style.display = 'block';
+    element.classList.add('active');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Biz-Ex Scaling System Initializing...');
-
-    const stage = document.getElementById('app-stage');
-    const baseWidth = 1920;
-    const baseHeight = 1080;
-
-    function updateScale() {
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
-
-        // Calculate scale to fit both width and height (Letterbox)
-        const scale = Math.min(windowWidth / baseWidth, windowHeight / baseHeight);
-
-        if (stage) {
-            stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
-            document.documentElement.style.setProperty('--scale-factor', scale);
-        }
-    }
-
-    // Initial scale
-    updateScale();
-
-    // Update scale on window resize
-    window.addEventListener('resize', updateScale);
+    console.log('Biz-Ex Audio System Initializing...');
 
     let audioCtx;
     const bgm = document.getElementById('home-bgm');
@@ -348,8 +334,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
             diffSpan.textContent = ` (${sign}${formattedPercent}%)`;
             diffSpan.className = `diff-percent ${statusClass}`;
+
+            // --- Update Overall Progress ---
+            updateOverallProgress();
         });
     });
+
+    // Helper to check progress
+    function updateOverallProgress() {
+        const totalInputs = sheetInputs.length;
+        if (totalInputs === 0) return;
+
+        // Count inputs that have a valid number value (and not just empty)
+        // For this demo, we assume any non-empty string is 'filled'
+        // If pre-filled, we might need a different logic, but let's start here.
+        let filledCount = 0;
+        sheetInputs.forEach(inp => {
+            if (inp.value && inp.value.trim() !== "") {
+                filledCount++;
+            }
+        });
+
+        // Calculate percentage
+        let percentage = Math.floor((filledCount / totalInputs) * 100);
+
+        // Debug/Demo Mode: If logic is too strict, just ensure it works visually
+        // console.log(`Progress: ${filledCount}/${totalInputs} = ${percentage}%`);
+
+        // Update UI
+        const progressBar = document.querySelector('.overall-progress-bar');
+        const progressText = document.querySelector('.overall-progress-text');
+        const decisionBtn = document.getElementById('final-decision-btn');
+
+        if (progressBar) progressBar.style.width = `${percentage}%`;
+        if (progressText) progressText.textContent = `${percentage}%`;
+
+        if (decisionBtn) {
+            if (percentage >= 100) {
+                decisionBtn.removeAttribute('disabled');
+            } else {
+                decisionBtn.setAttribute('disabled', 'true');
+            }
+        }
+    }
+
+    // Initialize progress on load
+    setTimeout(updateOverallProgress, 500); // Small delay to ensure inputs are ready
 });
 
 // --- Calculator Logic ---
@@ -377,42 +407,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Dragging Logic ---
-    const startDragging = (clientX, clientY) => {
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    calcHeader.addEventListener('mousedown', (e) => {
         isDragging = true;
-        offsetX = clientX - calcWindow.offsetLeft;
-        offsetY = clientY - calcWindow.offsetTop;
+        offsetX = e.clientX - calcWindow.offsetLeft;
+        offsetY = e.clientY - calcWindow.offsetTop;
         calcWindow.style.opacity = "0.9";
-    };
+    });
 
-    const handleDragging = (clientX, clientY) => {
+    document.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
-        calcWindow.style.left = (clientX - offsetX) + 'px';
-        calcWindow.style.top = (clientY - offsetY) + 'px';
-        calcWindow.style.bottom = 'auto';
+        calcWindow.style.left = (e.clientX - offsetX) + 'px';
+        calcWindow.style.top = (e.clientY - offsetY) + 'px';
+        calcWindow.style.bottom = 'auto'; // Break free from initial fixed positioning
         calcWindow.style.right = 'auto';
-    };
+    });
 
-    const stopDragging = () => {
+    document.addEventListener('mouseup', () => {
         isDragging = false;
         calcWindow.style.opacity = "1";
-    };
-
-    calcHeader.addEventListener('mousedown', (e) => startDragging(e.clientX, e.clientY));
-    document.addEventListener('mousemove', (e) => handleDragging(e.clientX, e.clientY));
-    document.addEventListener('mouseup', stopDragging);
-
-    calcHeader.addEventListener('touchstart', (e) => {
-        const touch = e.touches[0];
-        startDragging(touch.clientX, touch.clientY);
-    }, { passive: true });
-
-    document.addEventListener('touchmove', (e) => {
-        if (!isDragging) return;
-        const touch = e.touches[0];
-        handleDragging(touch.clientX, touch.clientY);
-    }, { passive: false });
-
-    document.addEventListener('touchend', stopDragging);
+    });
 
     // --- Calculation Logic ---
     const updateDisplay = () => {
@@ -503,44 +519,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Dragging Logic ---
-    const startDraggingMemo = (clientX, clientY) => {
-        isDragging = true;
-        offsetX = clientX - memoWindow.offsetLeft;
-        offsetY = clientY - memoWindow.offsetTop;
-        memoWindow.style.opacity = "0.9";
-        memoWindow.style.zIndex = "1001";
-        if (document.getElementById('draggable-calc')) document.getElementById('draggable-calc').style.zIndex = "1000";
-    };
+    let isDragging = false;
+    let offsetX, offsetY;
 
-    const handleDraggingMemo = (clientX, clientY) => {
+    memoHeader.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        offsetX = e.clientX - memoWindow.offsetLeft;
+        offsetY = e.clientY - memoWindow.offsetTop;
+        memoWindow.style.opacity = "0.9";
+        memoWindow.style.zIndex = "1001"; // Bring to front when dragging
+        if (document.getElementById('draggable-calc')) document.getElementById('draggable-calc').style.zIndex = "1000";
+    });
+
+    document.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
-        memoWindow.style.left = (clientX - offsetX) + 'px';
-        memoWindow.style.top = (clientY - offsetY) + 'px';
+        memoWindow.style.left = (e.clientX - offsetX) + 'px';
+        memoWindow.style.top = (e.clientY - offsetY) + 'px';
         memoWindow.style.bottom = 'auto';
         memoWindow.style.right = 'auto';
-    };
+    });
 
-    const stopDraggingMemo = () => {
+    document.addEventListener('mouseup', () => {
         isDragging = false;
         memoWindow.style.opacity = "1";
-    };
-
-    memoHeader.addEventListener('mousedown', (e) => startDraggingMemo(e.clientX, e.clientY));
-    document.addEventListener('mousemove', (e) => handleDraggingMemo(e.clientX, e.clientY));
-    document.addEventListener('mouseup', stopDraggingMemo);
-
-    memoHeader.addEventListener('touchstart', (e) => {
-        const touch = e.touches[0];
-        startDraggingMemo(touch.clientX, touch.clientY);
-    }, { passive: true });
-
-    document.addEventListener('touchmove', (e) => {
-        if (!isDragging) return;
-        const touch = e.touches[0];
-        handleDraggingMemo(touch.clientX, touch.clientY);
-    }, { passive: false });
-
-    document.addEventListener('touchend', stopDraggingMemo);
+    });
 });
 
 // --- Stock Chart Logic ---
@@ -683,43 +685,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Dragging Logic ---
-    const startDraggingChart = (clientX, clientY) => {
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    chartHeader.addEventListener('mousedown', (e) => {
         isDragging = true;
-        offsetX = clientX - chartWindow.offsetLeft;
-        offsetY = clientY - chartWindow.offsetTop;
+        offsetX = e.clientX - chartWindow.offsetLeft;
+        offsetY = e.clientY - chartWindow.offsetTop;
         chartWindow.style.opacity = "0.9";
         chartWindow.style.zIndex = "1101";
+        // Reset others
         if (document.getElementById('draggable-calc')) document.getElementById('draggable-calc').style.zIndex = "1000";
         if (document.getElementById('draggable-memo')) document.getElementById('draggable-memo').style.zIndex = "999";
-    };
+    });
 
-    const handleDraggingChart = (clientX, clientY) => {
+    document.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
-        chartWindow.style.left = (clientX - offsetX) + 'px';
-        chartWindow.style.top = (clientY - offsetY) + 'px';
+        chartWindow.style.left = (e.clientX - offsetX) + 'px';
+        chartWindow.style.top = (e.clientY - offsetY) + 'px';
         chartWindow.style.bottom = 'auto';
         chartWindow.style.right = 'auto';
-    };
+    });
 
-    const stopDraggingChart = () => {
+    document.addEventListener('mouseup', () => {
         isDragging = false;
         chartWindow.style.opacity = "1";
-    };
-
-    chartHeader.addEventListener('mousedown', (e) => startDraggingChart(e.clientX, e.clientY));
-    document.addEventListener('mousemove', (e) => handleDraggingChart(e.clientX, e.clientY));
-    document.addEventListener('mouseup', stopDraggingChart);
-
-    chartHeader.addEventListener('touchstart', (e) => {
-        const touch = e.touches[0];
-        startDraggingChart(touch.clientX, touch.clientY);
-    }, { passive: true });
-
-    document.addEventListener('touchmove', (e) => {
-        if (!isDragging) return;
-        const touch = e.touches[0];
-        handleDraggingChart(touch.clientX, touch.clientY);
-    }, { passive: false });
-
-    document.addEventListener('touchend', stopDraggingChart);
+    });
 });
