@@ -378,8 +378,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Initialize progress on load
-    setTimeout(updateOverallProgress, 500); // Small delay to ensure inputs are ready
+    // Initialize progress with animation
+    setTimeout(() => {
+        // Overall Progress Bar Animation
+        const progressBar = document.querySelector('.overall-progress-bar');
+        const progressText = document.querySelector('.overall-progress-text');
+
+        // Individual Menu Progress Bars Animation
+        const menuBars = document.querySelectorAll('.menu-item-progress-bar');
+        const originalWidths = [];
+
+        // 1. Store original widths and Animate to 100%
+        if (progressBar) progressBar.style.width = '100%';
+        if (progressText) progressText.textContent = '100%';
+
+        menuBars.forEach((bar, index) => {
+            originalWidths[index] = bar.style.width; // Save actual progress
+            bar.style.width = '100%';
+        });
+
+        // 2. Revert to actual value after a delay
+        setTimeout(() => {
+            updateOverallProgress(); // Revert overall bar
+
+            menuBars.forEach((bar, index) => {
+                bar.style.width = originalWidths[index]; // Revert individual bars
+            });
+        }, 800);
+    }, 500);
 });
 
 // --- Calculator Logic ---
