@@ -1553,9 +1553,9 @@ body {
   border-radius: 8px;
 }
 
-/* --- Responsive & Fixed Resolution Logic --- */
+/* --- Layout Mode Switcher --- */
 
-/* Desktop Mode: Maintain the 1920x1080 "Perfect Shape" */
+/* Desktop Mode: Fixed 1920x1080 with JS Zoom support */
 @media (min-width: 1025px) {
   body {
     width: 1920px;
@@ -1564,72 +1564,86 @@ body {
     transform-origin: top left;
     margin: 0;
     padding: 0;
+    background-color: #0d1b2a;
+  }
+
+  .main-container {
+    height: calc(1080px - 90px);
   }
 }
 
-/* Mobile/Tablet Mode: Adjust layout to fit the screen without breaking functionality */
+/* Mobile Mode: Vertical Stack Layout */
 @media (max-width: 1024px) {
-  body {
-    width: 100vw;
-    height: 100vh;
-    overflow-x: hidden;
-    overflow-y: auto;
-    background-attachment: fixed;
-    zoom: 1.0 !important;
-    /* Disable JS zoom on mobile to use CSS scaling */
-  }
 
-  html {
+  html,
+  body {
     width: 100%;
     height: auto;
-    display: block;
     overflow-y: auto;
+    /* Allow vertical scroll */
+    overflow-x: hidden;
+    display: block;
+    background-size: cover;
+    background-attachment: fixed;
+    zoom: 1.0 !important;
+    /* Force reset zoom on mobile */
   }
 
   .main-container {
     display: flex;
     flex-direction: column;
+    /* Stack elements vertically */
     height: auto;
     gap: 20px;
-    padding: 10px;
+    padding: 15px;
   }
 
-  /* Grid adjustment: Stack vertically on mobile but keep icons clickable */
+  /* Each panel takes full width */
   .left-panel-narrow,
   .decision-panel,
   .comment-window,
   .app-footer {
     grid-column: 1 !important;
+    grid-row: auto !important;
     width: 100% !important;
     height: auto !important;
-    position: relative;
+    min-height: unset;
   }
 
-  /* Ensure the secretary and comments are easy to see on narrow screens */
+  /* Stakeholder Grid adjustment for vertical scroll */
   .stakeholder-grid-mini {
     grid-template-columns: repeat(3, 1fr) !important;
     grid-template-rows: auto !important;
+    height: auto !important;
+  }
+
+  /* Adjust panel orders */
+  .left-panel-narrow {
+    order: 1;
   }
 
   .comment-window {
     order: 2;
-    /* Move comments below stakeholder list */
+    margin-top: 10px;
   }
 
   .decision-panel {
     order: 3;
-    max-height: 500px;
+    height: 600px !important;
   }
 
+  /* Give some height to scroll */
   .app-footer {
     order: 4;
-    margin-top: 10px;
+    display: block;
+    position: relative;
   }
 
+  /* Header adjustments for smaller screens */
   .app-header {
     height: auto;
-    padding: 10px;
     flex-direction: column;
+    padding: 10px;
     gap: 10px;
   }
 
@@ -1638,18 +1652,31 @@ body {
     width: 100%;
     justify-content: center;
     flex-wrap: wrap;
+    gap: 10px;
   }
 
+  .term-text {
+    font-size: 2.5rem;
+  }
+
+  .role-badge {
+    padding: 5px 15px;
+    font-size: 1rem;
+  }
+
+  .header-expiry,
+  .header-stock,
+  .header-points {
+    margin-left: 0;
+  }
+
+  /* Sub Header adjustment */
   .sub-header {
     height: auto;
+    flex-direction: column;
     padding: 10px;
+    gap: 10px;
   }
-}
-
-/* Ensure container fits the fixed body */
-.main-container {
-  height: calc(1080px - 90px);
-  /* Fixed height minus header */
 }
 
 /* Center the content if the window is larger (optional, handled by JS centering later) */
