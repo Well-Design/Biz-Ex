@@ -138,11 +138,6 @@
                         <span class="card-label-mini">営業責任者</span>
                     </div>
                 </div>
-                <!-- Stakeholder Comment View (Moved to Bottom) -->
-                <div class="comment-window" id="stakeholder-comment"
-                    style="font-size: 1.1rem; padding: 20px; margin-top: 20px; min-height: 100px;">
-                    相談したい担当者を選択してください。
-                </div>
             </div>
 
             <!-- View: Financial Analysis (Placeholder) -->
@@ -582,39 +577,43 @@
                 </div>
             </aside>
         </div>
+        <!-- Stakeholder Comment View (Integrated) -->
+        <div class="comment-window" id="stakeholder-comment">
+            相談したい担当者を選択してください。
+        </div>
 
-    </div>
-
-    <!-- Footer -->
-    <footer class="app-footer">
-        <div class="secretary-section">
-            <img src="secretary.png" alt="Secretary" class="secretary-avatar">
-            <div class="comment-wrapper">
-                <div class="dialog-box">
-                    社長、情報収集の準備は整っております。<br>進捗を確認しましょう。<i class="fa-solid fa-comment-dots"
-                        style="margin-left:5px; color:#00bcd4;"></i>
-                </div>
-                <div class="footer-menu">
-                    <div class="f-btn active" data-view="view-gathering">
-                        <i class="fa-solid fa-briefcase f-icon"></i>
-                        <div class="f-label">情報収集</div>
+        <!-- Integrated Footer/Secretary -->
+        <footer class="app-footer">
+            <div class="secretary-section">
+                <img src="secretary.png" alt="Secretary" class="secretary-avatar">
+                <div class="comment-wrapper">
+                    <div class="dialog-box">
+                        社長、情報収集の準備は整っております。<br>進捗を確認しましょう。<i class="fa-solid fa-comment-dots"
+                            style="margin-left:5px; color:#00bcd4;"></i>
                     </div>
-                    <div class="f-btn" data-view="view-finance" data-info="今期の財務諸表を分析します。">
-                        <i class="fa-solid fa-chart-pie f-icon"></i>
-                        <div class="f-label">財務分析</div>
-                    </div>
-                    <div class="f-btn" data-view="view-closing" data-info="前期の決算結果を確認します。">
-                        <i class="fa-solid fa-file-invoice-dollar f-icon"></i>
-                        <div class="f-label">決算サマリー</div>
-                    </div>
-                    <div class="f-btn" data-view="view-knowledge" data-info="経営に役立つナレッジを確認します。">
-                        <i class="fa-solid fa-book f-icon"></i>
-                        <div class="f-label">ナレッジ<br>ボックス</div>
+                    <div class="footer-menu">
+                        <div class="f-btn active" data-view="view-gathering">
+                            <i class="fa-solid fa-briefcase f-icon"></i>
+                            <div class="f-label">情報収集</div>
+                        </div>
+                        <div class="f-btn" data-view="view-finance" data-info="今期の財務諸表を分析します。">
+                            <i class="fa-solid fa-chart-pie f-icon"></i>
+                            <div class="f-label">財務分析</div>
+                        </div>
+                        <div class="f-btn" data-view="view-closing" data-info="前期の決算結果を確認します。">
+                            <i class="fa-solid fa-file-invoice-dollar f-icon"></i>
+                            <div class="f-label">決算サマリー</div>
+                        </div>
+                        <div class="f-btn" data-view="view-knowledge" data-info="経営に役立つナレッジを確認します。">
+                            <i class="fa-solid fa-book f-icon"></i>
+                            <div class="f-label">ナレッジ<br>ボックス</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </footer>
+        </footer>
+    </div>
+
 
     <!-- Draggable Calculator -->
     <div id="draggable-calc" class="calculator-window">

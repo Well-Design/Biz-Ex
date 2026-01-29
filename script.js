@@ -8,6 +8,30 @@ function switchTab(tabName, element) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Fixed Resolution Scaler (Zoom Method) ---
+    function adjustZoom() {
+        const targetWidth = 1920;
+        const targetHeight = 1080;
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+
+        // Calculate scale ratios
+        const scaleX = windowWidth / targetWidth;
+        const scaleY = windowHeight / targetHeight;
+
+        // Choose the smaller scale to fit the screen (contain)
+        const scale = Math.min(scaleX, scaleY);
+
+        // Apply zoom
+        document.body.style.zoom = scale;
+
+        // Note: 'zoom' property automatically handles layout scaling
+        // unlike 'transform: scale', so dragging coordinates usually work fine.
+    }
+
+    window.addEventListener('resize', adjustZoom);
+    adjustZoom(); // Initial call
+
     console.log('Biz-Ex Audio System Initializing...');
 
     let audioCtx;
