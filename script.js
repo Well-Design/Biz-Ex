@@ -8,6 +8,9 @@ function switchTab(tabName, element) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    let manualScale = 1.0;
+    let autoScale = 1.0;
+
     // --- Fixed Resolution Scaler (Zoom Method) ---
     function adjustZoom() {
         // Mobile layout logic: disable zoom calculation and reset
@@ -26,17 +29,286 @@ document.addEventListener('DOMContentLoaded', () => {
         const scaleY = windowHeight / targetHeight;
 
         // Choose the smaller scale to fit the screen (contain)
-        const scale = Math.min(scaleX, scaleY);
+        autoScale = Math.min(scaleX, scaleY);
+
+        // Final scale is autoScale * manualScale
+        const finalScale = autoScale * manualScale;
 
         // Apply zoom
-        document.body.style.zoom = scale;
+        document.body.style.zoom = finalScale;
 
-        // Note: 'zoom' property automatically handles layout scaling
-        // unlike 'transform: scale', so dragging coordinates usually work fine.
+        // Update Zoom Text
+        const zoomText = document.getElementById('zoom-val-text');
+        if (zoomText) {
+            zoomText.textContent = Math.round(finalScale * 100) + '%';
+        }
     }
+
+    // --- Zoom Controls ---
+    const btnIn = document.getElementById('zoom-in');
+    const btnOut = document.getElementById('zoom-out');
+    const btnReset = document.getElementById('zoom-reset');
+
+    if (btnIn) {
+        btnIn.addEventListener('click', () => {
+            manualScale += 0.05;
+            if (manualScale > 2.0) manualScale = 2.0;
+            adjustZoom();
+        });
+    }
+    if (btnOut) {
+        btnOut.addEventListener('click', () => {
+            manualScale -= 0.05;
+            if (manualScale < 0.2) manualScale = 0.2;
+            adjustZoom();
+        });
+    }
+    if (btnReset) {
+        btnReset.addEventListener('click', () => {
+            manualScale = 1.0;
+            adjustZoom();
+        });
+    }
+
 
     window.addEventListener('resize', adjustZoom);
     adjustZoom(); // Initial call
+
+    // --- Quick Input Popover Logic ---
+    const quickPopover = document.getElementById('quick-input-popover');
+    const popBtns = [
+        document.getElementById('pop-btn-0'),
+        document.getElementById('pop-btn-1'),
+        document.getElementById('pop-btn-2'),
+        document.getElementById('pop-btn-3'),
+        document.getElementById('pop-btn-4')
+    ];
+    let activeInput = null;
+    let hideTimeout = null;
+
+    const showPopover = (input) => {
+        if (hideTimeout) clearTimeout(hideTimeout);
+        activeInput = input;
+
+        const prevVal = parseFloat(input.getAttribute('data-prev')) || 0;
+        const currentVal = parseFloat(input.value) || prevVal;
+
+        const choices = [
+            { label: '-20%', val: Math.round(currentVal * 0.8) },
+            { label: '-10%', val: Math.round(currentVal * 0.9) },
+            { label: '前年並み', val: prevVal },
+            { label: '+10%', val: Math.round(currentVal * 1.1) },
+            { label: '+20%', val: Math.round(currentVal * 1.2) }
+        ];
+
+        // Format labels/values for small numbers
+        if (currentVal > 0 && currentVal <= 10) {
+            choices[0].label = '減 (-2)'; choices[0].val = Math.max(0, currentVal - 2);
+            choices[1].label = '減 (-1)'; choices[1].val = Math.max(0, currentVal - 1);
+            choices[3].label = '増 (+1)'; choices[3].val = currentVal + 1;
+            choices[4].label = '増 (+2)'; choices[4].val = currentVal + 2;
+        } else if (currentVal === 0) {
+            choices[0].label = '0固定'; choices[0].val = 0;
+            choices[1].label = 'min'; choices[1].val = 1;
+            choices[4].label = '初期値'; choices[4].val = Math.max(10, Math.round(prevVal * 0.1) || 10);
+        }
+
+        choices.forEach((c, i) => {
+            if (popBtns[i]) {
+                popBtns[i].textContent = c.label;
+                popBtns[i].onclick = (e) => {
+                    e.stopPropagation();
+                    input.value = c.val;
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                    // Refresh labels for "many times" clicking
+                    showPopover(input);
+                };
+            }
+        });
+
+        // Position popover
+        const rect = input.getBoundingClientRect();
+        // Zoom adjustment: since body is zoomed, we need to account for it
+        const currentZoom = parseFloat(document.body.style.zoom) || 1.0;
+
+        quickPopover.style.display = 'flex';
+        const popRect = quickPopover.getBoundingClientRect();
+
+        // Final position calculation
+        quickPopover.style.left = (rect.left + rect.width / 2 - popRect.width / 2) / currentZoom + 'px';
+        quickPopover.style.top = (rect.top - popRect.height - 15) / currentZoom + 'px';
+    };
+
+    const hidePopover = () => {
+        hideTimeout = setTimeout(() => {
+            quickPopover.style.display = 'none';
+            activeInput = null;
+        }, 300);
+    };
+
+    // Delegate hover events for inputs
+    document.addEventListener('mouseover', (e) => {
+        const input = e.target.closest('.sheet-input');
+        if (input) {
+            showPopover(input);
+        }
+    });
+
+    // --- Trend Chart Logic ---
+    const trendWindow = document.getElementById('trend-chart-window');
+    const trendCloseBtn = document.getElementById('trend-close-btn');
+    const trendTitle = document.getElementById('trend-title');
+    let trendChartObj = null;
+
+    // --- Sheet Switcher Logic ---
+    const switcherBtns = document.querySelectorAll('.switcher-btn');
+    const sheetContainers = {
+        goal: document.getElementById('sheet-content-goal'),
+        decision: document.getElementById('sheet-content-decision'),
+        forecast: document.getElementById('sheet-content-forecast')
+    };
+
+    switcherBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetSheet = btn.getAttribute('data-sheet');
+
+            // Update button states
+            switcherBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Show target container, hide others
+            Object.keys(sheetContainers).forEach(key => {
+                const container = sheetContainers[key];
+                if (container) {
+                    if (key === targetSheet) {
+                        container.style.display = 'block';
+                        container.style.animation = 'fadeIn 0.3s ease-out';
+                    } else {
+                        container.style.display = 'none';
+                    }
+                }
+            });
+
+            // If switching TO decision sheet, ensure at least one section is active
+            if (targetSheet === 'decision') {
+                const activeSection = document.querySelector('.sheet-section.active');
+                if (!activeSection) {
+                    const firstSection = document.querySelector('.sheet-section');
+                    if (firstSection) firstSection.classList.add('active');
+                }
+            }
+        });
+    });
+
+    const mockTrendData = {
+        sales_plan: {
+            title: '販売計画の推移',
+            labels: ['1期', '2期', '3期', '4期', '5期'],
+            datasets: [
+                { label: '普及機', data: [450, 480, 500, 520, 500], color: '#4caf50' },
+                { label: '中級機', data: [180, 190, 200, 210, 200], color: '#2196f3' },
+                { label: '高級機', data: [80, 90, 100, 110, 100], color: '#ff9800' }
+            ]
+        },
+        sales_price: {
+            title: '販売価格の推移',
+            labels: ['1期', '2期', '3期', '4期', '5期'],
+            datasets: [
+                { label: '普及機', data: [48000, 47000, 46000, 45000, 45000], color: '#4caf50' },
+                { label: '中級機', data: [85000, 83000, 81000, 80000, 80000], color: '#2196f3' },
+                { label: '高級機', data: [130000, 125000, 122000, 120000, 120000], color: '#ff9800' }
+            ]
+        },
+        promo: {
+            title: '販促費の推移',
+            labels: ['1期', '2期', '3期', '4期', '5期'],
+            datasets: [
+                { label: '普及機', data: [4, 5, 5, 6, 5], color: '#4caf50' },
+                { label: '中級機', data: [7, 8, 8, 9, 8], color: '#2196f3' },
+                { label: '高級機', data: [9, 10, 10, 12, 10], color: '#ff9800' }
+            ]
+        },
+        ad: {
+            title: '広告宣伝費の推移',
+            labels: ['1期', '2期', '3期', '4期', '5期'],
+            datasets: [
+                { label: '広告宣伝費', data: [12, 14, 15, 18, 15], color: '#e91e63' }
+            ]
+        },
+        mfg_plan: {
+            title: '製造計画の推移',
+            labels: ['1期', '2期', '3期', '4期', '5期'],
+            datasets: [
+                { label: '普及機', data: [380, 400, 420, 410, 400], color: '#4caf50' },
+                { label: '中級機', data: [140, 150, 160, 155, 150], color: '#2196f3' },
+                { label: '高級機', data: [70, 75, 80, 85, 80], color: '#ff9800' }
+            ]
+        }
+    };
+
+    const openTrendChart = (type) => {
+        const data = mockTrendData[type] || { title: 'データ推移', labels: [], datasets: [] };
+        trendTitle.textContent = data.title;
+        trendWindow.style.display = 'flex';
+
+        if (trendChartObj) trendChartObj.destroy();
+
+        const ctx = document.getElementById('trendChart').getContext('2d');
+        trendChartObj = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.labels,
+                datasets: data.datasets.map(ds => ({
+                    label: ds.label,
+                    data: ds.data,
+                    borderColor: ds.color,
+                    backgroundColor: ds.color + '22',
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }))
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { font: { size: 14, weight: 'bold' } } }
+                },
+                scales: {
+                    y: { beginAtZero: true, ticks: { font: { size: 12 } } },
+                    x: { ticks: { font: { size: 12, weight: 'bold' } } }
+                }
+            }
+        });
+    };
+
+    document.querySelectorAll('.group-chart-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const type = btn.getAttribute('data-trend');
+            openTrendChart(type);
+        });
+    });
+
+    trendCloseBtn.addEventListener('click', () => {
+        trendWindow.style.display = 'none';
+    });
+
+    document.addEventListener('mouseout', (e) => {
+        const input = e.target.closest('.sheet-input');
+        if (input) {
+            hidePopover();
+        }
+    });
+
+    quickPopover.addEventListener('mouseenter', () => {
+        if (hideTimeout) clearTimeout(hideTimeout);
+    });
+
+    quickPopover.addEventListener('mouseleave', () => {
+        hidePopover();
+    });
 
     console.log('Biz-Ex Audio System Initializing...');
 
@@ -286,6 +558,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
+            // Update Stakeholder Comment Window Visibility
+            if (commentWindow) {
+                if (targetViewId === 'view-gathering') {
+                    commentWindow.style.display = 'block';
+                } else {
+                    commentWindow.style.display = 'none';
+                }
+            }
+
             // Update Secretary Dialog if info exists
             if (dialogBox && viewInfo) {
                 dialogBox.innerHTML = `社長、${viewInfo}<i class="fa-solid fa-comment-dots" style="margin-left:5px; color:#00bcd4;"></i>`;
@@ -395,9 +676,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const progressBar = document.querySelector('.overall-progress-bar');
         const progressText = document.querySelector('.overall-progress-text');
         const decisionBtn = document.getElementById('final-decision-btn');
+        const btnProgressBar = document.querySelector('.btn-progress-bar');
+        const btnProgressText = document.querySelector('.btn-progress-text');
 
         if (progressBar) progressBar.style.width = `${percentage}%`;
         if (progressText) progressText.textContent = `${percentage}%`;
+        if (btnProgressBar) btnProgressBar.style.width = `${percentage}%`;
+        if (btnProgressText) btnProgressText.textContent = `${percentage}%`;
 
         if (decisionBtn) {
             if (percentage >= 100) {
@@ -413,6 +698,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Overall Progress Bar Animation
         const progressBar = document.querySelector('.overall-progress-bar');
         const progressText = document.querySelector('.overall-progress-text');
+        const btnProgressBar = document.querySelector('.btn-progress-bar');
+        const btnProgressText = document.querySelector('.btn-progress-text');
 
         // Individual Menu Progress Bars Animation
         const menuBars = document.querySelectorAll('.menu-item-progress-bar');
@@ -421,6 +708,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1. Store original widths and Animate to 100%
         if (progressBar) progressBar.style.width = '100%';
         if (progressText) progressText.textContent = '100%';
+        if (btnProgressBar) btnProgressBar.style.width = '100%';
+        if (btnProgressText) btnProgressText.textContent = '100%';
 
         menuBars.forEach((bar, index) => {
             originalWidths[index] = bar.style.width; // Save actual progress
@@ -662,6 +951,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         borderWidth: 4,
                         pointBackgroundColor: set.color,
                         pointRadius: 6,
+                        pointHoverRadius: 8,
                         fill: true,
                         tension: 0.3
                     }]
@@ -673,10 +963,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     scales: {
                         y: {
                             beginAtZero: false,
-                            title: { display: true, text: `単位：${set.unit}`, color: '#666' },
+                            title: {
+                                display: true,
+                                text: `単位：${set.unit}`,
+                                color: '#666',
+                                font: { size: 16, weight: 'bold' }
+                            },
+                            ticks: {
+                                font: { size: 14, weight: 'bold' },
+                                padding: 10
+                            },
                             grid: { color: 'rgba(0,0,0,0.05)' }
                         },
-                        x: { grid: { display: false } }
+                        x: {
+                            ticks: {
+                                font: { size: 14, weight: 'bold' },
+                                padding: 10
+                            },
+                            grid: { display: false }
+                        }
                     }
                 }
             };
@@ -699,13 +1004,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         legend: {
                             display: true,
                             position: 'right',
-                            labels: { color: '#333', font: { weight: 'bold', size: 14 } }
+                            labels: {
+                                color: '#333',
+                                font: { weight: 'bold', size: 24 },
+                                padding: 25
+                            }
                         },
                         title: {
-                            display: true,
-                            text: '現在期の株主構成',
-                            font: { size: 16 }
+                            display: false
                         }
+                    },
+                    layout: {
+                        padding: 30
                     },
                     cutout: '60%'
                 }
@@ -766,5 +1076,325 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('mouseup', () => {
         isDragging = false;
         chartWindow.style.opacity = "1";
+    });
+    // --- Corporate Culture Point Allocation Logic ---
+    const TOTAL_POINTS = 10;
+    const remainingDisplay = document.getElementById('remaining-points');
+    const cultureItems = document.querySelectorAll('.culture-item');
+    let cultureChartInstance = null;
+
+    function initCultureChart() {
+        const ctx = document.getElementById('cultureChart');
+        if (!ctx) return;
+
+        const labels = ['利益最大化', '顧客価値', '技術・品質', '社会貢献', '人・組織'];
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: '経営スタンス',
+                data: [0, 0, 0, 0, 0],
+                fill: true,
+                backgroundColor: 'rgba(0, 229, 255, 0.2)',
+                borderColor: '#00e5ff',
+                pointBackgroundColor: '#00e5ff',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: '#00e5ff'
+            }]
+        };
+
+        const config = {
+            type: 'radar',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        pointLabels: {
+                            color: '#fff',
+                            font: { size: 24, weight: 'bold' }
+                        },
+                        ticks: {
+                            display: false,
+                            stepSize: 2,
+                            max: 10
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 10
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        };
+
+        cultureChartInstance = new Chart(ctx, config);
+    }
+
+    // Simulated Base Cumulative Points (from previous years)
+    let baseCumulativePoints = {
+        'financial': 0,
+        'customer': 0,
+        'product': 0,
+        'purpose': 0,
+        'people': 0
+    };
+
+    function updatePoints() {
+        let currentTotal = 0;
+        const inputs = document.querySelectorAll('.point-input');
+        inputs.forEach(input => {
+            currentTotal += parseInt(input.value) || 0;
+        });
+
+        const remaining = TOTAL_POINTS - currentTotal;
+        if (remainingDisplay) {
+            remainingDisplay.textContent = remaining;
+            remainingDisplay.style.color = remaining === 0 ? '#4caf50' : (remaining < 0 ? '#ff5252' : '#00e5ff');
+        }
+
+        // Update button states
+        document.querySelectorAll('.culture-item').forEach(item => {
+            const input = item.querySelector('.point-input');
+            const val = parseInt(input.value) || 0;
+            const plusBtn = item.querySelector('.plus');
+            const minusBtn = item.querySelector('.minus');
+
+            if (plusBtn) plusBtn.disabled = (remaining <= 0);
+            if (minusBtn) minusBtn.disabled = (val <= 0);
+        });
+
+        // Update Chart & Cumulative Boxes
+        if (cultureChartInstance) {
+            const typesOrder = ['financial', 'customer', 'product', 'purpose', 'people'];
+
+            const newData = [];
+
+            typesOrder.forEach(type => {
+                const input = document.querySelector(`.culture-item[data-type="${type}"] .point-input`);
+                const currentVal = parseInt(input ? input.value : 0);
+                const totalVal = (baseCumulativePoints[type] || 0) + currentVal;
+
+                // Update Chart Data (Current Input Shape)
+                newData.push(currentVal);
+
+                // Update Cumulative Box
+                const box = document.querySelector(`.c-box[data-type="${type}"] .c-value`);
+                if (box) {
+                    box.textContent = totalVal + " pt";
+                }
+            });
+
+            cultureChartInstance.data.datasets[0].data = newData;
+            cultureChartInstance.update();
+        }
+
+        // Update Card Progress Bar (Culture)
+        const consumed = TOTAL_POINTS - remaining;
+        const progressFill = document.getElementById('culture-progress-fill');
+        const progressLabel = document.getElementById('culture-progress-label');
+        if (progressFill && progressLabel) {
+            const percent = (consumed / TOTAL_POINTS) * 100;
+            progressFill.style.width = `${percent}%`;
+            progressLabel.textContent = `${consumed}/${TOTAL_POINTS} pt`;
+        }
+
+        // Save to LocalStorage
+        const cultureData = {};
+        inputs.forEach(input => {
+            const type = input.closest('.culture-item').getAttribute('data-type');
+            cultureData[type] = input.value;
+        });
+        localStorage.setItem('bizex_culture_allocation', JSON.stringify(cultureData));
+    }
+
+    cultureItems.forEach(item => {
+        const plusBtn = item.querySelector('.plus');
+        const minusBtn = item.querySelector('.minus');
+        const input = item.querySelector('.point-input');
+
+        if (plusBtn) {
+            plusBtn.addEventListener('click', () => {
+                let val = parseInt(input.value) || 0;
+                let currentTotal = 0;
+                document.querySelectorAll('.point-input').forEach(i => currentTotal += parseInt(i.value) || 0);
+
+                if (currentTotal < TOTAL_POINTS) {
+                    input.value = val + 1;
+                    updatePoints();
+                }
+            });
+        }
+
+        if (minusBtn) {
+            minusBtn.addEventListener('click', () => {
+                let val = parseInt(input.value) || 0;
+                if (val > 0) {
+                    input.value = val - 1;
+                    updatePoints();
+                }
+            });
+        }
+    });
+
+    // Initialize Chart on load
+    initCultureChart();
+
+    // Load saved data
+    const savedCulture = localStorage.getItem('bizex_culture_allocation');
+    if (savedCulture) {
+        const data = JSON.parse(savedCulture);
+        Object.keys(data).forEach(type => {
+            const item = document.querySelector(`.culture-item[data-type="${type}"]`);
+            if (item) {
+                const input = item.querySelector('.point-input');
+                if (input) input.value = data[type];
+            }
+        });
+        updatePoints();
+    }
+
+    // --- Collapsible Cards Logic ---
+    document.querySelectorAll('.card-header-toggle').forEach(header => {
+        header.addEventListener('click', () => {
+            const card = header.closest('.collapsible-card');
+            if (card) {
+                card.classList.toggle('collapsed');
+            }
+        });
+    });
+
+    // --- Strategy Input Progress Logic ---
+    // 3. For 4P Marketing Mix Selection
+    const p4Selects = document.querySelectorAll('.p4-select');
+    if (p4Selects.length > 0) {
+        const updateP4Progress = () => {
+            let filledCount = 0;
+            p4Selects.forEach(select => {
+                if (select.value !== "") filledCount++;
+            });
+
+            // Find the closest strategy card (assuming all selects are within the same strategy section)
+            // Use the first select to identify the container card
+            const card = p4Selects[0].closest('.strategy-card');
+
+            if (card) {
+                const progressFill = card.querySelector('.card-progress-fill');
+                const progressLabel = card.querySelector('.card-progress-label');
+
+                // Calculate percentage based on 4 items
+                const percentage = (filledCount / p4Selects.length) * 100;
+
+                if (progressFill) progressFill.style.width = `${percentage}%`;
+
+                if (progressLabel) {
+                    if (filledCount === 0) {
+                        progressLabel.textContent = '未入力';
+                        progressLabel.style.color = '#aaa';
+                    } else if (filledCount === p4Selects.length) {
+                        progressLabel.textContent = '選択済';
+                        progressLabel.style.color = '#00e5ff';
+                    } else {
+                        progressLabel.textContent = '入力中';
+                        progressLabel.style.color = '#ffeb3b';
+                    }
+                }
+            }
+        };
+
+        p4Selects.forEach(select => {
+            select.addEventListener('change', updateP4Progress);
+        });
+    }
+
+    // 4. For Management Plan Inputs (Market Size, Share, Profit)
+    const planInputs = document.querySelectorAll('.plan-input');
+    if (planInputs.length > 0) {
+        const updatePlanProgress = () => {
+            let filledCount = 0;
+            planInputs.forEach(input => {
+                if (input.value !== "") filledCount++;
+            });
+
+            const card = planInputs[0].closest('.strategy-card');
+
+            if (card) {
+                const progressFill = card.querySelector('.card-progress-fill');
+                const progressLabel = card.querySelector('.card-progress-label');
+
+                const percentage = (filledCount / planInputs.length) * 100;
+
+                if (progressFill) progressFill.style.width = `${percentage}%`;
+
+                if (progressLabel) {
+                    if (filledCount === 0) {
+                        progressLabel.textContent = '未入力';
+                        progressLabel.style.color = '#aaa';
+                    } else if (filledCount === planInputs.length) {
+                        progressLabel.textContent = '計算完了';
+                        progressLabel.style.color = '#00e5ff';
+                    } else {
+                        progressLabel.textContent = '入力中';
+                        progressLabel.style.color = '#ffeb3b';
+                    }
+                }
+            }
+        };
+
+        planInputs.forEach(input => {
+            input.addEventListener('input', updatePlanProgress);
+        });
+    }
+
+    // 1. For Textareas (Marketing Strategy & Philosophy)
+    const strategyTextareas = document.querySelectorAll('.strategy-textarea');
+    strategyTextareas.forEach(textarea => {
+        const card = textarea.closest('.strategy-card');
+        if (card) {
+            const progressFill = card.querySelector('.card-progress-fill');
+            const progressLabel = card.querySelector('.card-progress-label');
+
+            const updateStrategyProgress = () => {
+                const hasText = textarea.value.trim().length > 0;
+                if (progressFill) progressFill.style.width = hasText ? '100%' : '0%';
+                if (progressLabel) {
+                    progressLabel.textContent = hasText ? '入力済' : '未入力';
+                    progressLabel.style.color = hasText ? '#00e5ff' : '#aaa';
+                }
+            };
+
+            textarea.addEventListener('input', updateStrategyProgress);
+            updateStrategyProgress();
+        }
+    });
+
+    // 2. For Selection Cards (Management Strategy)
+    const strategyRadioInputs = document.querySelectorAll('.strategy-option input[type="radio"]');
+    strategyRadioInputs.forEach(input => {
+        input.addEventListener('change', (e) => {
+            // Remove selected class from siblings
+            const allOptions = input.closest('.strategy-options-grid').querySelectorAll('.strategy-option');
+            allOptions.forEach(opt => opt.classList.remove('selected'));
+
+            // Add selected class to parent label
+            const label = input.closest('.strategy-option');
+            label.classList.add('selected');
+
+            // Update Progress
+            const card = input.closest('.strategy-card');
+            if (card) {
+                const progressFill = card.querySelector('.card-progress-fill');
+                const progressLabel = card.querySelector('.card-progress-label');
+                if (progressFill) progressFill.style.width = '100%';
+                if (progressLabel) {
+                    progressLabel.textContent = '選択済';
+                    progressLabel.style.color = '#00e5ff';
+                }
+            }
+        });
     });
 });
