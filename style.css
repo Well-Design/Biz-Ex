@@ -1553,16 +1553,97 @@ body {
   border-radius: 8px;
 }
 
-/* Fixed Resolution Styles */
-body {
-  width: 1920px;
-  height: 1080px;
-  overflow: hidden;
-  transform-origin: top left;
-  margin: 0;
-  padding: 0;
-  background-color: #0d1b2a;
-  /* Main background color */
+/* --- Responsive & Fixed Resolution Logic --- */
+
+/* Desktop Mode: Maintain the 1920x1080 "Perfect Shape" */
+@media (min-width: 1025px) {
+  body {
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    transform-origin: top left;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* Mobile/Tablet Mode: Adjust layout to fit the screen without breaking functionality */
+@media (max-width: 1024px) {
+  body {
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-attachment: fixed;
+    zoom: 1.0 !important;
+    /* Disable JS zoom on mobile to use CSS scaling */
+  }
+
+  html {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow-y: auto;
+  }
+
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    gap: 20px;
+    padding: 10px;
+  }
+
+  /* Grid adjustment: Stack vertically on mobile but keep icons clickable */
+  .left-panel-narrow,
+  .decision-panel,
+  .comment-window,
+  .app-footer {
+    grid-column: 1 !important;
+    width: 100% !important;
+    height: auto !important;
+    position: relative;
+  }
+
+  /* Ensure the secretary and comments are easy to see on narrow screens */
+  .stakeholder-grid-mini {
+    grid-template-columns: repeat(3, 1fr) !important;
+    grid-template-rows: auto !important;
+  }
+
+  .comment-window {
+    order: 2;
+    /* Move comments below stakeholder list */
+  }
+
+  .decision-panel {
+    order: 3;
+    max-height: 500px;
+  }
+
+  .app-footer {
+    order: 4;
+    margin-top: 10px;
+  }
+
+  .app-header {
+    height: auto;
+    padding: 10px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .header-left,
+  .header-right {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .sub-header {
+    height: auto;
+    padding: 10px;
+  }
 }
 
 /* Ensure container fits the fixed body */

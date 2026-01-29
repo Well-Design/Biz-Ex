@@ -10,6 +10,11 @@ function switchTab(tabName, element) {
 document.addEventListener('DOMContentLoaded', () => {
     // --- Fixed Resolution Scaler (Zoom Method) ---
     function adjustZoom() {
+        if (window.innerWidth <= 1024) {
+            document.body.style.zoom = 1.0;
+            return;
+        }
+
         const targetWidth = 1920;
         const targetHeight = 1080;
         const windowWidth = window.innerWidth;
@@ -24,9 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Apply zoom
         document.body.style.zoom = scale;
-
-        // Note: 'zoom' property automatically handles layout scaling
-        // unlike 'transform: scale', so dragging coordinates usually work fine.
     }
 
     window.addEventListener('resize', adjustZoom);
