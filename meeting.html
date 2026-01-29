@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>経営体験『Biz-Ex：ビジックス』</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome & Chart.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-left">
+            <div class="term-text">第15期</div>
+            <div class="role-badge">社長</div>
+            <div class="header-expiry">有効期限：2026年02月07日</div>
+            <div class="header-stock" id="stock-chart-trigger" style="cursor: pointer;">
+                <span class="stock-label">時価総額</span> 5,000 <span class="stock-change">億円</span>
+            </div>
+            <div class="header-points">
+                <i class="fa-solid fa-coins"></i> 3240pt
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="header-btn"><i class="fa-solid fa-user"></i> プロフィール</button>
+            <button class="header-btn" id="memo-trigger"><i class="fa-solid fa-note-sticky"></i> メモ</button>
+            <button class="header-btn" id="calc-trigger"><i class="fa-solid fa-list-check"></i> 電卓</button>
+            <button class="header-btn" id="bgm-toggle"><i class="fa-solid fa-volume-xmark"></i> BGM OFF</button>
+            <button class="header-btn" id="se-toggle"><i class="fa-solid fa-bell-slash"></i> SE OFF</button>
+            <button class="header-btn"><i class="fa-solid fa-envelope"></i> お知らせ</button>
+        </div>
+    </header>
+
+    <!-- Hidden Audio Element -->
+    <audio id="home-bgm" loop>
+        <source src="Home1.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Sub Header -->
+    <div class="sub-header">
+        <div class="demo-logo">
+            <a href="index.html" style="text-decoration: none; color: inherit;">
+                <i class="fa-solid fa-globe" id="current-view-icon"></i> <span id="current-view-title">情報収集</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <!-- Main Content -->
+    <div class="main-container">
+
+        <!-- Left Column: Information Gathering Area -->
+        <aside class="left-panel-narrow">
+            <!-- View: Information Gathering (Stakeholders) -->
+            <div id="view-gathering" class="info-view active">
+                <div class="stakeholder-grid-mini">
+                    <!-- Mini Stakeholder Cards -->
+                    <div class="stakeholder-card-mini stakeholder-card"
+                        data-comment="「株主価値の向上と、安定した配当を期待していますよ。経営陣の腕の見せ所ですな。」" data-name="主要株主" data-affinity="2">
+                        <div class="stakeholder-portrait-mini char-0"></div>
+                        <span class="card-label-mini">主要株主</span>
+                    </div>
+                    <div class="stakeholder-card-mini stakeholder-card" data-comment="「今期の決算、少し数字が気になりますね」"
+                        data-name="会計事務所" data-affinity="3">
+                        <div class="stakeholder-portrait-mini char-1"></div>
+                        <span class="card-label-mini">会計事務所</span>
+                    </div>
+                    <div class="stakeholder-card-mini stakeholder-card" data-comment="「株価の動向、注視していますよ」" data-name="証券会社"
+                        data-affinity="2">
+                        <div class="stakeholder-portrait-mini char-2"></div>
+                        <span class="card-label-mini">証券会社</span>
+                    </div>
+                    <div class="stakeholder-card-mini stakeholder-card" data-comment="「待遇改善、期待しています」" data-name="労働組合"
+                        data-affinity="1">
+                        <div class="stakeholder-portrait-mini char-4"></div>
+                        <span class="card-label-mini">労働組合</span>
+                    </div>
+                    <div class="stakeholder-card-mini stakeholder-card" data-comment="「特ダネ、頂けませんか？」" data-name="業界新聞"
+                        data-affinity="4">
+                        <div class="stakeholder-portrait-mini char-3"></div>
+                        <span class="card-label-mini">業界新聞</span>
+                    </div>
+                    <div class="stakeholder-card-mini stakeholder-card" data-comment="「生産性の向上が急務です」" data-name="技術コンサル"
+                        data-affinity="3">
+                        <div class="stakeholder-portrait-mini char-5"></div>
+                        <span class="card-label-mini">技術コンサル</span>
+                    </div>
+                    <div class="stakeholder-card-mini stakeholder-card" data-comment="「人員が不足気味です」" data-name="製造管理者"
+                        data-affinity="4">
+                        <div class="stakeholder-portrait-mini char-6"></div>
+                        <span class="card-label-mini">製造管理者</span>
+                    </div>
+                    <div class="stakeholder-card-mini stakeholder-card" data-comment="「新店舗の立地はどうしますか？」"
+                        data-name="店舗マネジャー" data-affinity="3">
+                        <div class="stakeholder-portrait-mini char-7"></div>
+                        <span class="card-label-mini">店舗マネジャー</span>
+                    </div>
+                    <div class="stakeholder-card-mini stakeholder-card" data-comment="「建材価格が上がっています」" data-name="建設会社"
+                        data-affinity="2">
+                        <div class="stakeholder-portrait-mini char-8"></div>
+                        <span class="card-label-mini">建設会社</span>
+                    </div>
+                    <div class="stakeholder-card-mini stakeholder-card" data-comment="「コンプラ遵守は経営の要です」" data-name="弁護士"
+                        data-affinity="3">
+                        <div class="stakeholder-portrait-mini char-9"></div>
+                        <span class="card-label-mini">弁護士</span>
+                    </div>
+                    <!-- Adding missing 5 stakeholders -->
+                    <div class="stakeholder-card-mini stakeholder-card" data-comment="「システム開発の進捗は順調です」"
+                        data-name="エンジニア" data-affinity="4">
+                        <div class="stakeholder-portrait-mini char-10"></div>
+                        <span class="card-label-mini">エンジニア</span>
+                    </div>
+                    <div class="stakeholder-card-mini stakeholder-card" data-comment="「次世代のリーダー育成プランをご提案します」"
+                        data-name="教育担当" data-affinity="3">
+                        <div class="stakeholder-portrait-mini char-11"></div>
+                        <span class="card-label-mini">教育担当</span>
+                    </div>
+                    <div class="stakeholder-card-mini stakeholder-card" data-comment="「新しい技術シーズの可能性を、データの観点から検証しました。」"
+                        data-name="科学者" data-affinity="2">
+                        <div class="stakeholder-portrait-mini char-12"></div>
+                        <span class="card-label-mini">科学者</span>
+                    </div>
+                    <div class="stakeholder-card-mini stakeholder-card" data-comment="「従業員の健康管理、お任せください」"
+                        data-name="看護師" data-affinity="3">
+                        <div class="stakeholder-portrait-mini char-13"></div>
+                        <span class="card-label-mini">産業医/看護師</span>
+                    </div>
+                    <div class="stakeholder-card-mini stakeholder-card" data-comment="「市場の反応は上々です。攻めましょう！」"
+                        data-name="営業責任者" data-affinity="5">
+                        <div class="stakeholder-portrait-mini char-14"></div>
+                        <span class="card-label-mini">営業責任者</span>
+                    </div>
+                </div>
+                <!-- Stakeholder Comment View (Moved to Bottom) -->
+                <div class="comment-window" id="stakeholder-comment"
+                    style="font-size: 1.1rem; padding: 20px; margin-top: 20px; min-height: 100px;">
+                    相談したい担当者を選択してください。
+                </div>
+            </div>
+
+            <!-- View: Financial Analysis (Placeholder) -->
+            <div id="view-finance" class="info-view">
+                <div style="padding:40px; color:white; text-align:center;">
+                    <i class="fa-solid fa-chart-pie" style="font-size:4rem; margin-bottom:20px; color:#00bcd4;"></i>
+                    <h2>財務分析画面</h2>
+                    <p>財務状況を分析し、戦略を立ててください。</p>
+                </div>
+            </div>
+
+            <!-- View: Closing Summary (Placeholder) -->
+            <div id="view-closing" class="info-view">
+                <div style="padding:40px; color:white; text-align:center;">
+                    <i class="fa-solid fa-file-invoice-dollar"
+                        style="font-size:4rem; margin-bottom:20px; color:#00bcd4;"></i>
+                    <h2>決算サマリー</h2>
+                    <p>前期の業績結果を確認し、今期の目標を設定してください。</p>
+                </div>
+            </div>
+
+            <!-- View: Knowledge Box (Placeholder) -->
+            <div id="view-knowledge" class="info-view">
+                <div style="padding:40px; color:white; text-align:center;">
+                    <i class="fa-solid fa-book" style="font-size:4rem; margin-bottom:20px; color:#00bcd4;"></i>
+                    <h2>ナレッジボックス</h2>
+                    <p>経営に必要な知識やノウハウを蓄積しています。</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Column: Integrated Decision Panel -->
+        <div class="decision-panel">
+            <aside class="right-sidebar">
+                <div class="menu-top-bar">
+                    <span><i class="fa-solid fa-pen-to-square"></i> 意思決定・計画入力</span>
+                    <div class="menu-progress">
+                        <div class="progress-container-mini">
+                            <div class="progress-bar-mini" style="width: 5%;"></div>
+                        </div>
+                        <span class="progress-text-mini">5%</span>
+                    </div>
+                </div>
+                <div class="menu-grid">
+                    <div class="menu-item active" data-tab="section-sales">
+                        <i class="fa-solid fa-cart-shopping menu-icon"></i>
+                        <span class="menu-label">販売</span>
+                    </div>
+                    <div class="menu-item" data-tab="section-mfg">
+                        <i class="fa-solid fa-industry menu-icon"></i>
+                        <span class="menu-label">製造</span>
+                    </div>
+                    <div class="menu-item" data-tab="section-hr">
+                        <i class="fa-solid fa-users-gear menu-icon"></i>
+                        <span class="menu-label">人事</span>
+                    </div>
+                    <div class="menu-item" data-tab="section-finance">
+                        <i class="fa-solid fa-coins menu-icon"></i>
+                        <span class="menu-label">財務</span>
+                    </div>
+                </div>
+
+                <!-- Scrollable Decision Sheet Content -->
+                <div class="decision-sheet">
+                    <div class="sheet-header-info">
+                        <div class="sheet-term-badge">１５期</div>
+                    </div>
+
+                    <!-- 販売関係 Section (Default Active) -->
+                    <div class="sheet-section active" id="section-sales">
+                        <div class="section-title">
+                            <i class="fa-solid fa-cart-shopping" style="color: #2e7d32;"></i>
+                            ● 販売関係
+                        </div>
+
+                        <div class="decision-group">
+                            <div class="group-title">販売計画（単位：台）</div>
+                            <div class="input-grid">
+                                <div class="input-item">
+                                    <span class="input-label">高級機</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="100">
+                                    <div class="prev-value">前期：<span class="base-val">100</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">中級機</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="200">
+                                    <div class="prev-value">前期：<span class="base-val">200</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">普及機</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="500">
+                                    <div class="prev-value">前期：<span class="base-val">500</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="decision-group">
+                            <div class="group-title">販売価格（単位：円）</div>
+                            <div class="input-grid">
+                                <div class="input-item">
+                                    <span class="input-label">高級機</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="120000">
+                                    <div class="prev-value">前期：<span class="base-val">120,000</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">中級機</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="80000">
+                                    <div class="prev-value">前期：<span class="base-val">80,000</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">普及機</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="45000">
+                                    <div class="prev-value">前期：<span class="base-val">45,000</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="decision-group">
+                            <div class="group-title">販促費（単位：百万円）</div>
+                            <div class="input-grid">
+                                <div class="input-item">
+                                    <span class="input-label">高級機</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="10">
+                                    <div class="prev-value">前期：<span class="base-val">10</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">中級機</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="8">
+                                    <div class="prev-value">前期：<span class="base-val">8</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">普及機</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="5">
+                                    <div class="prev-value">前期：<span class="base-val">5</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">広告宣伝費</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="15">
+                                    <div class="prev-value">前期：<span class="base-val">15</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- 製造関係 Section -->
+                    <div class="sheet-section" id="section-mfg">
+                        <div class="section-title">
+                            <i class="fa-solid fa-industry" style="color: #455a64;"></i>
+                            ● 製造関係
+                        </div>
+
+                        <div class="decision-group">
+                            <div class="group-title">部品グレード</div>
+                            <div class="input-grid" style="grid-template-columns: repeat(5, 1fr);">
+                                <div class="input-item">
+                                    <span class="input-label">部品 1</span>
+                                    <select class="sheet-input">
+                                        <option value="high">高</option>
+                                        <option value="medium">中</option>
+                                        <option value="normal" selected>並</option>
+                                    </select>
+                                    <div class="prev-value">前期：並</div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">部品 2</span>
+                                    <select class="sheet-input">
+                                        <option value="high">高</option>
+                                        <option value="medium">中</option>
+                                        <option value="normal" selected>並</option>
+                                    </select>
+                                    <div class="prev-value">前期：並</div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">部品 3</span>
+                                    <select class="sheet-input">
+                                        <option value="high">高</option>
+                                        <option value="medium">中</option>
+                                        <option value="normal" selected>並</option>
+                                    </select>
+                                    <div class="prev-value">前期：並</div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">部品 4</span>
+                                    <select class="sheet-input">
+                                        <option value="high">高</option>
+                                        <option value="medium">中</option>
+                                        <option value="normal" selected>並</option>
+                                    </select>
+                                    <div class="prev-value">前期：並</div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">部品 5</span>
+                                    <select class="sheet-input">
+                                        <option value="high">高</option>
+                                        <option value="medium">中</option>
+                                        <option value="normal" selected>並</option>
+                                    </select>
+                                    <div class="prev-value">前期：並</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="decision-group">
+                            <div class="group-title">製造計画（単位：台）</div>
+                            <div class="input-grid">
+                                <div class="input-item">
+                                    <span class="input-label">高級機</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="80">
+                                    <div class="prev-value">前期：<span class="base-val">80</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">中級機</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="150">
+                                    <div class="prev-value">前期：<span class="base-val">150</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">普及機</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="400">
+                                    <div class="prev-value">前期：<span class="base-val">400</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="decision-group">
+                            <div class="group-title">製造経費</div>
+                            <div class="input-grid">
+                                <div class="input-item">
+                                    <span class="input-label">設備保守</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="5">
+                                    <span class="input-unit">百万円</span>
+                                    <div class="prev-value">前期：<span class="base-val">5</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">品質管理</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="3">
+                                    <span class="input-unit">百万円</span>
+                                    <div class="prev-value">前期：<span class="base-val">3</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">設備増設</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="0">
+                                    <span class="input-unit">台</span>
+                                    <div class="prev-value">前期：<span class="base-val">0</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">教育・福利厚生</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="2">
+                                    <span class="input-unit">百万円</span>
+                                    <div class="prev-value">前期：<span class="base-val">2</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 人事関係 Section -->
+                    <div class="sheet-section" id="section-hr">
+                        <div class="section-title">
+                            <i class="fa-solid fa-users-gear" style="color: #6a1b9a;"></i>
+                            ● 人事関係
+                        </div>
+                        <div class="decision-group">
+                            <div class="group-title">製造人件費</div>
+                            <div class="input-grid">
+                                <div class="input-item">
+                                    <span class="input-label">製造員採用</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="0">
+                                    <span class="input-unit">人</span>
+                                    <div class="prev-value">前期：<span class="base-val">0</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">製造管理者採用</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="0">
+                                    <span class="input-unit">人</span>
+                                    <div class="prev-value">前期：<span class="base-val">0</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">製造員給与</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="4000">
+                                    <span class="input-unit">千円/年</span>
+                                    <div class="prev-value">前期：<span class="base-val">4,000</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">製造管理者給与</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="6000">
+                                    <span class="input-unit">千円/年</span>
+                                    <div class="prev-value">前期：<span class="base-val">6,000</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="decision-group">
+                            <div class="group-title">販売人件費</div>
+                            <div class="input-grid">
+                                <div class="input-item">
+                                    <span class="input-label">販売員採用</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="0">
+                                    <span class="input-unit">人</span>
+                                    <div class="prev-value">前期：<span class="base-val">0</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">販売管理者採用</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="0">
+                                    <span class="input-unit">人</span>
+                                    <div class="prev-value">前期：<span class="base-val">0</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">販売員給与</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="3500">
+                                    <span class="input-unit">千円/年</span>
+                                    <div class="prev-value">前期：<span class="base-val">3,500</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">販売管理者給与</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="5500">
+                                    <span class="input-unit">千円/年</span>
+                                    <div class="prev-value">前期：<span class="base-val">5,500</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="decision-group">
+                            <div class="group-title">教育費・福利厚生</div>
+                            <div class="input-grid">
+                                <div class="input-item">
+                                    <span class="input-label">販売部門</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="3">
+                                    <span class="input-unit">百万円</span>
+                                    <div class="prev-value">前期：<span class="base-val">3</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                                <div class="input-item">
+                                    <span class="input-label">製造部門</span>
+                                    <input type="number" class="sheet-input" placeholder="0" data-prev="2">
+                                    <span class="input-unit">百万円</span>
+                                    <div class="prev-value">前期：<span class="base-val">2</span><span
+                                            class="diff-percent"></span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 財務関係 Section -->
+                    <div class="sheet-section" id="section-finance">
+                        <div class="section-title">
+                            <i class="fa-solid fa-coins" style="color: #f57c00;"></i>
+                            ● 財務関係
+                        </div>
+
+                        <div class="input-grid">
+                            <div class="input-item">
+                                <span class="input-label">短期借入金</span>
+                                <input type="number" class="sheet-input" placeholder="0" data-prev="50">
+                                <span class="input-unit">百万円</span>
+                                <div class="prev-value">前期：<span class="base-val">50</span><span
+                                        class="diff-percent"></span></div>
+                            </div>
+                            <div class="input-item">
+                                <span class="input-label">長期借入金</span>
+                                <input type="number" class="sheet-input" placeholder="0" data-prev="200">
+                                <span class="input-unit">百万円</span>
+                                <div class="prev-value">前期：<span class="base-val">200</span><span
+                                        class="diff-percent"></span></div>
+                            </div>
+                            <div class="input-item">
+                                <span class="input-label">前期分長借返済</span>
+                                <input type="number" class="sheet-input" placeholder="0" data-prev="20">
+                                <span class="input-unit">百万円</span>
+                                <div class="prev-value">前期：<span class="base-val">20</span><span
+                                        class="diff-percent"></span></div>
+                            </div>
+                            <div class="input-item">
+                                <span class="input-label">前々期分長借返済</span>
+                                <input type="number" class="sheet-input" placeholder="0" data-prev="20">
+                                <span class="input-unit">百万円</span>
+                                <div class="prev-value">前期：<span class="base-val">20</span><span
+                                        class="diff-percent"></span></div>
+                            </div>
+                            <div class="input-item">
+                                <span class="input-label">増資</span>
+                                <input type="number" class="sheet-input" placeholder="0" data-prev="0">
+                                <span class="input-unit">百万円</span>
+                                <div class="prev-value">前期：<span class="base-val">0</span><span
+                                        class="diff-percent"></span></div>
+                            </div>
+                            <div class="input-item">
+                                <span class="input-label">株配当</span>
+                                <input type="number" class="sheet-input" placeholder="0" data-prev="10">
+                                <span class="input-unit">円</span>
+                                <div class="prev-value">前期：<span class="base-val">10</span><span
+                                        class="diff-percent"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div class="secretary-section">
+            <img src="secretary.png" alt="Secretary" class="secretary-avatar">
+            <div class="comment-wrapper">
+                <div class="dialog-box">
+                    社長、情報収集の準備は整っております。<br>進捗を確認しましょう。<i class="fa-solid fa-comment-dots"
+                        style="margin-left:5px; color:#00bcd4;"></i>
+                </div>
+                <div class="footer-menu">
+                    <div class="f-btn active" data-view="view-gathering">
+                        <i class="fa-solid fa-briefcase f-icon"></i>
+                        <div class="f-label">情報収集</div>
+                    </div>
+                    <div class="f-btn" data-view="view-finance" data-info="今期の財務諸表を分析します。">
+                        <i class="fa-solid fa-chart-pie f-icon"></i>
+                        <div class="f-label">財務分析</div>
+                    </div>
+                    <div class="f-btn" data-view="view-closing" data-info="前期の決算結果を確認します。">
+                        <i class="fa-solid fa-file-invoice-dollar f-icon"></i>
+                        <div class="f-label">決算サマリー</div>
+                    </div>
+                    <div class="f-btn" data-view="view-knowledge" data-info="経営に役立つナレッジを確認します。">
+                        <i class="fa-solid fa-book f-icon"></i>
+                        <div class="f-label">ナレッジ<br>ボックス</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Draggable Calculator -->
+    <div id="draggable-calc" class="calculator-window">
+        <div class="calc-header">
+            <span><i class="fa-solid fa-calculator"></i> 電卓</span>
+            <button class="calc-close" id="calc-close">&times;</button>
+        </div>
+        <div class="calc-display">
+            <div id="calc-prev" class="calc-prev-value"></div>
+            <div id="calc-main" class="calc-main-value">0</div>
+        </div>
+        <div class="calc-buttons">
+            <button class="calc-btn operator" data-op="C">C</button>
+            <button class="calc-btn operator" data-op="delete"><i class="fa-solid fa-backspace"></i></button>
+            <button class="calc-btn operator" data-op="/">÷</button>
+            <button class="calc-btn operator" data-op="*">&times;</button>
+
+            <button class="calc-btn" data-num="7">7</button>
+            <button class="calc-btn" data-num="8">8</button>
+            <button class="calc-btn" data-num="9">9</button>
+            <button class="calc-btn operator" data-op="-">-</button>
+
+            <button class="calc-btn" data-num="4">4</button>
+            <button class="calc-btn" data-num="5">5</button>
+            <button class="calc-btn" data-num="6">6</button>
+            <button class="calc-btn operator" data-op="+">+</button>
+
+            <button class="calc-btn" data-num="1">1</button>
+            <button class="calc-btn" data-num="2">2</button>
+            <button class="calc-btn" data-num="3">3</button>
+            <button class="calc-btn equals" data-op="=">=</button>
+
+            <button class="calc-btn zero" data-num="0">0</button>
+            <button class="calc-btn" data-num=".">.</button>
+        </div>
+    </div>
+
+    <!-- Draggable Memo -->
+    <div id="draggable-memo" class="memo-window">
+        <div class="memo-header">
+            <span><i class="fa-solid fa-note-sticky"></i> 経営メモ</span>
+            <button class="memo-close" id="memo-close">&times;</button>
+        </div>
+        <div class="memo-body">
+            <textarea id="memo-textarea" placeholder="ここにメモを入力してください... (自動保存されます)"></textarea>
+        </div>
+    </div>
+
+    <!-- Draggable Stock Chart -->
+    <div id="draggable-stock-chart" class="chart-window">
+        <div class="chart-header">
+            <span><i class="fa-solid fa-chart-line"></i> 財務データ推移チャート</span>
+            <button class="chart-close" id="chart-close">&times;</button>
+        </div>
+        <div class="chart-tabs">
+            <button class="chart-tab active" data-type="market_cap">時価総額</button>
+            <button class="chart-tab" data-type="stock_price">株価</button>
+            <button class="chart-tab" data-type="shares">発行済株式</button>
+            <button class="chart-tab" data-type="shareholders">株主構成</button>
+        </div>
+        <div class="chart-body">
+            <canvas id="stockChart"></canvas>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

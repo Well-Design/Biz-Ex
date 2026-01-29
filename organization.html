@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>経営体験『Biz-Ex：ビジックス』</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-left">
+            <div class="term-text">第15期</div>
+            <div class="role-badge">社長</div>
+            <div class="header-expiry">有効期限：2026年02月07日</div>
+        </div>
+        <div class="header-right">
+            <button class="header-btn"><i class="fa-solid fa-user"></i> プロフィール</button>
+            <button class="header-btn"><i class="fa-solid fa-note-sticky"></i> メモ</button>
+            <button class="header-btn"><i class="fa-solid fa-list-check"></i> 電卓</button>
+            <button class="header-btn" id="bgm-toggle"><i class="fa-solid fa-volume-xmark"></i> BGM OFF</button>
+            <button class="header-btn" id="se-toggle"><i class="fa-solid fa-bell-slash"></i> SE OFF</button>
+            <button class="header-btn"><i class="fa-solid fa-envelope"></i> お知らせ</button>
+        </div>
+    </header>
+
+    <!-- Hidden Audio Element -->
+    <audio id="home-bgm" loop>
+        <source src="Home1.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Sub Header -->
+    <div class="sub-header">
+        <div class="demo-logo">
+            <a href="index.html" style="text-decoration: none; color: inherit;">
+                <i class="fa-solid fa-users-rays"></i> 組織分析
+            </a>
+        </div>
+        <div class="status-bar">
+            <div class="stock-ticker">
+                <span class="badge">株価</span> 250 ← 0 (0%) <i class="fa-solid fa-circle-arrow-right"></i>
+            </div>
+            <div class="points-display">
+                <div class="coin-icon">P</div>
+                3240pt
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+
+        <!-- Left Sidebar removed as information moved to header -->
+
+        <!-- Center Panel: Rich Stakeholder Selection -->
+        <main class="center-panel" style="max-width: 1000px; margin: 0 auto;">
+            <div class="stakeholder-container">
+                <div class="comment-window" id="stakeholder-comment">
+                    組織内のキーマンを選択し、状況を分析してください。
+                </div>
+
+                <div class="stakeholder-grid-rich">
+                    <!-- Character Cards -->
+                    <div class="stakeholder-card" data-comment="「部品の供給なら任せてくれ。だがコスト面はシビアだぞ」" data-name="部品メーカー"
+                        data-affinity="2">
+                        <div class="stakeholder-portrait char-0"></div>
+                        <span class="card-label">部品メーカー</span>
+                        <div class="affinity-meter">
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                        </div>
+                    </div>
+                    <div class="stakeholder-card" data-comment="「今期の決算、少し数字が気になりますね。相談しましょうか」" data-name="会計事務所"
+                        data-affinity="3">
+                        <div class="stakeholder-portrait char-1"></div>
+                        <span class="card-label">会計事務所</span>
+                        <div class="affinity-meter">
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                        </div>
+                    </div>
+                    <div class="stakeholder-card" data-comment="「御社の株価、市場からは非常に高い関心を集めていますよ」" data-name="証券会社"
+                        data-affinity="2">
+                        <div class="stakeholder-portrait char-2"></div>
+                        <span class="card-label">証券会社</span>
+                        <div class="affinity-meter">
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                        </div>
+                    </div>
+                    <div class="stakeholder-card" data-comment="「我々の要望、無視するわけにはいきませんよね？」" data-name="労働組合"
+                        data-affinity="1">
+                        <div class="stakeholder-portrait char-4"></div>
+                        <span class="card-label">労働組合</span>
+                        <div class="affinity-meter">
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                        </div>
+                    </div>
+                    <div class="stakeholder-card" data-comment="「特ダネを探してます！御社の次の一手、教えていただけませんか？」" data-name="業界新聞"
+                        data-affinity="4">
+                        <div class="stakeholder-portrait char-3"></div>
+                        <span class="card-label">業界新聞</span>
+                        <div class="affinity-meter">
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                        </div>
+                    </div>
+                    <!-- Row 2 -->
+                    <div class="stakeholder-card" data-comment="「最新のテクノロジーを導入すれば、生産性は劇的に向上します」" data-name="技術コンサル"
+                        data-affinity="3">
+                        <div class="stakeholder-portrait char-5"></div>
+                        <span class="card-label">技術コンサル</span>
+                        <div class="affinity-meter">
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                        </div>
+                    </div>
+                    <div class="stakeholder-card" data-comment="「現場の士気は高いですよ。材料さえあればもっと作れます」" data-name="製造管理者"
+                        data-affinity="4">
+                        <div class="stakeholder-portrait char-6"></div>
+                        <span class="card-label">製造管理者</span>
+                        <div class="affinity-meter">
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                        </div>
+                    </div>
+                    <div class="stakeholder-card" data-comment="「新しい店舗レイアウト、非常に魅力的な案がありますよ」" data-name="店舗マネジャー"
+                        data-affinity="3">
+                        <div class="stakeholder-portrait char-7"></div>
+                        <span class="card-label">店舗マネジャー</span>
+                        <div class="affinity-meter">
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                        </div>
+                    </div>
+                    <div class="stakeholder-card" data-comment="「建設資材が高騰しています。スケジュールの見直しが必要かもしれません」" data-name="建設会社"
+                        data-affinity="2">
+                        <div class="stakeholder-portrait char-8"></div>
+                        <span class="card-label">建設会社</span>
+                        <div class="affinity-meter">
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                        </div>
+                    </div>
+                    <div class="stakeholder-card" data-comment="「法的な懸念点は解決しました。契約に進みましょう」" data-name="弁護士"
+                        data-affinity="3">
+                        <div class="stakeholder-portrait char-9"></div>
+                        <span class="card-label">弁護士</span>
+                        <div class="affinity-meter">
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                        </div>
+                    </div>
+                    <!-- Row 3 -->
+                    <div class="stakeholder-card" data-comment="「システム開発の進捗は順調です。リリースを楽しみにしていてください」" data-name="IT開発者"
+                        data-affinity="4">
+                        <div class="stakeholder-portrait char-10"></div>
+                        <span class="card-label">IT開発者</span>
+                        <div class="affinity-meter">
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                        </div>
+                    </div>
+                    <div class="stakeholder-card" data-comment="「次世代のリーダー育成プランを考えてきました」" data-name="教育担当"
+                        data-affinity="3">
+                        <div class="stakeholder-portrait char-11"></div>
+                        <span class="card-label">教育担当</span>
+                        <div class="affinity-meter">
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                        </div>
+                    </div>
+                    <div class="stakeholder-card" data-comment="「新しいオフィスの設計図です。機能性を重視しました」" data-name="建築家"
+                        data-affinity="2">
+                        <div class="stakeholder-portrait char-12"></div>
+                        <span class="card-label">建築家</span>
+                        <div class="affinity-meter">
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                        </div>
+                    </div>
+                    <div class="stakeholder-card" data-comment="「従業員の健康管理、もっと充実させることが可能です」" data-name="看護師"
+                        data-affinity="3">
+                        <div class="stakeholder-portrait char-13"></div>
+                        <span class="card-label">産業医/看護師</span>
+                        <div class="affinity-meter">
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                            <i class="fa-solid fa-heart heart-icon empty"></i>
+                        </div>
+                    </div>
+                    <div class="stakeholder-card" data-comment="「市場の反応は上々です。このまま一気に攻め込みましょう！」" data-name="営業責任者"
+                        data-affinity="5">
+                        <div class="stakeholder-portrait char-14"></div>
+                        <span class="card-label">営業責任者</span>
+                        <div class="affinity-meter">
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                            <i class="fa-solid fa-heart heart-icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Menu -->
+        <aside class="right-sidebar">
+            <div class="menu-top-bar">
+                <span>意思決定メニュー</span>
+                <div class="menu-progress">
+                    <div class="progress-container-mini">
+                        <div class="progress-bar-mini" style="width: 5%;"></div>
+                    </div>
+                    <span class="progress-text-mini">5%</span>
+                </div>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <i class="fa-solid fa-cart-shopping menu-icon"></i>
+                    <span class="menu-label">販売計画</span>
+                    <div class="menu-item-progress">
+                        <div class="menu-item-progress-bar" style="width: 20%;"></div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <i class="fa-solid fa-industry menu-icon"></i>
+                    <span class="menu-label">製造計画</span>
+                    <div class="menu-item-progress">
+                        <div class="menu-item-progress-bar" style="width: 0%;"></div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <i class="fa-solid fa-users-gear menu-icon"></i>
+                    <span class="menu-label">人事計画</span>
+                    <div class="menu-item-progress">
+                        <div class="menu-item-progress-bar" style="width: 0%;"></div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <i class="fa-solid fa-coins menu-icon"></i>
+                    <span class="menu-label">財務計画</span>
+                    <div class="menu-item-progress">
+                        <div class="menu-item-progress-bar" style="width: 0%;"></div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div class="secretary-section">
+            <img src="secretary.png" alt="Secretary" class="secretary-avatar">
+            <div class="dialog-box">
+                社長、組織の状態を確認しましょう。<br>人的資本の最適化が鍵となります。<i class="fa-solid fa-sitemap"
+                    style="margin-left:5px; color:#00bcd4;"></i>
+            </div>
+        </div>
+
+        <div class="footer-menu">
+            <a href="meeting.html" class="f-btn">
+                <i class="fa-solid fa-briefcase f-icon"></i>
+                <div class="f-label">情報収集</div>
+            </a>
+            <div class="f-btn">
+                <i class="fa-solid fa-chart-pie f-icon"></i>
+                <div class="f-label">財務分析</div>
+            </div>
+            <div class="f-btn">
+                <i class="fa-solid fa-file-invoice-dollar f-icon"></i>
+                <div class="f-label">決算サマリー</div>
+            </div>
+            <div class="f-btn">
+                <i class="fa-solid fa-book f-icon"></i>
+                <div class="f-label">ナレッジ<br>ボックス</div>
+            </div>
+            <div class="f-btn">
+                <i class="fa-solid fa-book-open f-icon"></i>
+                <div class="f-label">用語集</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
