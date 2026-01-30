@@ -172,7 +172,7 @@
                             <div class="strategy-card collapsible-card collapsed">
                                 <div class="card-header-toggle">
                                     <div class="header-content">
-                                        <h3><i class="fa-solid fa-quote-left"></i> 経営理念</h3>
+                                        <h3><i class="fa-solid fa-quote-left"></i> 経営理念 ・ 組織文化</h3>
                                         <div class="card-progress-wrapper">
                                             <div class="card-progress-bar-bg">
                                                 <div class="card-progress-fill" style="width: 0%;"></div>
@@ -183,152 +183,145 @@
                                     <i class="fa-solid fa-chevron-up toggle-icon"></i>
                                 </div>
                                 <div class="card-body">
-                                    <textarea class="strategy-textarea"
-                                        placeholder="企業の存在意義やビジョンを入力してください..."></textarea>
-                                </div>
-                            </div>
-
-                            <!-- Culture Allocation Section -->
-                            <div class="strategy-card culture-card collapsible-card collapsed">
-                                <div class="card-header-toggle">
-                                    <div class="header-content">
-                                        <h3><i class="fa-solid fa-sliders"></i> 組織文化</h3>
-                                        <div class="card-progress-wrapper">
-                                            <div class="card-progress-bar-bg">
-                                                <div class="card-progress-fill" id="culture-progress-fill"
-                                                    style="width: 0%;"></div>
-                                            </div>
-                                            <span class="card-progress-label" id="culture-progress-label">0/10 pt</span>
-                                        </div>
-                                    </div>
-                                    <i class="fa-solid fa-chevron-up toggle-icon"></i>
-                                </div>
-                                <div class="card-body">
-                                    <div class="culture-intro">
-                                        <p>合計 <span id="total-points-display" class="points-badge">10</span>
-                                            ポイントを自由に配分し、貴社の経営スタンスを決定してください。</p>
-                                        <div class="points-status">残り: <span id="remaining-points">10</span> pt</div>
+                                    <div class="philosophy-section" style="margin-bottom: 30px;">
+                                        <h4 style="color: #00bcd4; margin-bottom: 10px; font-size: 1rem;"><i
+                                                class="fa-solid fa-pen-nib"></i> 経営理念の策定</h4>
+                                        <textarea class="strategy-textarea"
+                                            placeholder="企業の存在意義やビジョンを入力してください..."></textarea>
                                     </div>
 
-                                    <div class="culture-main-layout">
-                                        <div class="culture-grid">
-                                            <!-- 1. Financial -->
-                                            <div class="culture-item" data-type="financial">
-                                                <div class="culture-header">
-                                                    <span class="culture-title">① 利益最大化型</span>
-                                                    <div class="point-control">
-                                                        <button class="point-btn minus">-</button>
-                                                        <input type="number" class="point-input" value="0" readonly>
-                                                        <button class="point-btn plus">+</button>
-                                                    </div>
-                                                </div>
-                                                <div class="culture-details">
-                                                    <div class="detail-row"><span>問い：</span>どうすれば資本効率が最大になるか</div>
-                                                    <div class="detail-row"><span>強み：</span>合理性・撤退判断が速い /
-                                                        <span>弱み：</span>ブランド・文化が育ちにくい
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 2. Customer -->
-                                            <div class="culture-item" data-type="customer">
-                                                <div class="culture-header">
-                                                    <span class="culture-title">② 顧客価値最大化型</span>
-                                                    <div class="point-control">
-                                                        <button class="point-btn minus">-</button>
-                                                        <input type="number" class="point-input" value="0" readonly>
-                                                        <button class="point-btn plus">+</button>
-                                                    </div>
-                                                </div>
-                                                <div class="culture-details">
-                                                    <div class="detail-row"><span>問い：</span>顧客は何に一番喜ぶか</div>
-                                                    <div class="detail-row"><span>強み：</span>リピート・口コミ /
-                                                        <span>弱み：</span>原価・過剰品質
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 3. Product -->
-                                            <div class="culture-item" data-type="product">
-                                                <div class="culture-header">
-                                                    <span class="culture-title">③ 技術・品質追求型</span>
-                                                    <div class="point-control">
-                                                        <button class="point-btn minus">-</button>
-                                                        <input type="number" class="point-input" value="0" readonly>
-                                                        <button class="point-btn plus">+</button>
-                                                    </div>
-                                                </div>
-                                                <div class="culture-details">
-                                                    <div class="detail-row"><span>問い：</span>最高のものを作れているか</div>
-                                                    <div class="detail-row"><span>強み：</span>差別化・模倣困難性 /
-                                                        <span>弱み：</span>市場ズレ・コスト高
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 4. Purpose -->
-                                            <div class="culture-item" data-type="purpose">
-                                                <div class="culture-header">
-                                                    <span class="culture-title">④ 社会価値・使命型</span>
-                                                    <div class="point-control">
-                                                        <button class="point-btn minus">-</button>
-                                                        <input type="number" class="point-input" value="0" readonly>
-                                                        <button class="point-btn plus">+</button>
-                                                    </div>
-                                                </div>
-                                                <div class="culture-details">
-                                                    <div class="detail-row"><span>問い：</span>社会にどんな意味があるか</div>
-                                                    <div class="detail-row"><span>強み：</span>共感・採用・長期信頼 /
-                                                        <span>弱み：</span>収益化が遅い
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 5. People -->
-                                            <div class="culture-item" data-type="people">
-                                                <div class="culture-header">
-                                                    <span class="culture-title">⑤ 人・組織重視型</span>
-                                                    <div class="point-control">
-                                                        <button class="point-btn minus">-</button>
-                                                        <input type="number" class="point-input" value="0" readonly>
-                                                        <button class="point-btn plus">+</button>
-                                                    </div>
-                                                </div>
-                                                <div class="culture-details">
-                                                    <div class="detail-row"><span>問い：</span>人が成長できているか</div>
-                                                    <div class="detail-row"><span>強み：</span>安定運営・改善力 /
-                                                        <span>弱み：</span>スピード・短期成果
-                                                    </div>
-                                                </div>
+                                    <div class="culture-section"
+                                        style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px;">
+                                        <h4 style="color: #00bcd4; margin-bottom: 15px; font-size: 1rem;"><i
+                                                class="fa-solid fa-sliders"></i> 組織文化（経営スタンス）の配分</h4>
+                                        <div class="culture-intro">
+                                            <p>合計 <span id="total-points-display" class="points-badge">10</span>
+                                                ポイントを自由に配分し、貴社の経営スタンスを決定してください。</p>
+                                            <div class="points-status">残り: <span id="remaining-points">10</span> pt
                                             </div>
                                         </div>
-                                        <div class="culture-chart-area">
-                                            <div class="chart-container-strategy">
-                                                <canvas id="cultureChart"></canvas>
+
+                                        <div class="culture-main-layout">
+                                            <div class="culture-grid">
+                                                <!-- 1. Financial -->
+                                                <div class="culture-item" data-type="financial">
+                                                    <div class="culture-header">
+                                                        <span class="culture-title">① 利益最大化型</span>
+                                                        <div class="point-control">
+                                                            <button class="point-btn minus">-</button>
+                                                            <input type="number" class="point-input" value="0" readonly>
+                                                            <button class="point-btn plus">+</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="culture-details">
+                                                        <div class="detail-row"><span>問い：</span>どうすれば資本効率が最大になるか</div>
+                                                        <div class="detail-row"><span>強み：</span>合理性・撤退判断が速い /
+                                                            <span>弱み：</span>ブランド・文化が育ちにくい
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 2. Customer -->
+                                                <div class="culture-item" data-type="customer">
+                                                    <div class="culture-header">
+                                                        <span class="culture-title">② 顧客価値最大化型</span>
+                                                        <div class="point-control">
+                                                            <button class="point-btn minus">-</button>
+                                                            <input type="number" class="point-input" value="0" readonly>
+                                                            <button class="point-btn plus">+</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="culture-details">
+                                                        <div class="detail-row"><span>問い：</span>顧客は何に一番喜ぶか</div>
+                                                        <div class="detail-row"><span>強み：</span>リピート・口コミ /
+                                                            <span>弱み：</span>原価・過剰品質
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 3. Product -->
+                                                <div class="culture-item" data-type="product">
+                                                    <div class="culture-header">
+                                                        <span class="culture-title">③ 技術・品質追求型</span>
+                                                        <div class="point-control">
+                                                            <button class="point-btn minus">-</button>
+                                                            <input type="number" class="point-input" value="0" readonly>
+                                                            <button class="point-btn plus">+</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="culture-details">
+                                                        <div class="detail-row"><span>問い：</span>最高のものを作れているか</div>
+                                                        <div class="detail-row"><span>強み：</span>差別化・模倣困難性 /
+                                                            <span>弱み：</span>市場ズレ・コスト高
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 4. Purpose -->
+                                                <div class="culture-item" data-type="purpose">
+                                                    <div class="culture-header">
+                                                        <span class="culture-title">④ 社会価値・使命型</span>
+                                                        <div class="point-control">
+                                                            <button class="point-btn minus">-</button>
+                                                            <input type="number" class="point-input" value="0" readonly>
+                                                            <button class="point-btn plus">+</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="culture-details">
+                                                        <div class="detail-row"><span>問い：</span>社会にどんな意味があるか</div>
+                                                        <div class="detail-row"><span>強み：</span>共感・採用・長期信頼 /
+                                                            <span>弱み：</span>収益化が遅い
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 5. People -->
+                                                <div class="culture-item" data-type="people">
+                                                    <div class="culture-header">
+                                                        <span class="culture-title">⑤ 人・組織重視型</span>
+                                                        <div class="point-control">
+                                                            <button class="point-btn minus">-</button>
+                                                            <input type="number" class="point-input" value="0" readonly>
+                                                            <button class="point-btn plus">+</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="culture-details">
+                                                        <div class="detail-row"><span>問い：</span>人が成長できているか</div>
+                                                        <div class="detail-row"><span>強み：</span>安定運営・改善力 /
+                                                            <span>弱み：</span>スピード・短期成果
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="cumulative-section">
-                                                <div class="cumulative-title"><i class="fa-solid fa-layer-group"></i>
-                                                    累計カルチャー蓄積</div>
-                                                <div class="cumulative-boxes">
-                                                    <div class="c-box" data-type="financial">
-                                                        <div class="c-label">利益最大化</div>
-                                                        <div class="c-value">0</div>
-                                                    </div>
-                                                    <div class="c-box" data-type="customer">
-                                                        <div class="c-label">顧客価値</div>
-                                                        <div class="c-value">0</div>
-                                                    </div>
-                                                    <div class="c-box" data-type="product">
-                                                        <div class="c-label">技術・品質</div>
-                                                        <div class="c-value">0</div>
-                                                    </div>
-                                                    <div class="c-box" data-type="purpose">
-                                                        <div class="c-label">社会貢献</div>
-                                                        <div class="c-value">0</div>
-                                                    </div>
-                                                    <div class="c-box" data-type="people">
-                                                        <div class="c-label">人・組織</div>
-                                                        <div class="c-value">0</div>
+                                            <div class="culture-chart-area">
+                                                <div class="chart-container-strategy">
+                                                    <canvas id="cultureChart"></canvas>
+                                                </div>
+                                                <div class="cumulative-section">
+                                                    <div class="cumulative-title"><i
+                                                            class="fa-solid fa-layer-group"></i>
+                                                        累計カルチャー蓄積</div>
+                                                    <div class="cumulative-boxes">
+                                                        <div class="c-box" data-type="financial">
+                                                            <div class="c-label">利益最大化</div>
+                                                            <div class="c-value">0</div>
+                                                        </div>
+                                                        <div class="c-box" data-type="customer">
+                                                            <div class="c-label">顧客価値</div>
+                                                            <div class="c-value">0</div>
+                                                        </div>
+                                                        <div class="c-box" data-type="product">
+                                                            <div class="c-label">技術・品質</div>
+                                                            <div class="c-value">0</div>
+                                                        </div>
+                                                        <div class="c-box" data-type="purpose">
+                                                            <div class="c-label">社会貢献</div>
+                                                            <div class="c-value">0</div>
+                                                        </div>
+                                                        <div class="c-box" data-type="people">
+                                                            <div class="c-label">人・組織</div>
+                                                            <div class="c-value">0</div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -337,11 +330,12 @@
                                 </div>
                             </div>
 
-                            <!-- Management Strategy Section -->
+
+                            <!-- Combined Management Strategy & Marketing Mix Section -->
                             <div class="strategy-card collapsible-card collapsed">
                                 <div class="card-header-toggle">
                                     <div class="header-content">
-                                        <h3><i class="fa-solid fa-chess"></i> 経営戦略</h3>
+                                        <h3><i class="fa-solid fa-chess"></i> 経営戦略 ・ マーケティング</h3>
                                         <div class="card-progress-wrapper">
                                             <div class="card-progress-bar-bg">
                                                 <div class="card-progress-fill" style="width: 0%;"></div>
@@ -352,115 +346,234 @@
                                     <i class="fa-solid fa-chevron-up toggle-icon"></i>
                                 </div>
                                 <div class="card-body">
-                                    <div class="strategy-options-grid">
-                                        <label class="strategy-option">
-                                            <input type="radio" name="mgmt_strategy" value="cost_leadership">
-                                            <span class="strategy-option-title">コストリーダーシップ戦略</span>
-                                            <span
-                                                class="strategy-option-desc">徹底したコスト削減と効率化により、競争力のある価格設定でシェア拡大を目指す。</span>
-                                        </label>
-                                        <label class="strategy-option">
-                                            <input type="radio" name="mgmt_strategy" value="differentiation">
-                                            <span class="strategy-option-title">差別化戦略</span>
-                                            <span
-                                                class="strategy-option-desc">技術やブランド力を活かし、他社にはない付加価値を提供して高収益を目指す。</span>
-                                        </label>
-                                        <label class="strategy-option">
-                                            <input type="radio" name="mgmt_strategy" value="niche_focus">
-                                            <span class="strategy-option-title">集中（ニッチ）戦略</span>
-                                            <span
-                                                class="strategy-option-desc">特定の市場や顧客層に資源を集中し、その領域での圧倒的な地位確立を目指す。</span>
-                                        </label>
+                                    <!-- Management Strategy Subset -->
+                                    <div class="mgmt-strategy-subset" style="margin-bottom: 30px;">
+                                        <h4 style="color: #00bcd4; margin-bottom: 15px; font-size: 1rem;"><i
+                                                class="fa-solid fa-chess-knight"></i> 基本戦略の選択</h4>
+                                        <div class="strategy-options-grid">
+                                            <label class="strategy-option">
+                                                <input type="radio" name="mgmt_strategy" value="cost_leadership">
+                                                <span class="strategy-option-title">コストリーダーシップ戦略</span>
+                                                <span
+                                                    class="strategy-option-desc">徹底したコスト削減と効率化により、競争力のある価格設定でシェア拡大を目指す。</span>
+                                            </label>
+                                            <label class="strategy-option">
+                                                <input type="radio" name="mgmt_strategy" value="differentiation">
+                                                <span class="strategy-option-title">差別化戦略</span>
+                                                <span
+                                                    class="strategy-option-desc">技術やブランド力を活かし、他社にはない付加価値を提供して高収益を目指す。</span>
+                                            </label>
+                                            <label class="strategy-option">
+                                                <input type="radio" name="mgmt_strategy" value="niche_focus">
+                                                <span class="strategy-option-title">集中（ニッチ）戦略</span>
+                                                <span
+                                                    class="strategy-option-desc">特定の市場や顧客層に資源を集中し、その領域での圧倒的な地位確立を目指す。</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Marketing Mix Subset -->
+                                    <div class="marketing-mix-subset"
+                                        style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px;">
+                                        <h4 style="color: #00bcd4; margin-bottom: 15px; font-size: 1rem;"><i
+                                                class="fa-solid fa-bullhorn"></i> マーケティングミックス (4P)</h4>
+                                        <div class="p4-grid">
+                                            <!-- Product -->
+                                            <div class="p4-card">
+                                                <div class="p4-header">
+                                                    <div class="p4-icon-wrapper"><i
+                                                            class="fa-solid fa-box-open p4-icon"></i></div>
+                                                    <span class="p4-title">Product (製品)</span>
+                                                </div>
+                                                <div class="brand-option-list" data-group="product">
+                                                    <div class="brand-option-item" data-id="innovation">
+                                                        <span class="brand-option-name">革新性・性能</span>
+                                                        <div class="brand-equity-info">
+                                                            <div class="equity-bar-container">
+                                                                <div class="equity-bar-fill" style="width: 75%;"></div>
+                                                            </div>
+                                                            <span class="equity-val-label">75pt</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="brand-option-item" data-id="brand">
+                                                        <span class="brand-option-name">ブランド・デザイン</span>
+                                                        <div class="brand-equity-info">
+                                                            <div class="equity-bar-container">
+                                                                <div class="equity-bar-fill" style="width: 40%;"></div>
+                                                            </div>
+                                                            <span class="equity-val-label">40pt</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="brand-option-item" data-id="reliability">
+                                                        <span class="brand-option-name">品質・信頼性</span>
+                                                        <div class="brand-equity-info">
+                                                            <div class="equity-bar-container">
+                                                                <div class="equity-bar-fill" style="width: 60%;"></div>
+                                                            </div>
+                                                            <span class="equity-val-label">60pt</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="brand-option-item" data-id="standard">
+                                                        <span class="brand-option-name">標準モデル</span>
+                                                        <div class="brand-equity-info">
+                                                            <div class="equity-bar-container">
+                                                                <div class="equity-bar-fill" style="width: 25%;"></div>
+                                                            </div>
+                                                            <span class="equity-val-label">25pt</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="p4-desc">製品の提供価値と差別化のポイントを決定します。</div>
+                                            </div>
+
+                                            <!-- Price -->
+                                            <div class="p4-card">
+                                                <div class="p4-header">
+                                                    <div class="p4-icon-wrapper"><i class="fa-solid fa-tag p4-icon"></i>
+                                                    </div>
+                                                    <span class="p4-title">Price (価格)</span>
+                                                </div>
+                                                <div class="brand-option-list" data-group="price">
+                                                    <div class="brand-option-item" data-id="skimming">
+                                                        <span class="brand-option-name">高収益（スキミング）</span>
+                                                        <div class="brand-equity-info">
+                                                            <div class="equity-bar-container">
+                                                                <div class="equity-bar-fill" style="width: 55%;"></div>
+                                                            </div>
+                                                            <span class="equity-val-label">55pt</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="brand-option-item" data-id="premium">
+                                                        <span class="brand-option-name">プレミアム感</span>
+                                                        <div class="brand-equity-info">
+                                                            <div class="equity-bar-container">
+                                                                <div class="equity-bar-fill" style="width: 45%;"></div>
+                                                            </div>
+                                                            <span class="equity-val-label">45pt</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="brand-option-item" data-id="market">
+                                                        <span class="brand-option-name">適正価格（市場適正）</span>
+                                                        <div class="brand-equity-info">
+                                                            <div class="equity-bar-container">
+                                                                <div class="equity-bar-fill" style="width: 70%;"></div>
+                                                            </div>
+                                                            <span class="equity-val-label">70pt</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="brand-option-item" data-id="penetration">
+                                                        <span class="brand-option-name">低価格（シェア獲得）</span>
+                                                        <div class="brand-equity-info">
+                                                            <div class="equity-bar-container">
+                                                                <div class="equity-bar-fill" style="width: 30%;"></div>
+                                                            </div>
+                                                            <span class="equity-val-label">30pt</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="p4-desc">収益性と市場シェアのバランスを決定します。</div>
+                                            </div>
+
+                                            <!-- Place -->
+                                            <div class="p4-card">
+                                                <div class="p4-header">
+                                                    <div class="p4-icon-wrapper"><i
+                                                            class="fa-solid fa-store p4-icon"></i></div>
+                                                    <span class="p4-title">Place (流通)</span>
+                                                </div>
+                                                <div class="brand-option-list" data-group="place">
+                                                    <div class="brand-option-item" data-id="direct">
+                                                        <span class="brand-option-name">直販（EC・D2C）</span>
+                                                        <div class="brand-equity-info">
+                                                            <div class="equity-bar-container">
+                                                                <div class="equity-bar-fill" style="width: 50%;"></div>
+                                                            </div>
+                                                            <span class="equity-val-label">50pt</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="brand-option-item" data-id="retail">
+                                                        <span class="brand-option-name">量販店網（広域）</span>
+                                                        <div class="brand-equity-info">
+                                                            <div class="equity-bar-container">
+                                                                <div class="equity-bar-fill" style="width: 80%;"></div>
+                                                            </div>
+                                                            <span class="equity-val-label">80pt</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="brand-option-item" data-id="b2b_direct">
+                                                        <span class="brand-option-name">法人営業網</span>
+                                                        <div class="brand-equity-info">
+                                                            <div class="equity-bar-container">
+                                                                <div class="equity-bar-fill" style="width: 40%;"></div>
+                                                            </div>
+                                                            <span class="equity-val-label">40pt</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="brand-option-item" data-id="omni">
+                                                        <span class="brand-option-name">複合（オムニチャネル）</span>
+                                                        <div class="brand-equity-info">
+                                                            <div class="equity-bar-container">
+                                                                <div class="equity-bar-fill" style="width: 35%;"></div>
+                                                            </div>
+                                                            <span class="equity-val-label">35pt</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="p4-desc">顧客への製品提供チャネルを決定します。</div>
+                                            </div>
+
+                                            <!-- Promotion -->
+                                            <div class="p4-card">
+                                                <div class="p4-header">
+                                                    <div class="p4-icon-wrapper"><i
+                                                            class="fa-solid fa-bullhorn p4-icon"></i></div>
+                                                    <span class="p4-title">Promotion (販促)</span>
+                                                </div>
+                                                <div class="brand-option-list" data-group="promotion">
+                                                    <div class="brand-option-item" data-id="awareness">
+                                                        <span class="brand-option-name">認知獲得（CM・広告）</span>
+                                                        <div class="brand-equity-info">
+                                                            <div class="equity-bar-container">
+                                                                <div class="equity-bar-fill" style="width: 90%;"></div>
+                                                            </div>
+                                                            <span class="equity-val-label">90pt</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="brand-option-item" data-id="digital">
+                                                        <span class="brand-option-name">デジタル（SNS・Web）</span>
+                                                        <div class="brand-equity-info">
+                                                            <div class="equity-bar-container">
+                                                                <div class="equity-bar-fill" style="width: 65%;"></div>
+                                                            </div>
+                                                            <span class="equity-val-label">65pt</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="brand-option-item" data-id="events">
+                                                        <span class="brand-option-name">体験価値（イベント）</span>
+                                                        <div class="brand-equity-info">
+                                                            <div class="equity-bar-container">
+                                                                <div class="equity-bar-fill" style="width: 30%;"></div>
+                                                            </div>
+                                                            <span class="equity-val-label">30pt</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="brand-option-item" data-id="sales">
+                                                        <span class="brand-option-name">人的販売・プッシュ</span>
+                                                        <div class="brand-equity-info">
+                                                            <div class="equity-bar-container">
+                                                                <div class="equity-bar-fill" style="width: 50%;"></div>
+                                                            </div>
+                                                            <span class="equity-val-label">50pt</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="p4-desc">ターゲット層への訴求方法を決定します。</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Marketing Strategy Section -->
-                            <div class="strategy-card collapsible-card collapsed">
-                                <div class="card-header-toggle">
-                                    <div class="header-content">
-                                        <h3><i class="fa-solid fa-bullhorn"></i> マーケティングミックス</h3>
-                                        <div class="card-progress-wrapper">
-                                            <div class="card-progress-bar-bg">
-                                                <div class="card-progress-fill" style="width: 0%;"></div>
-                                            </div>
-                                            <span class="card-progress-label">未入力</span>
-                                        </div>
-                                    </div>
-                                    <i class="fa-solid fa-chevron-up toggle-icon"></i>
-                                </div>
-                                <div class="card-body">
-                                    <div class="p4-grid">
-                                        <!-- Product -->
-                                        <div class="p4-card">
-                                            <div class="p4-header">
-                                                <div class="p4-icon-wrapper"><i
-                                                        class="fa-solid fa-box-open p4-icon"></i></div>
-                                                <span class="p4-title">Product (製品)</span>
-                                            </div>
-                                            <select class="p4-select" data-p-type="product">
-                                                <option value="">選択してください</option>
-                                                <option value="innovation">革新性・高性能（ハイエンド）</option>
-                                                <option value="brand">ブランド・デザイン重視</option>
-                                                <option value="reliability">品質・信頼性・サポート重視</option>
-                                                <option value="standard">標準モデル（量産コスト重視）</option>
-                                            </select>
-                                            <div class="p4-desc">製品の提供価値と差別化のポイントを決定します。</div>
-                                        </div>
-
-                                        <!-- Price -->
-                                        <div class="p4-card">
-                                            <div class="p4-header">
-                                                <div class="p4-icon-wrapper"><i class="fa-solid fa-tag p4-icon"></i>
-                                                </div>
-                                                <span class="p4-title">Price (価格)</span>
-                                            </div>
-                                            <select class="p4-select" data-p-type="price">
-                                                <option value="">選択してください</option>
-                                                <option value="skimming">スキミング（高収益・先行者利益）</option>
-                                                <option value="premium">プレミアム（高価格・ブランド維持）</option>
-                                                <option value="market">市場適正（競争力維持）</option>
-                                                <option value="penetration">ペネトレーション（低価格・シェア奪取）</option>
-                                            </select>
-                                            <div class="p4-desc">収益性と市場シェアのバランスを決定します。</div>
-                                        </div>
-
-                                        <!-- Place -->
-                                        <div class="p4-card">
-                                            <div class="p4-header">
-                                                <div class="p4-icon-wrapper"><i class="fa-solid fa-store p4-icon"></i>
-                                                </div>
-                                                <span class="p4-title">Place (流通)</span>
-                                            </div>
-                                            <select class="p4-select" data-p-type="place">
-                                                <option value="">選択してください</option>
-                                                <option value="direct">直販主体（EC・直営店・D2C）</option>
-                                                <option value="retail">代理店・量販店網（カバレッジ重視）</option>
-                                                <option value="b2b_direct">法人営業（B2Bダイレクト）</option>
-                                                <option value="omni">オムニチャネル（複合）</option>
-                                            </select>
-                                            <div class="p4-desc">顧客への製品提供チャネルを決定します。</div>
-                                        </div>
-
-                                        <!-- Promotion -->
-                                        <div class="p4-card">
-                                            <div class="p4-header">
-                                                <div class="p4-icon-wrapper"><i
-                                                        class="fa-solid fa-bullhorn p4-icon"></i></div>
-                                                <span class="p4-title">Promotion (販促)</span>
-                                            </div>
-                                            <select class="p4-select" data-p-type="promotion">
-                                                <option value="">選択してください</option>
-                                                <option value="awareness">マス広告（認知獲得・CM）</option>
-                                                <option value="digital">デジタルマーケティング（SNS・Web）</option>
-                                                <option value="events">イベント・PR活動（体験価値）</option>
-                                                <option value="sales">人的販売・営業強化（プッシュ型）</option>
-                                            </select>
-                                            <div class="p4-desc">ターゲット層への訴求方法を決定します。</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
                             <!-- Management Plan Section -->
                             <div class="strategy-card collapsible-card collapsed">
@@ -477,14 +590,6 @@
                                     <i class="fa-solid fa-chevron-up toggle-icon"></i>
                                 </div>
                                 <div class="card-body">
-                                    <div class="plan-period-container">
-                                        <label class="plan-period-label">計画期間設定 :</label>
-                                        <select class="plan-period-select">
-                                            <option value="term_16">単年度計画（第16期）</option>
-                                            <option value="term_3_years">中期経営計画（3カ年）</option>
-                                            <option value="term_5_years">長期経営計画（5カ年）</option>
-                                        </select>
-                                    </div>
                                     <div class="plan-grid">
                                         <!-- Market Size (Visual Selection) -->
                                         <div class="plan-card">
@@ -494,17 +599,19 @@
                                                 <canvas id="chart-market-forecast"></canvas>
                                             </div>
                                             <div class="plan-controls">
-                                                <div class="plan-btn-group">
-                                                    <button class="plan-select-btn"
-                                                        data-scenario="optimistic">強気<br>(Optimistic)</button>
-                                                    <button class="plan-select-btn"
-                                                        data-scenario="base">標準<br>(Base)</button>
-                                                    <button class="plan-select-btn"
-                                                        data-scenario="pessimistic">弱気<br>(Pessimistic)</button>
+                                                <div class="plan-slider-container">
+                                                    <span>-50%</span>
+                                                    <input type="range" class="plan-range" id="range-market-growth"
+                                                        min="-50" max="50" step="0.5" value="0">
+                                                    <span>+50%</span>
+                                                </div>
+                                                <div class="plan-value-display" id="disp-market-growth">0%</div>
+                                                <div class="plan-calc-row">
+                                                    <span class="calc-label">市場規模 :</span>
+                                                    <span class="calc-value" id="disp-market-size">2,000 億円</span>
                                                 </div>
                                                 <input type="hidden" class="plan-input hidden-plan-input"
-                                                    id="input-market-size">
-                                                <div class="plan-value-display" id="disp-market-size">--- 台</div>
+                                                    id="input-market-size" value="2000">
                                             </div>
                                         </div>
 
@@ -519,10 +626,14 @@
                                                 <div class="plan-slider-container">
                                                     <span>0%</span>
                                                     <input type="range" class="plan-range" id="range-share" min="0"
-                                                        max="50" step="1" value="0">
-                                                    <span>50%</span>
+                                                        max="100" step="1" value="0">
+                                                    <span>100%</span>
                                                 </div>
                                                 <div class="plan-value-display" id="disp-share">0%</div>
+                                                <div class="plan-calc-row">
+                                                    <span class="calc-label">想定売上 :</span>
+                                                    <span class="calc-value" id="disp-expected-sales">0 億円</span>
+                                                </div>
                                                 <input type="hidden" class="plan-input hidden-plan-input"
                                                     id="input-share">
                                             </div>
@@ -539,12 +650,66 @@
                                                 <div class="plan-slider-container">
                                                     <span>0%</span>
                                                     <input type="range" class="plan-range" id="range-profit" min="0"
-                                                        max="30" step="0.5" value="0">
-                                                    <span>30%</span>
+                                                        max="100" step="0.5" value="0">
+                                                    <span>100%</span>
                                                 </div>
                                                 <div class="plan-value-display" id="disp-profit">0%</div>
+                                                <div class="plan-calc-row">
+                                                    <span class="calc-label">当期純利益 :</span>
+                                                    <span class="calc-value" id="disp-net-profit">0 億円</span>
+                                                </div>
                                                 <input type="hidden" class="plan-input hidden-plan-input"
                                                     id="input-profit">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- NEW: Mid-to-Long Term Management Plan Charts -->
+                                    <div class="midterm-plan-section">
+                                        <h3 class="midterm-title">
+                                            <div class="midterm-title-text"><i class="fa-solid fa-chart-line"></i>
+                                                中長期経営計画</div>
+                                            <div class="midterm-time-slider-wrapper">
+                                                <span class="slider-label">期間設定 (5-100年):</span>
+                                                <div class="slider-control">
+                                                    <input type="range" id="midterm-range-slider" min="5" max="100"
+                                                        step="1" value="5">
+                                                    <span id="midterm-range-display">5年</span>
+                                                </div>
+                                            </div>
+                                        </h3>
+                                        <div class="midterm-grid">
+                                            <div class="midterm-chart-card">
+                                                <div class="midterm-chart-label">
+                                                    <span><i class="fa-solid fa-earth-americas"></i> 市場規模予測 (億円)</span>
+                                                </div>
+                                                <div class="midterm-canvas-container">
+                                                    <canvas id="chart-midterm-market"></canvas>
+                                                </div>
+                                            </div>
+                                            <div class="midterm-chart-card">
+                                                <div class="midterm-chart-label">
+                                                    <span><i class="fa-solid fa-cart-shopping"></i> 目標売上 (億円)</span>
+                                                </div>
+                                                <div class="midterm-canvas-container">
+                                                    <canvas id="chart-midterm-sales"></canvas>
+                                                </div>
+                                            </div>
+                                            <div class="midterm-chart-card">
+                                                <div class="midterm-chart-label">
+                                                    <span><i class="fa-solid fa-sack-dollar"></i> 目標利益額 (億円)</span>
+                                                </div>
+                                                <div class="midterm-canvas-container">
+                                                    <canvas id="chart-midterm-profit"></canvas>
+                                                </div>
+                                            </div>
+                                            <div class="midterm-chart-card">
+                                                <div class="midterm-chart-label">
+                                                    <span><i class="fa-solid fa-building-columns"></i> 純資産目標 (億円)</span>
+                                                </div>
+                                                <div class="midterm-canvas-container">
+                                                    <canvas id="chart-midterm-assets"></canvas>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

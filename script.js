@@ -1193,14 +1193,12 @@ document.addEventListener('DOMContentLoaded', () => {
             cultureChartInstance.update();
         }
 
-        // Update Card Progress Bar (Culture)
+        // Update Card Progress Bar (Combined: Philosophy + Culture)
         const consumed = TOTAL_POINTS - remaining;
-        const progressFill = document.getElementById('culture-progress-fill');
-        const progressLabel = document.getElementById('culture-progress-label');
-        if (progressFill && progressLabel) {
-            const percent = (consumed / TOTAL_POINTS) * 100;
-            progressFill.style.width = `${percent}%`;
-            progressLabel.textContent = `${consumed}/${TOTAL_POINTS} pt`;
+
+        const card = document.querySelector('.strategy-textarea')?.closest('.strategy-card');
+        if (card) {
+            updateUnifiedProgress(card);
         }
 
         // Save to LocalStorage
@@ -1210,6 +1208,38 @@ document.addEventListener('DOMContentLoaded', () => {
             cultureData[type] = input.value;
         });
         localStorage.setItem('bizex_culture_allocation', JSON.stringify(cultureData));
+    }
+
+    function updateUnifiedProgress(card) {
+        const textarea = card.querySelector('.strategy-textarea');
+        const progressFill = card.querySelector('.card-progress-fill');
+        const progressLabel = card.querySelector('.card-progress-label');
+
+        if (!textarea || !progressFill || !progressLabel) return;
+
+        // 1. Philosophy Progress (0 or 50)
+        const hasText = textarea.value.trim().length > 0;
+        const philScore = hasText ? 50 : 0;
+
+        // 2. Culture Progress (0 to 50)
+        let currentPoints = 0;
+        document.querySelectorAll('.point-input').forEach(i => currentPoints += parseInt(i.value) || 0);
+        const cultureScore = (currentPoints / 10) * 50;
+
+        const totalPercent = philScore + cultureScore;
+        progressFill.style.width = `${totalPercent}%`;
+
+        // Label logic
+        if (totalPercent === 100) {
+            progressLabel.textContent = '策定完了';
+            progressLabel.style.color = '#00e5ff';
+        } else if (totalPercent > 0) {
+            progressLabel.textContent = '策定中';
+            progressLabel.style.color = '#ffeb3b';
+        } else {
+            progressLabel.textContent = '未入力';
+            progressLabel.style.color = '#aaa';
+        }
     }
 
     cultureItems.forEach(item => {
@@ -1258,6 +1288,276 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePoints();
     }
 
+    // --- Management Plan Visual Input Logic ---
+    let marketChart = null;
+    let shareChart = null;
+    let profitChart = null;
+
+    // Midterm Charts
+    let midMarketChart = null;
+    let midSalesChart = null;
+    let midProfitChart = null;
+    let midAssetsChart = null;
+
+    function initManagementPlanCharts() {
+        // 1. Market Size Forecast Chart
+        const marketCtx = document.getElementById('chart-market-forecast');
+        if (marketCtx) {
+            marketChart = new Chart(marketCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['前期実績', '次期予測'],
+                    datasets: [{
+                        label: '市場規模 (億円)',
+                        data: [1950, 2000],
+                        backgroundColor: [
+                            'rgba(255, 255, 255, 0.2)',
+                            '#00e5ff'
+                        ],
+                        borderColor: 'rgba(255, 255, 255, 0.3)',
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#aaa', font: { size: 10 } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#fff', font: { weight: 'bold', size: 11 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 2. Share Target Chart (Radial/Doughnut)
+        const shareCtx = document.getElementById('chart-share-target');
+        if (shareCtx) {
+            shareChart = new Chart(shareCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['目標', '残り'],
+                    datasets: [{
+                        data: [0, 100],
+                        backgroundColor: ['#00e5ff', 'rgba(255, 255, 255, 0.05)'],
+                        borderWidth: 0,
+                        circumference: 180,
+                        rotation: 270
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '80%',
+                    plugins: { legend: { display: false }, tooltip: { enabled: false } }
+                }
+            });
+        }
+
+        // 3. Profit Margin Chart (Radial/Doughnut)
+        const profitCtx = document.getElementById('chart-profit-target');
+        if (profitCtx) {
+            profitChart = new Chart(profitCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['目標', '残り'],
+                    datasets: [{
+                        data: [0, 100],
+                        backgroundColor: ['#ffeb3b', 'rgba(255, 255, 255, 0.05)'],
+                        borderWidth: 0,
+                        circumference: 180,
+                        rotation: 270
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '80%',
+                    plugins: { legend: { display: false }, tooltip: { enabled: false } }
+                }
+            });
+        }
+
+        // --- Mid-to-Long Term Initialization ---
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            elements: {
+                line: { tension: 0.4, borderWidth: 3, borderColor: '#00e5ff', fill: true, backgroundColor: 'rgba(0, 229, 255, 0.1)' },
+                point: { radius: 4, hitRadius: 10, hoverRadius: 6, backgroundColor: '#fff' }
+            },
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#aaa', font: { size: 10 } } },
+                x: { grid: { display: false }, ticks: { color: '#fff' } }
+            }
+        };
+
+        const midtermLabels = ['15期(実)', '16期', '17期', '18期', '19期', '20期'];
+
+        const initMidChart = (id, color) => {
+            const ctx = document.getElementById(id);
+            if (!ctx) return null;
+            const cfg = JSON.parse(JSON.stringify(commonOptions));
+            cfg.elements.line.borderColor = color;
+            cfg.elements.line.backgroundColor = color.replace('1)', '0.1)');
+            return new Chart(ctx, {
+                type: 'line',
+                data: { labels: midtermLabels, datasets: [{ data: [0, 0, 0, 0, 0, 0] }] },
+                options: cfg
+            });
+        };
+
+        midMarketChart = initMidChart('chart-midterm-market', '#00e5ff');
+        midSalesChart = initMidChart('chart-midterm-sales', '#00e5ff');
+        midProfitChart = initMidChart('chart-midterm-profit', '#ffeb3b');
+        midAssetsChart = initMidChart('chart-midterm-assets', '#4caf50');
+    }
+
+    function updateMidtermCharts(marketYear1, shareYear1, profitRateYear1) {
+        if (!midMarketChart) return;
+
+        const rangeSlider = document.getElementById('midterm-range-slider');
+        const numYears = rangeSlider ? parseInt(rangeSlider.value) : 5;
+        const currentTerm = 15;
+
+        // Dynamic labels for the requested time range
+        const labels = [`${currentTerm}期(実)`];
+        for (let i = 1; i <= numYears; i++) {
+            labels.push(`${currentTerm + i}期`);
+        }
+
+        const growthRate = (marketYear1 / 1950) - 1;
+        const marketData = [1950];
+        const salesData = [390]; // Sample Year 15 Sales
+        const profitData = [20];  // Sample Year 15 Profit
+        const assetsData = [5000]; // Sample Year 15 Net Assets
+
+        for (let i = 1; i <= numYears; i++) {
+            const m = Math.round(1950 * Math.pow(1 + growthRate, i));
+            const s = Math.round(m * (shareYear1 / 100));
+            const p = Math.round(s * (profitRateYear1 / 100));
+            const a = assetsData[i - 1] + p;
+
+            marketData.push(m);
+            salesData.push(s);
+            profitData.push(p);
+            assetsData.push(a);
+        }
+
+        const update = (chart, data, newLabels) => {
+            if (chart) {
+                chart.data.labels = newLabels;
+                chart.data.datasets[0].data = data;
+                chart.update('none'); // Update without animation for smoother slider feel
+            }
+        };
+
+        update(midMarketChart, marketData, labels);
+        update(midSalesChart, salesData, labels);
+        update(midProfitChart, profitData, labels);
+        update(midAssetsChart, assetsData, labels);
+    }
+
+    function updatePlanCalculations() {
+        const marketSize = parseInt(document.getElementById('input-market-size').value) || 0;
+        const share = parseInt(document.getElementById('input-share').value) || 0;
+        const profitMargin = parseFloat(document.getElementById('input-profit').value) || 0;
+
+        const expectedSales = Math.round(marketSize * (share / 100));
+        const netProfit = Math.round(expectedSales * (profitMargin / 100));
+
+        const salesDisp = document.getElementById('disp-expected-sales');
+        const profitDisp = document.getElementById('disp-net-profit');
+
+        if (salesDisp) salesDisp.textContent = expectedSales.toLocaleString() + " 億円";
+        if (profitDisp) profitDisp.textContent = netProfit.toLocaleString() + " 億円";
+
+        // Update Midterm Charts
+        updateMidtermCharts(marketSize, share, profitMargin);
+    }
+
+    // Market Growth Slider update
+    const rangeGrowth = document.getElementById('range-market-growth');
+    if (rangeGrowth) {
+        rangeGrowth.addEventListener('input', () => {
+            const growthRate = parseFloat(rangeGrowth.value);
+            const baseMarketValue = 1950; // Previous Term
+            const calculatedMarketSize = Math.round(baseMarketValue * (1 + growthRate / 100));
+
+            const growthDisplay = document.getElementById('disp-market-growth');
+            const marketSizeDisplay = document.getElementById('disp-market-size');
+            const hiddenInput = document.getElementById('input-market-size');
+
+            if (growthDisplay) {
+                growthDisplay.textContent = (growthRate > 0 ? "+" : "") + growthRate + "%";
+                growthDisplay.style.color = growthRate > 0 ? "#00e5ff" : (growthRate < 0 ? "#ff5252" : "#fff");
+            }
+            if (marketSizeDisplay) marketSizeDisplay.textContent = calculatedMarketSize.toLocaleString() + " 億円";
+            if (hiddenInput) {
+                hiddenInput.value = calculatedMarketSize;
+                hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+
+            if (marketChart) {
+                marketChart.data.datasets[0].data[1] = calculatedMarketSize;
+                marketChart.update();
+            }
+            updatePlanCalculations();
+        });
+    }
+
+    // Share Slider update
+    const rangeShare = document.getElementById('range-share');
+    if (rangeShare) {
+        rangeShare.addEventListener('input', () => {
+            const val = rangeShare.value;
+            const display = document.getElementById('disp-share');
+            const hiddenInput = document.getElementById('input-share');
+            if (display) display.textContent = val + "%";
+            if (hiddenInput) {
+                hiddenInput.value = val;
+                hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            if (shareChart) {
+                shareChart.data.datasets[0].data = [val, 100 - val];
+                shareChart.update();
+            }
+            updatePlanCalculations();
+        });
+    }
+
+    // Profit Slider update
+    const rangeProfit = document.getElementById('range-profit');
+    if (rangeProfit) {
+        rangeProfit.addEventListener('input', () => {
+            const val = rangeProfit.value;
+            const display = document.getElementById('disp-profit');
+            const hiddenInput = document.getElementById('input-profit');
+            if (display) display.textContent = val + "%";
+            if (hiddenInput) {
+                hiddenInput.value = val;
+                hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            if (profitChart) {
+                profitChart.data.datasets[0].data = [val, 100 - val];
+                profitChart.update();
+            }
+            updatePlanCalculations();
+        });
+    }
+
+    // Initialize Management Plan
+    initManagementPlanCharts();
+
     // --- Collapsible Cards Logic ---
     document.querySelectorAll('.card-header-toggle').forEach(header => {
         header.addEventListener('click', () => {
@@ -1268,48 +1568,86 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- Strategy Input Progress Logic ---
-    // 3. For 4P Marketing Mix Selection
-    const p4Selects = document.querySelectorAll('.p4-select');
-    if (p4Selects.length > 0) {
-        const updateP4Progress = () => {
-            let filledCount = 0;
-            p4Selects.forEach(select => {
-                if (select.value !== "") filledCount++;
-            });
+    // --- Brand Identity Selection Logic (Marketing Mix) ---
+    const brandOptionLists = document.querySelectorAll('.brand-option-list');
 
-            // Find the closest strategy card (assuming all selects are within the same strategy section)
-            // Use the first select to identify the container card
-            const card = p4Selects[0].closest('.strategy-card');
+    function updateCombinedStrategyProgress() {
+        const card = document.querySelector('.mgmt-strategy-subset')?.closest('.strategy-card');
+        if (!card) return;
 
-            if (card) {
-                const progressFill = card.querySelector('.card-progress-fill');
-                const progressLabel = card.querySelector('.card-progress-label');
+        const progressFill = card.querySelector('.card-progress-fill');
+        const progressLabel = card.querySelector('.card-progress-label');
+        if (!progressFill || !progressLabel) return;
 
-                // Calculate percentage based on 4 items
-                const percentage = (filledCount / p4Selects.length) * 100;
+        // 1. Management Strategy Progress (0 or 20%)
+        const strategySelected = !!card.querySelector('input[name="mgmt_strategy"]:checked');
+        const strategyScore = strategySelected ? 20 : 0;
 
-                if (progressFill) progressFill.style.width = `${percentage}%`;
+        // 2. Marketing Mix Progress (0 to 80%)
+        const brandOptionLists = document.querySelectorAll('.brand-option-list');
+        let filledGroups = 0;
+        brandOptionLists.forEach(list => {
+            if (list.querySelector('.brand-option-item.active')) {
+                filledGroups++;
+            }
+        });
+        const marketingScore = (filledGroups / 4) * 80;
 
-                if (progressLabel) {
-                    if (filledCount === 0) {
-                        progressLabel.textContent = '未入力';
-                        progressLabel.style.color = '#aaa';
-                    } else if (filledCount === p4Selects.length) {
-                        progressLabel.textContent = '選択済';
-                        progressLabel.style.color = '#00e5ff';
-                    } else {
-                        progressLabel.textContent = '入力中';
-                        progressLabel.style.color = '#ffeb3b';
-                    }
+        const totalPercent = strategyScore + marketingScore;
+        progressFill.style.width = `${totalPercent}%`;
+
+        // Label logic
+        if (totalPercent === 100) {
+            progressLabel.textContent = '策定完了';
+            progressLabel.style.color = '#00e5ff';
+        } else if (totalPercent > 0) {
+            progressLabel.textContent = '策定中';
+            progressLabel.style.color = '#ffeb3b';
+        } else {
+            progressLabel.textContent = '未入力';
+            progressLabel.style.color = '#aaa';
+        }
+    }
+
+    document.querySelectorAll('.brand-option-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const group = item.closest('.brand-option-list');
+            // Remove active from others in the same group
+            group.querySelectorAll('.brand-option-item').forEach(i => i.classList.remove('active'));
+            // Add to this one
+            item.classList.add('active');
+
+            // Visual accumulation effect: gain +5pt on click (simulated)
+            const bar = item.querySelector('.equity-bar-fill');
+            if (bar) {
+                let currentWidth = parseInt(bar.style.width) || 0;
+                if (currentWidth < 95) {
+                    bar.style.width = (currentWidth + 5) + "%";
+                    const label = item.querySelector('.equity-val-label');
+                    if (label) label.textContent = (currentWidth + 5) + "pt";
                 }
             }
-        };
 
-        p4Selects.forEach(select => {
-            select.addEventListener('change', updateP4Progress);
+            updateCombinedStrategyProgress();
+
+            // Trigger a sound or small effect if available (optional)
+            // Save state if needed
+            const groupId = group.getAttribute('data-group');
+            const optionId = item.getAttribute('data-id');
+            localStorage.setItem(`bizex_p4_${groupId}`, optionId);
         });
-    }
+    });
+
+    // Load saved states
+    brandOptionLists.forEach(list => {
+        const groupId = list.getAttribute('data-group');
+        const saved = localStorage.getItem(`bizex_p4_${groupId}`);
+        if (saved) {
+            const item = list.querySelector(`.brand-option-item[data-id="${saved}"]`);
+            if (item) item.classList.add('active');
+        }
+    });
+    updateCombinedStrategyProgress();
 
     // 4. For Management Plan Inputs (Market Size, Share, Profit)
     const planInputs = document.querySelectorAll('.plan-input');
@@ -1355,10 +1693,15 @@ document.addEventListener('DOMContentLoaded', () => {
     strategyTextareas.forEach(textarea => {
         const card = textarea.closest('.strategy-card');
         if (card) {
-            const progressFill = card.querySelector('.card-progress-fill');
-            const progressLabel = card.querySelector('.card-progress-label');
-
             const updateStrategyProgress = () => {
+                // If this is the combined Philosophy & Culture card, use the unified logic
+                if (card.querySelector('.culture-section')) {
+                    updateUnifiedProgress(card);
+                    return;
+                }
+
+                const progressFill = card.querySelector('.card-progress-fill');
+                const progressLabel = card.querySelector('.card-progress-label');
                 const hasText = textarea.value.trim().length > 0;
                 if (progressFill) progressFill.style.width = hasText ? '100%' : '0%';
                 if (progressLabel) {
@@ -1384,17 +1727,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const label = input.closest('.strategy-option');
             label.classList.add('selected');
 
-            // Update Progress
-            const card = input.closest('.strategy-card');
-            if (card) {
-                const progressFill = card.querySelector('.card-progress-fill');
-                const progressLabel = card.querySelector('.card-progress-label');
-                if (progressFill) progressFill.style.width = '100%';
-                if (progressLabel) {
-                    progressLabel.textContent = '選択済';
-                    progressLabel.style.color = '#00e5ff';
-                }
-            }
+            // Update Combined Progress
+            updateCombinedStrategyProgress();
         });
     });
+
+    // Midterm Time Range Slider update
+    const midtermRangeSlider = document.getElementById('midterm-range-slider');
+    const midtermRangeDisplay = document.getElementById('midterm-range-display');
+    if (midtermRangeSlider && midtermRangeDisplay) {
+        midtermRangeSlider.addEventListener('input', () => {
+            const val = midtermRangeSlider.value;
+            midtermRangeDisplay.textContent = val + "年";
+
+            // Re-run calculations which calls updateMidtermCharts with new slider value
+            updatePlanCalculations();
+        });
+    }
 });
