@@ -3942,6 +3942,49 @@ html {
   filter: drop-shadow(0 0 5px rgba(0, 229, 255, 0.5));
 }
 
+.closing-graph-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.closing-graph-card h3 {
+  margin-bottom: 0px !important;
+  /* Reset for header flex */
+}
+
+.chart-switch {
+  display: flex;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  padding: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.switch-btn {
+  background: transparent;
+  border: none;
+  color: #aaa;
+  padding: 4px 15px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.switch-btn.active {
+  background: #00e5ff;
+  color: #0a1929;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+}
+
+.switch-btn:hover:not(.active) {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
 .closing-chart-container {
   height: 320px;
   width: 100%;

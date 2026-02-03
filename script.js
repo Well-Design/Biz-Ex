@@ -1766,6 +1766,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- Closing Summary Toggle Logic ---
+    document.querySelectorAll('.chart-switch .switch-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const container = btn.closest('.chart-switch');
+            const chartId = container.getAttribute('data-chart');
+            const mode = btn.getAttribute('data-mode');
+
+            // Update UI
+            container.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            if (chartId === 'market-trend' && closingProfitabilityChart) {
+                if (mode === 'sales') {
+                    closingProfitabilityChart.data.datasets[0].label = '市場規模 (億円)';
+                    closingProfitabilityChart.data.datasets[0].data = [1800, 1850, 1950, 2000];
+                    closingProfitabilityChart.options.scales.y.min = 1500;
+                    closingProfitabilityChart.options.scales.y.ticks.callback = (value) => value + ' 億円';
+                } else {
+                    closingProfitabilityChart.data.datasets[0].label = '市場規模 (台)';
+                    closingProfitabilityChart.data.datasets[0].data = [45000, 46000, 48500, 50000];
+                    closingProfitabilityChart.options.scales.y.min = 40000;
+                    closingProfitabilityChart.options.scales.y.ticks.callback = (value) => value.toLocaleString() + ' 台';
+                }
+                closingProfitabilityChart.update();
+            } else if (chartId === 'market-share' && closingAssetsChart) {
+                if (mode === 'sales') {
+                    closingAssetsChart.data.datasets[0].data = [20, 20, 20, 20, 20]; // Sample Sales Share
+                } else {
+                    closingAssetsChart.data.datasets[0].data = [15, 25, 20, 18, 22]; // Sample Volume Share
+                }
+                closingAssetsChart.update();
+            }
+        });
+    });
+
     // Initialize charts
     initManagementPlanCharts();
     initClosingSummaryCharts();
