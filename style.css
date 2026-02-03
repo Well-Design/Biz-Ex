@@ -3245,3 +3245,739 @@ html {
   transform: translateY(1px) scale(0.98);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
+
+/* --- Nadler-Tushman Model Styles --- */
+.finance-analysis-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 40px;
+  align-items: center;
+  color: white;
+  overflow-y: auto;
+}
+
+.finance-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.finance-header h2 {
+  font-size: 2rem;
+  color: #00e5ff;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+  margin-bottom: 10px;
+}
+
+.finance-header p {
+  color: #b0bec5;
+  font-size: 1rem;
+}
+
+.nadler-model-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  position: relative;
+  padding-bottom: 50px;
+  /* Space for feedback line */
+  width: 100%;
+  max-width: 1200px;
+}
+
+.nt-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.nt-box-title {
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #90a4ae;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+/* Common Box Styles */
+.nt-box {
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid #cfd8dc;
+  border-radius: 4px;
+  padding: 15px;
+  color: #333;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.nt-box:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(0, 229, 255, 0.3);
+  border-color: #00bcd4;
+}
+
+.nt-box:active {
+  transform: translateY(-2px);
+}
+
+/* Input & Output Boxes (Vertical Stack Look) */
+.nt-input-box,
+.nt-output-box {
+  width: 140px;
+  height: 300px;
+  justify-content: space-around;
+  border-radius: 8px;
+}
+
+.nt-sep {
+  width: 80%;
+  height: 1px;
+  background: #cfd8dc;
+  margin: 5px 0;
+}
+
+.nt-text {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Strategy Arrow */
+.nt-arrow-strategy {
+  width: 120px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin: 0 10px;
+}
+
+.arrow-shape {
+  width: 100%;
+  height: 60px;
+  background: #546e7a;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  clip-path: polygon(0% 20%, 75% 20%, 75% 0%, 100% 50%, 75% 100%, 75% 80%, 0% 80%);
+  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.3));
+  transition: transform 0.3s;
+}
+
+.arrow-shape:hover {
+  transform: scale(1.1);
+  background: #00bcd4;
+}
+
+.arrow-text {
+  margin-right: 15px;
+  /* Adjust for arrow tip */
+  font-size: 1.1rem;
+}
+
+/* Center Diamond Grid */
+.nt-diamond-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 30px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nt-process-box {
+  width: 140px;
+  height: 70px;
+  background: white;
+  border: 2px solid #546e7a;
+}
+
+.nt-mid-row {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nt-cross {
+  font-size: 2rem;
+  color: #b0bec5;
+  animation: pulse-cross 3s infinite;
+}
+
+@keyframes pulse-cross {
+
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* Connections */
+.nt-arrow-output {
+  font-size: 3rem;
+  color: #546e7a;
+  margin: 0 20px;
+  animation: slide-right 2s infinite;
+}
+
+@keyframes slide-right {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(5px);
+  }
+}
+
+/* Feedback Line */
+.nt-feedback-line {
+  position: absolute;
+  bottom: 20px;
+  left: 80px;
+  right: 80px;
+  height: 30px;
+  border: 2px solid #546e7a;
+  border-top: none;
+  border-radius: 0 0 20px 20px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.nt-feedback-line::before,
+.nt-feedback-line::after {
+  content: '▲';
+  position: absolute;
+  top: -10px;
+  font-size: 12px;
+  color: #546e7a;
+}
+
+.nt-feedback-line::before {
+  left: -6px;
+  transform: rotate(0deg);
+}
+
+.nt-feedback-line::after {
+  right: -6px;
+  transform: rotate(0deg);
+}
+
+/* --- Capital Iceberg Model Styles --- */
+.iceberg-section {
+  width: 100%;
+  max-width: 1000px;
+  margin: 100px 0 150px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding: 60px 40px;
+  background: radial-gradient(circle at 50% 30%, rgba(0, 188, 212, 0.1) 0%, transparent 70%);
+  border-radius: 30px;
+}
+
+.iceberg-container {
+  position: relative;
+  width: 750px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  min-height: 700px;
+}
+
+.capital-box {
+  background: rgba(255, 255, 255, 0.82);
+  /* Slightly more transparent for iceberg visibility */
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 15px;
+  text-align: center;
+  color: #1a237e;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 180px;
+}
+
+.capital-box:hover {
+  transform: translateY(-8px) scale(1.03);
+  border-color: #00e5ff;
+  box-shadow: 0 15px 35px rgba(0, 229, 255, 0.4);
+  background: rgba(255, 255, 255, 1);
+  z-index: 20;
+}
+
+.c-title {
+  font-size: 1.15rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.c-sub {
+  font-size: 0.8rem;
+  color: #546e7a;
+  margin-top: 3px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.c-desc {
+  font-size: 0.85rem;
+  color: #00796b;
+  margin-top: 4px;
+  font-weight: 800;
+}
+
+/* Above Water Area */
+.iceberg-top {
+  margin-bottom: 70px;
+  position: relative;
+  z-index: 15;
+}
+
+.capital-box.financial {
+  width: 320px;
+  height: 120px;
+  border-radius: 12px;
+  border-top: 4px solid #fff;
+  border-bottom: 5px solid #ffca28;
+}
+
+/* Enhanced Water Line with Waves */
+.iceberg-water-line {
+  width: 150%;
+  height: 4px;
+  background: rgba(0, 188, 212, 0.8);
+  position: relative;
+  margin: 10px 0 50px 0;
+  z-index: 5;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+}
+
+.iceberg-water-line::before {
+  content: "";
+  position: absolute;
+  top: -15px;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39 56.44c58-10.79 114.16-30.13 172-41.86 82.39-16.72 168.19-17.73 250.45-.39C823.78 31 906.67 72 985.66 92.83c70.05 18.48 146.53 26.09 214.34 3.47V0H0v59.3c60 14.2 140.21 21.06 205.47 5.03 33.62-8.27 66.32-22.1 115.92-7.89z' fill='%2300BCD4' fill-opacity='0.4' /%3E%3C/svg%3E");
+  background-size: 50% 100%;
+  animation: wave-animation 12s linear infinite;
+}
+
+@keyframes wave-animation {
+  from {
+    background-position-x: 0;
+  }
+
+  to {
+    background-position-x: 1000px;
+  }
+}
+
+.water-label {
+  position: absolute;
+  right: 5%;
+  top: -28px;
+  color: #00e5ff;
+  font-weight: 900;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+/* Below Water Split Area */
+.iceberg-mid-split {
+  display: flex;
+  gap: 50px;
+  margin-bottom: 45px;
+}
+
+.capital-box.technological,
+.capital-box.intellectual {
+  width: 250px;
+  height: 130px;
+  border-radius: 10px;
+}
+
+/* Level 2 & 3 */
+.iceberg-social,
+.iceberg-bottom {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 35px;
+}
+
+.capital-box.social {
+  width: 560px;
+  height: 140px;
+  border-radius: 10px;
+}
+
+.capital-box.ideological {
+  width: 660px;
+  height: 150px;
+  border-radius: 10px;
+  background: rgba(227, 242, 253, 0.9);
+  border-left: 6px solid #1e88e5;
+}
+
+/* Improved Jagged Iceberg Shape */
+.iceberg-shape-bg {
+  position: absolute;
+  top: -10px;
+  bottom: -40px;
+  left: 10px;
+  right: 10px;
+  background: linear-gradient(to bottom,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 1) 23%,
+      rgba(0, 188, 212, 0.3) 25%,
+      rgba(1, 87, 155, 0.8) 100%);
+  z-index: 1;
+  clip-path: polygon(50% 0%, 62% 8%, 85% 12%, 96% 38%, 98% 70%, 88% 92%,
+      50% 100%, 12% 92%, 2% 70%, 4% 38%, 15% 12%, 35% 8%);
+  filter: drop-shadow(0 0 30px rgba(0, 188, 212, 0.4));
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Light rays effect in water */
+.iceberg-shape-bg::after {
+  content: "";
+  position: absolute;
+  top: 25%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(110deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.08) 1%,
+      transparent 3%,
+      transparent 8%);
+  pointer-events: none;
+}
+
+/* --- Closing Summary Table Styles (Image Re-creation) --- */
+#view-closing {
+  background: url('closing_bg.png') no-repeat center center;
+  background-size: cover;
+  position: relative;
+}
+
+#view-closing {
+  background-image: url('closing_bg.png');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+#view-closing::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(0, 10, 20, 0.4) 0%, rgba(0, 5, 10, 0.8) 100%);
+  z-index: 1;
+}
+
+/* Subtle Animated Scanline */
+#view-closing::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(0deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+  background-size: 100% 4px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+.closing-summary-container {
+  position: relative;
+  z-index: 2;
+  padding: 40px 60px;
+  height: calc(100vh - 80px);
+  /* Adjust for footer if any */
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+/* Beautiful Scrollbar */
+.closing-summary-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.closing-summary-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.closing-summary-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #00e5ff, #1e88e5);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+}
+
+.closing-header {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 40px;
+  color: white;
+  border-left: 5px solid #00e5ff;
+  padding-left: 20px;
+}
+
+.term-badge {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 229, 255, 0.5);
+  padding: 8px 20px;
+  border-radius: 4px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+  color: #00e5ff;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.8);
+}
+
+.closing-header h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 1px;
+  background: linear-gradient(to right, #fff, #b0bec5);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes closingCardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.summary-table-wrapper {
+  animation: closingCardEntrance 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  margin-bottom: 40px;
+  background: rgba(10, 25, 41, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 2px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+/* Staggered animation for wrappers */
+.summary-table-wrapper:nth-child(even) {
+  animation-delay: 0.1s;
+}
+
+.summary-table-wrapper:nth-child(odd) {
+  animation-delay: 0.2s;
+}
+
+.biz-summary-table,
+.biz-analysis-table,
+.biz-statements-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0;
+}
+
+/* Headers */
+.biz-summary-table th,
+.biz-analysis-table th,
+.biz-statements-table th {
+  background: rgba(255, 255, 255, 0.05);
+  color: #81d4fa;
+  padding: 15px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Row Hover Effect */
+.biz-summary-table tr:hover td,
+.biz-analysis-table tr:hover td,
+.biz-statements-table tr:hover td {
+  background: rgba(0, 229, 255, 0.1) !important;
+  transition: background 0.2s ease;
+}
+
+/* Company Names / Labels (First Column) */
+.biz-summary-table td:first-child,
+.biz-analysis-table td.analysis-label-cell,
+.biz-statements-table td:first-child,
+.biz-statements-table th.statements-label-col {
+  background: rgba(0, 0, 0, 0.4) !important;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: left;
+  padding-left: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  width: 250px;
+}
+
+/* Data Cells */
+.biz-summary-table td,
+.biz-analysis-table td:not(.analysis-label-cell),
+.biz-statements-table td:not(:first-child) {
+  padding: 15px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: center;
+  color: #fff;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 500;
+  font-size: 1.1rem;
+  background: transparent;
+}
+
+/* Highlight "Self" Column or specific rows */
+.biz-summary-table td:nth-child(2),
+.biz-analysis-table td:nth-child(2),
+.biz-statements-table td:nth-child(2) {
+  color: #00e5ff;
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
+  background: rgba(0, 229, 255, 0.05);
+}
+
+.closing-graphs-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.closing-graph-card {
+  background: rgba(10, 25, 41, 0.7);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+.closing-graph-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, #00e5ff, transparent);
+}
+
+.closing-graph-card h3 {
+  color: #fff;
+  font-size: 1.25rem;
+  margin-bottom: 25px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.closing-graph-card h3 i {
+  color: #00e5ff;
+  filter: drop-shadow(0 0 5px rgba(0, 229, 255, 0.5));
+}
+
+.closing-chart-container {
+  height: 320px;
+  width: 100%;
+}
+
+.closing-footer {
+  margin-top: 40px;
+  padding-bottom: 60px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.back-btn-mini {
+  background: rgba(255, 255, 255, 0.05);
+  color: #cfd8dc;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 12px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(5px);
+}
+
+.back-btn-mini:hover {
+  background: rgba(0, 229, 255, 0.1);
+  color: #fff;
+  border-color: #00e5ff;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+  transform: translateX(-5px);
+}
+
+.back-btn-mini i {
+  font-size: 1rem;
+}

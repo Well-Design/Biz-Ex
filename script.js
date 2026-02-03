@@ -1681,8 +1681,94 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initialize Management Plan
+    // --- Closing Summary Performance Charts ---
+    let closingProfitabilityChart = null;
+    let closingAssetsChart = null;
+
+    function initClosingSummaryCharts() {
+        const marketCtx = document.getElementById('chart-closing-profitability');
+        if (marketCtx) {
+            closingProfitabilityChart = new Chart(marketCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['11期', '12期', '13期', '14期'],
+                    datasets: [
+                        {
+                            label: '市場規模 (億円)',
+                            data: [1800, 1850, 1950, 2000],
+                            backgroundColor: '#00e5ff',
+                            borderColor: '#00e5ff',
+                            borderWidth: 1,
+                            borderRadius: 5,
+                            barThickness: 30
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { backgroundColor: 'rgba(0,0,0,0.8)', padding: 12, cornerRadius: 8 }
+                    },
+                    scales: {
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            ticks: { color: '#00e5ff', font: { weight: 'bold' } },
+                            min: 1500
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#aaa', font: { weight: 'bold' } }
+                        }
+                    }
+                }
+            });
+        }
+
+        const shareCtx = document.getElementById('chart-closing-assets');
+        if (shareCtx) {
+            closingAssetsChart = new Chart(shareCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['DEMO', 'キス', 'リオ', 'G-DASH', 'ユア・サポート'],
+                    datasets: [{
+                        data: [20, 20, 20, 20, 20],
+                        backgroundColor: [
+                            '#00e5ff',
+                            '#1e88e5',
+                            '#ffeb3b',
+                            '#f44336',
+                            '#4caf50'
+                        ],
+                        hoverOffset: 15,
+                        borderWidth: 2,
+                        borderColor: '#0a1929'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: '#fff',
+                                padding: 15,
+                                font: { weight: 'bold', size: 12 }
+                            }
+                        }
+                    },
+                    animation: { animateScale: true, animateRotate: true }
+                }
+            });
+        }
+    }
+
+    // Initialize charts
     initManagementPlanCharts();
+    initClosingSummaryCharts();
 
     // --- Collapsible Cards Logic ---
     document.querySelectorAll('.card-header-toggle').forEach(header => {

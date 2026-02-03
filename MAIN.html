@@ -142,18 +142,579 @@
             <div id="view-finance" class="info-view">
                 <div style="padding:40px; color:white; text-align:center;">
                     <i class="fa-solid fa-chart-pie" style="font-size:4rem; margin-bottom:20px; color:#00bcd4;"></i>
-                    <h2>財務分析画面</h2>
-                    <p>財務状況を分析し、戦略を立ててください。</p>
+                    <h2>意思決定</h2>
+                    <p>当面の分析ツールは「経営理念・戦略策定」パネル内に移動しました。<br>そちらの「組織分析」「氷山モデル分析」項目をご確認ください。</p>
                 </div>
             </div>
 
-            <!-- View: Closing Summary (Placeholder) -->
+            <!-- View: Closing Summary -->
             <div id="view-closing" class="info-view">
-                <div style="padding:40px; color:white; text-align:center;">
-                    <i class="fa-solid fa-file-invoice-dollar"
-                        style="font-size:4rem; margin-bottom:20px; color:#00bcd4;"></i>
-                    <h2>決算サマリー</h2>
-                    <p>前期の業績結果を確認し、今期の目標を設定してください。</p>
+                <div class="closing-summary-container">
+                    <div class="closing-header">
+                        <span class="term-badge">第14期</span>
+                        <h2>決算サマリー</h2>
+                    </div>
+
+                    <!-- Market Overview Graphs (Moved to Top) -->
+                    <div class="closing-graphs-section">
+                        <div class="closing-graph-card">
+                            <h3><i class="fa-solid fa-chart-line"></i> 市場規模推移</h3>
+                            <div class="closing-chart-container">
+                                <canvas id="chart-closing-profitability"></canvas>
+                            </div>
+                        </div>
+                        <div class="closing-graph-card">
+                            <h3><i class="fa-solid fa-chart-pie"></i> 市場シェア</h3>
+                            <div class="closing-chart-container">
+                                <canvas id="chart-closing-assets"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Results Table -->
+                    <div class="summary-table-wrapper">
+                        <table class="biz-summary-table">
+                            <thead>
+                                <tr>
+                                    <th>会社名</th>
+                                    <th>売上<br>(億円)</th>
+                                    <th>売上シェア<br>(%)</th>
+                                    <th>原価率<br>(%)</th>
+                                    <th>純利益<br>(億円)</th>
+                                    <th>純資産<br>(億円)</th>
+                                    <th>現預金<br>(億円)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="highlight-row">
+                                    <td>DEMO</td>
+                                    <td>167</td>
+                                    <td>20.0</td>
+                                    <td>68.6</td>
+                                    <td>4</td>
+                                    <td>45</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <td>キス</td>
+                                    <td>167</td>
+                                    <td>20.0</td>
+                                    <td>68.6</td>
+                                    <td>4</td>
+                                    <td>45</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <td>リオ</td>
+                                    <td>167</td>
+                                    <td>20.0</td>
+                                    <td>68.6</td>
+                                    <td>4</td>
+                                    <td>45</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <td>G-DASH</td>
+                                    <td>167</td>
+                                    <td>20.0</td>
+                                    <td>68.6</td>
+                                    <td>4</td>
+                                    <td>45</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <td>ユア・サポート</td>
+                                    <td>167</td>
+                                    <td>20.0</td>
+                                    <td>68.6</td>
+                                    <td>4</td>
+                                    <td>45</td>
+                                    <td>6</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Competitiveness Analysis Table -->
+                    <div class="summary-table-wrapper">
+                        <table class="biz-analysis-table">
+                            <thead>
+                                <tr>
+                                    <th class="analysis-label-col">競争力分析</th>
+                                    <th>DEMO</th>
+                                    <th>キス</th>
+                                    <th>リオ</th>
+                                    <th>G-DASH</th>
+                                    <th>ユア・サポート</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="analysis-label-cell">商品力 (品質指数)</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                </tr>
+                                <tr>
+                                    <td class="analysis-label-cell">価格力 (販売価格)</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                </tr>
+                                <tr>
+                                    <td class="analysis-label-cell">流通力 (販売網指数)</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                </tr>
+                                <tr>
+                                    <td class="analysis-label-cell">広告力 (企業イメージ指数)</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                </tr>
+                                <tr>
+                                    <td class="analysis-label-cell">営業力 (営業意欲指数)</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- NEW: Financial Statements Analysis Table -->
+                    <div class="summary-table-wrapper">
+                        <table class="biz-statements-table">
+                            <thead>
+                                <tr>
+                                    <th class="statements-label-col">財務諸表分析</th>
+                                    <th>DEMO</th>
+                                    <th>キス</th>
+                                    <th>リオ</th>
+                                    <th>G-DASH</th>
+                                    <th>ユア・サポート</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>売上高 (億円)</td>
+                                    <td>167</td>
+                                    <td>167</td>
+                                    <td>167</td>
+                                    <td>167</td>
+                                    <td>167</td>
+                                </tr>
+                                <tr>
+                                    <td>売上高総利益率 (%)</td>
+                                    <td>31.4</td>
+                                    <td>31.4</td>
+                                    <td>31.4</td>
+                                    <td>31.4</td>
+                                    <td>31.4</td>
+                                </tr>
+                                <tr>
+                                    <td>営業利益率 (%)</td>
+                                    <td>10.0</td>
+                                    <td>10.0</td>
+                                    <td>10.0</td>
+                                    <td>10.0</td>
+                                    <td>10.0</td>
+                                </tr>
+                                <tr>
+                                    <td>経常利益率 (%)</td>
+                                    <td>4.4</td>
+                                    <td>4.4</td>
+                                    <td>4.4</td>
+                                    <td>4.4</td>
+                                    <td>4.4</td>
+                                </tr>
+                                <tr>
+                                    <td>当期純利益率 (%)</td>
+                                    <td>2.2</td>
+                                    <td>2.2</td>
+                                    <td>2.2</td>
+                                    <td>2.2</td>
+                                    <td>2.2</td>
+                                </tr>
+                                <tr>
+                                    <td>資産額 (億円)</td>
+                                    <td>175</td>
+                                    <td>175</td>
+                                    <td>175</td>
+                                    <td>175</td>
+                                    <td>175</td>
+                                </tr>
+                                <tr>
+                                    <td>負債額 (億円)</td>
+                                    <td>130</td>
+                                    <td>130</td>
+                                    <td>130</td>
+                                    <td>130</td>
+                                    <td>130</td>
+                                </tr>
+                                <tr>
+                                    <td>有利子負債 (億円)</td>
+                                    <td>80</td>
+                                    <td>80</td>
+                                    <td>80</td>
+                                    <td>80</td>
+                                    <td>80</td>
+                                </tr>
+                                <tr>
+                                    <td>純資産額 (億円)</td>
+                                    <td>45</td>
+                                    <td>45</td>
+                                    <td>45</td>
+                                    <td>45</td>
+                                    <td>45</td>
+                                </tr>
+                                <tr>
+                                    <td>現預金 (億円)</td>
+                                    <td>6</td>
+                                    <td>6</td>
+                                    <td>6</td>
+                                    <td>6</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <td>自己資本比率 (%)</td>
+                                    <td>25.6</td>
+                                    <td>25.6</td>
+                                    <td>25.6</td>
+                                    <td>25.6</td>
+                                    <td>25.6</td>
+                                </tr>
+                                <tr>
+                                    <td>ROA (%)</td>
+                                    <td>2.1</td>
+                                    <td>2.1</td>
+                                    <td>2.1</td>
+                                    <td>2.1</td>
+                                    <td>2.1</td>
+                                </tr>
+                                <tr>
+                                    <td>ROE (%)</td>
+                                    <td>8.2</td>
+                                    <td>8.2</td>
+                                    <td>8.2</td>
+                                    <td>8.2</td>
+                                    <td>8.2</td>
+                                </tr>
+                                <tr>
+                                    <td>営業CF (億円)</td>
+                                    <td style="color:#ff5252;">▲ 8</td>
+                                    <td style="color:#ff5252;">▲ 8</td>
+                                    <td style="color:#ff5252;">▲ 8</td>
+                                    <td style="color:#ff5252;">▲ 8</td>
+                                    <td style="color:#ff5252;">▲ 8</td>
+                                </tr>
+                                <tr>
+                                    <td>投資CF (億円)</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>財務CF (億円)</td>
+                                    <td>9</td>
+                                    <td>9</td>
+                                    <td>9</td>
+                                    <td>9</td>
+                                    <td>9</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- NEW: Sales Analysis Table -->
+                    <div class="summary-table-wrapper">
+                        <table class="biz-statements-table">
+                            <thead>
+                                <tr>
+                                    <th class="statements-label-col">販売分析</th>
+                                    <th>DEMO</th>
+                                    <th>キス</th>
+                                    <th>リオ</th>
+                                    <th>G-DASH</th>
+                                    <th>ユア・サポート</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>市場規模 (億円)</td>
+                                    <td>834</td>
+                                    <td>834</td>
+                                    <td>834</td>
+                                    <td>834</td>
+                                    <td>834</td>
+                                </tr>
+                                <tr>
+                                    <td>台数シェア (%)</td>
+                                    <td>20.0</td>
+                                    <td>20.0</td>
+                                    <td>20.0</td>
+                                    <td>20.0</td>
+                                    <td>20.0</td>
+                                </tr>
+                                <tr>
+                                    <td>普及機販売台数 (台)</td>
+                                    <td>24,000</td>
+                                    <td>24,000</td>
+                                    <td>24,000</td>
+                                    <td>24,000</td>
+                                    <td>24,000</td>
+                                </tr>
+                                <tr>
+                                    <td>中級機販売台数 (台)</td>
+                                    <td>12,000</td>
+                                    <td>12,000</td>
+                                    <td>12,000</td>
+                                    <td>12,000</td>
+                                    <td>12,000</td>
+                                </tr>
+                                <tr>
+                                    <td>高級機販売台数 (台)</td>
+                                    <td>6,000</td>
+                                    <td>6,000</td>
+                                    <td>6,000</td>
+                                    <td>6,000</td>
+                                    <td>6,000</td>
+                                </tr>
+                                <tr>
+                                    <td>1人当販売上限 (台)</td>
+                                    <td>400</td>
+                                    <td>400</td>
+                                    <td>400</td>
+                                    <td>400</td>
+                                    <td>400</td>
+                                </tr>
+                                <tr>
+                                    <td>販売員稼働率 (%)</td>
+                                    <td>61.8</td>
+                                    <td>61.8</td>
+                                    <td>61.8</td>
+                                    <td>61.8</td>
+                                    <td>61.8</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- NEW: Manufacturing Analysis Table -->
+                    <div class="summary-table-wrapper">
+                        <table class="biz-statements-table">
+                            <thead>
+                                <tr>
+                                    <th class="statements-label-col">製造分析</th>
+                                    <th>DEMO</th>
+                                    <th>キス</th>
+                                    <th>リオ</th>
+                                    <th>G-DASH</th>
+                                    <th>ユア・サポート</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>原価率 (%)</td>
+                                    <td>68.6</td>
+                                    <td>68.6</td>
+                                    <td>68.6</td>
+                                    <td>68.6</td>
+                                    <td>68.6</td>
+                                </tr>
+                                <tr>
+                                    <td>普及機原価率 (%)</td>
+                                    <td>65.0</td>
+                                    <td>65.0</td>
+                                    <td>65.0</td>
+                                    <td>65.0</td>
+                                    <td>65.0</td>
+                                </tr>
+                                <tr>
+                                    <td>中級機原価率 (%)</td>
+                                    <td>70.0</td>
+                                    <td>70.0</td>
+                                    <td>70.0</td>
+                                    <td>70.0</td>
+                                    <td>70.0</td>
+                                </tr>
+                                <tr>
+                                    <td>高級機原価率 (%)</td>
+                                    <td>75.0</td>
+                                    <td>75.0</td>
+                                    <td>75.0</td>
+                                    <td>75.0</td>
+                                    <td>75.0</td>
+                                </tr>
+                                <tr>
+                                    <td>1人当製造上限 (台)</td>
+                                    <td>111</td>
+                                    <td>111</td>
+                                    <td>111</td>
+                                    <td>111</td>
+                                    <td>111</td>
+                                </tr>
+                                <tr>
+                                    <td>製造員稼働率 (%)</td>
+                                    <td>90.8</td>
+                                    <td>90.8</td>
+                                    <td>90.8</td>
+                                    <td>90.8</td>
+                                    <td>90.8</td>
+                                </tr>
+                                <tr>
+                                    <td>生産設備上限 (台)</td>
+                                    <td>42,000</td>
+                                    <td>42,000</td>
+                                    <td>42,000</td>
+                                    <td>42,000</td>
+                                    <td>42,000</td>
+                                </tr>
+                                <tr>
+                                    <td>翌期生産設備上限 (台)</td>
+                                    <td>42,000</td>
+                                    <td>42,000</td>
+                                    <td>42,000</td>
+                                    <td>42,000</td>
+                                    <td>42,000</td>
+                                </tr>
+                                <tr>
+                                    <td>設備稼働率 (%)</td>
+                                    <td>94.8</td>
+                                    <td>94.8</td>
+                                    <td>94.8</td>
+                                    <td>94.8</td>
+                                    <td>94.8</td>
+                                </tr>
+                                <tr>
+                                    <td>普及機在庫 (台)</td>
+                                    <td>25,278</td>
+                                    <td>25,278</td>
+                                    <td>25,278</td>
+                                    <td>25,278</td>
+                                    <td>25,278</td>
+                                </tr>
+                                <tr>
+                                    <td>中級機在庫 (台)</td>
+                                    <td>8,112</td>
+                                    <td>8,112</td>
+                                    <td>8,112</td>
+                                    <td>8,112</td>
+                                    <td>8,112</td>
+                                </tr>
+                                <tr>
+                                    <td>高級機在庫 (台)</td>
+                                    <td>5,153</td>
+                                    <td>5,153</td>
+                                    <td>5,153</td>
+                                    <td>5,153</td>
+                                    <td>5,153</td>
+                                </tr>
+                                <tr>
+                                    <td>部品品質</td>
+                                    <td>中高高中中</td>
+                                    <td>中高高中中</td>
+                                    <td>中高高中中</td>
+                                    <td>中高高中中</td>
+                                    <td>中高高中中</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- NEW: HR Analysis Table -->
+                    <div class="summary-table-wrapper">
+                        <table class="biz-statements-table">
+                            <thead>
+                                <tr>
+                                    <th class="statements-label-col">人事分析</th>
+                                    <th>DEMO</th>
+                                    <th>キス</th>
+                                    <th>リオ</th>
+                                    <th>G-DASH</th>
+                                    <th>ユア・サポート</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>平均給料 (千円)</td>
+                                    <td>3,554</td>
+                                    <td>3,554</td>
+                                    <td>3,554</td>
+                                    <td>3,554</td>
+                                    <td>3,554</td>
+                                </tr>
+                                <tr>
+                                    <td>販売員退職率 (%)</td>
+                                    <td>5.1</td>
+                                    <td>5.1</td>
+                                    <td>5.1</td>
+                                    <td>5.1</td>
+                                    <td>5.1</td>
+                                </tr>
+                                <tr>
+                                    <td>販売管理者退職率 (%)</td>
+                                    <td>2.5</td>
+                                    <td>2.5</td>
+                                    <td>2.5</td>
+                                    <td>2.5</td>
+                                    <td>2.5</td>
+                                </tr>
+                                <tr>
+                                    <td>1人当販売教育費 (円)</td>
+                                    <td>33,702</td>
+                                    <td>33,702</td>
+                                    <td>33,702</td>
+                                    <td>33,702</td>
+                                    <td>33,702</td>
+                                </tr>
+                                <tr>
+                                    <td>製造員退職率 (%)</td>
+                                    <td>15.0</td>
+                                    <td>15.0</td>
+                                    <td>15.0</td>
+                                    <td>15.0</td>
+                                    <td>15.0</td>
+                                </tr>
+                                <tr>
+                                    <td>製造管理者退職率 (%)</td>
+                                    <td>2.5</td>
+                                    <td>2.5</td>
+                                    <td>2.5</td>
+                                    <td>2.5</td>
+                                    <td>2.5</td>
+                                </tr>
+                                <tr>
+                                    <td>1人当製造教育費 (円)</td>
+                                    <td>38,583</td>
+                                    <td>38,583</td>
+                                    <td>38,583</td>
+                                    <td>38,583</td>
+                                    <td>38,583</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div class="closing-footer">
+                        <button class="back-btn-mini"
+                            onclick="document.querySelector('[data-view=\'view-gathering\']').click()"><i
+                                class="fa-solid fa-reply"></i> 戻る</button>
+                    </div>
                 </div>
             </div>
 
@@ -713,18 +1274,154 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Moved Organization Model -->
+                            <div class="strategy-card collapsible-card collapsed">
+                                <div class="card-header-toggle">
+                                    <div class="header-content">
+                                        <h3><i class="fa-solid fa-sitemap"></i> 組織分析（現状分析モデル）</h3>
+                                        <div class="card-progress-wrapper">
+                                            <div class="card-progress-bar-bg">
+                                                <div class="card-progress-fill" style="width: 100%;"></div>
+                                            </div>
+                                            <span class="card-progress-label" style="color: #00bcd4;">分析ツール</span>
+                                        </div>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-up toggle-icon"></i>
+                                </div>
+                                <div class="card-body">
+                                    <div class="finance-analysis-container" style="padding: 20px 0;">
+                                        <div class="nadler-model-wrapper">
+                                            <!-- Inputs -->
+                                            <div class="nt-column nt-col-input">
+                                                <div class="nt-box-title">入力 (Input)</div>
+                                                <button class="nt-box nt-input-box">
+                                                    <span class="nt-text">環境</span>
+                                                    <span class="nt-sep"></span>
+                                                    <span class="nt-text">資源</span>
+                                                    <span class="nt-sep"></span>
+                                                    <span class="nt-text">歴史</span>
+                                                </button>
+                                            </div>
+
+                                            <div class="nt-arrow-strategy">
+                                                <div class="arrow-shape">
+                                                    <span class="arrow-text">戦略</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="nt-column nt-col-center">
+                                                <div class="nt-box-title">変換プロセス</div>
+                                                <div class="nt-diamond-grid">
+                                                    <button class="nt-box nt-process-box nt-top">非公式組織</button>
+                                                    <div class="nt-mid-row">
+                                                        <button class="nt-box nt-process-box nt-left">タスク</button>
+                                                        <div class="nt-cross">
+                                                            <i class="fa-solid fa-arrows-up-down-left-right"></i>
+                                                        </div>
+                                                        <button
+                                                            class="nt-box nt-process-box nt-right">公式組織の<br>取り決め</button>
+                                                    </div>
+                                                    <button class="nt-box nt-process-box nt-bottom">人間</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="nt-arrow-output">
+                                                <i class="fa-solid fa-caret-right"></i>
+                                            </div>
+
+                                            <div class="nt-column nt-col-output">
+                                                <div class="nt-box-title">出力 (Output)</div>
+                                                <button class="nt-box nt-output-box">
+                                                    <span class="nt-text">組織</span>
+                                                    <span class="nt-sep"></span>
+                                                    <span class="nt-text">集団</span>
+                                                    <span class="nt-sep"></span>
+                                                    <span class="nt-text">個人</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="nt-feedback-line"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Moved Iceberg Model -->
+                            <div class="strategy-card collapsible-card collapsed">
+                                <div class="card-header-toggle">
+                                    <div class="header-content">
+                                        <h3><i class="fa-solid fa-gem"></i> 資本の氷山モデル分析</h3>
+                                        <div class="card-progress-wrapper">
+                                            <div class="card-progress-bar-bg">
+                                                <div class="card-progress-fill" style="width: 100%;"></div>
+                                            </div>
+                                            <span class="card-progress-label" style="color: #00bcd4;">分析ツール</span>
+                                        </div>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-up toggle-icon"></i>
+                                </div>
+                                <div class="card-body">
+                                    <div class="iceberg-section" style="margin: 20px 0; padding: 20px 0;">
+                                        <div class="iceberg-container" style="transform: scale(0.9);">
+                                            <!-- Above Water -->
+                                            <div class="iceberg-top">
+                                                <div class="capital-box financial">
+                                                    <div class="c-title">財務的・経済的資本</div>
+                                                    <div class="c-sub">Financial Capital</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="iceberg-water-line">
+                                                <span class="water-label">海面</span>
+                                            </div>
+
+                                            <!-- Below Water Level 1 -->
+                                            <div class="iceberg-mid-split">
+                                                <div class="capital-box technological">
+                                                    <div class="c-title">技術的資本</div>
+                                                    <div class="c-sub">Technological Capital</div>
+                                                </div>
+                                                <div class="capital-box intellectual">
+                                                    <div class="c-title">知的資本</div>
+                                                    <div class="c-sub">Intellectual Capital</div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Below Water Level 2 -->
+                                            <div class="iceberg-social">
+                                                <div class="capital-box social">
+                                                    <div class="c-title">社会関係資本</div>
+                                                    <div class="c-sub">Social Capital</div>
+                                                    <div class="c-desc">（人と人との関係）</div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Below Water Level 3 -->
+                                            <div class="iceberg-bottom">
+                                                <div class="capital-box ideological">
+                                                    <div class="c-title">アイディロジカル資本</div>
+                                                    <div class="c-sub">Ideological Capital</div>
+                                                    <div class="c-desc">（らしさ・社風・伝統）</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="iceberg-shape-bg"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- View: Knowledge Box (Placeholder) -->
-                <div id="view-knowledge" class="info-view">
-                    <div style="padding:40px; color:white; text-align:center;">
-                        <i class="fa-solid fa-book" style="font-size:4rem; margin-bottom:20px; color:#00bcd4;"></i>
-                        <h2>ナレッジボックス</h2>
-                        <p>経営に必要な知識やノウハウを蓄積しています。</p>
+                    <!-- View: Knowledge Box (Placeholder) -->
+                    <div id="view-knowledge" class="info-view">
+                        <div style="padding:40px; color:white; text-align:center;">
+                            <i class="fa-solid fa-chart-column"
+                                style="font-size:4rem; margin-bottom:20px; color:#00bcd4;"></i>
+                            <h2>レポート</h2>
+                            <p>経営分析レポートや各種データを確認できます。</p>
+                        </div>
                     </div>
-                </div>
         </aside>
 
         <!-- Right Column: Integrated Decision Panel -->
@@ -1326,17 +2023,17 @@
                             <i class="fa-solid fa-briefcase f-icon"></i>
                             <div class="f-label">情報収集</div>
                         </div>
-                        <div class="f-btn" data-view="view-finance" data-info="今期の財務諸表を分析します。">
+                        <div class="f-btn" data-view="view-finance" data-info="今期の意思決定および分析を行います。">
                             <i class="fa-solid fa-chart-pie f-icon"></i>
-                            <div class="f-label">財務分析</div>
+                            <div class="f-label">意思決定</div>
                         </div>
                         <div class="f-btn" data-view="view-closing" data-info="前期の決算結果を確認します。">
                             <i class="fa-solid fa-file-invoice-dollar f-icon"></i>
                             <div class="f-label">決算サマリー</div>
                         </div>
-                        <div class="f-btn" data-view="view-knowledge" data-info="経営に役立つナレッジを確認します。">
-                            <i class="fa-solid fa-book f-icon"></i>
-                            <div class="f-label">ナレッジ<br>ボックス</div>
+                        <div class="f-btn" data-view="view-knowledge" data-info="経営分析レポートや各種データを確認します。">
+                            <i class="fa-solid fa-chart-column f-icon"></i>
+                            <div class="f-label">レポート</div>
                         </div>
                     </div>
                 </div>
