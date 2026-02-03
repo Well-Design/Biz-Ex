@@ -693,6 +693,132 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- Real-time Forecast Calculation System (Excel Logic Port) ---
+    const calcInputs = [
+        'input-sales-qty-std', 'input-sales-qty-mid', 'input-sales-qty-high',
+        'input-sales-price-std', 'input-sales-price-mid', 'input-sales-price-high',
+        'input-promo-std', 'input-promo-mid', 'input-promo-high', 'input-ad-total',
+        'input-mfg-qty-std', 'input-mfg-qty-mid', 'input-mfg-qty-high',
+        'input-mfg-cost-maint', 'input-mfg-cost-qc', 'input-mfg-cost-expansion', 'input-mfg-cost-edu',
+        // HR
+        'input-hr-hire-mfg', 'input-hr-salary-mfg', 'input-hr-hire-mfg-mgr', 'input-hr-salary-mfg-mgr',
+        'input-hr-hire-sales', 'input-hr-salary-sales', 'input-hr-hire-sales-mgr', 'input-hr-salary-sales-mgr',
+        'input-hr-edu-sales', 'input-hr-edu-mfg',
+        // Finance
+        'input-fin-short-loan', 'input-fin-long-loan', 'input-fin-repay-long-1', 'input-fin-repay-long-2',
+        'input-fin-capital', 'input-fin-dividend'
+    ];
+
+    function calculateForecast() {
+        // Helper to get value securely
+        const getVal = (id) => {
+            const el = document.getElementById(id);
+            if (!el) return 0;
+            // Handle select inputs if necessary, currently sticking to number inputs
+            const val = parseFloat(el.value);
+            return isNaN(val) ? 0 : val;
+        };
+
+        // --- 1. Revenue Calculation (Sales) ---
+        // Formula: Sum(Qty * Price) / 1,000,000 (to Million Yen)
+        const salesStd = getVal('input-sales-qty-std') * getVal('input-sales-price-std');
+        const salesMid = getVal('input-sales-qty-mid') * getVal('input-sales-price-mid');
+        const salesHigh = getVal('input-sales-qty-high') * getVal('input-sales-price-high');
+
+        const totalRevenue = (salesStd + salesMid + salesHigh) / 1000000;
+
+        // --- 2. Cost Calculation (Direct Costs) ---
+        // Assumption: Cost Rate per model (can be adjusting by formulas later)
+        // Std: 45000 * 0.6 = 27000? Let's assume fixed unit base cost.
+        const costPerUnitStd = 20000;
+        const costPerUnitMid = 35000;
+        const costPerUnitHigh = 50000;
+
+        const cogs = (getVal('input-mfg-qty-std') * costPerUnitStd) +
+            (getVal('input-mfg-qty-mid') * costPerUnitMid) +
+            (getVal('input-mfg-qty-high') * costPerUnitHigh);
+        const totalCogs = cogs / 1000000;
+
+        // --- 3. Expenses ---
+        const promo = getVal('input-promo-std') + getVal('input-promo-mid') + getVal('input-promo-high'); // Million
+        const ad = getVal('input-ad-total'); // Million
+
+        const mfgFixed = getVal('input-mfg-cost-maint') + getVal('input-mfg-cost-qc') + getVal('input-mfg-cost-edu'); // Million
+        const hrEdu = getVal('input-hr-edu-sales') + getVal('input-hr-edu-mfg'); // Million
+
+        // Labor Cost (Simplified Estimation)
+        // (Salary * Headcount)
+        // Base Headcount: Mfg=50, Sales=30 (Example)
+        const laborMfg = ((getVal('input-hr-salary-mfg') * (50 + getVal('input-hr-hire-mfg')))) / 1000; // to Million
+        const laborSales = ((getVal('input-hr-salary-sales') * (30 + getVal('input-hr-hire-sales')))) / 1000; // to Million
+        const laborTotal = laborMfg + laborSales;
+
+        const totalExpenses = promo + ad + mfgFixed + hrEdu + laborTotal;
+
+        // --- 4. Operating Profit ---
+        const opProfit = totalRevenue - totalCogs - totalExpenses;
+
+        // --- 5. Cash Balance (Forecast) ---
+        const startCash = 300; // Example Opening Balance
+        const loans = getVal('input-fin-short-loan') + getVal('input-fin-long-loan') + getVal('input-fin-capital');
+        const repayments = getVal('input-fin-repay-long-1') + getVal('input-fin-repay-long-2') + getVal('input-fin-dividend');
+
+        // Capex: Assume 50 Million per Expansion Unit
+        const capex = getVal('input-mfg-cost-expansion') * 50;
+
+        // Cash Flow ≈ OpProfit + Loans - Repayments - Capex
+        // (Ignoring depreciation/tax/interest for simple simulator)
+        const endCash = startCash + opProfit + loans - repayments - capex;
+
+        // --- Update UI ---
+        const setTxt = (id, val) => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.textContent = Math.round(val).toLocaleString();
+                // Color coding
+                if (val < 0) el.style.color = '#ff5252'; // Red for negative
+                else if (id === 'val-forecast-profit') el.style.color = '#ffeb3b';
+                else if (id === 'val-forecast-sales') el.style.color = '#00e5ff';
+                else if (id === 'val-forecast-cash') el.style.color = '#00bcd4';
+            }
+        };
+
+        setTxt('val-forecast-sales', totalRevenue);
+        setTxt('val-forecast-profit', opProfit);
+        setTxt('val-forecast-cash', endCash);
+    }
+
+    // Attach listeners
+    calcInputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', calculateForecast);
+    });
+
+    // Run once to init
+    // calculateForecast();
+
+    // --- Link Analysis Buttons to Simulation Page ---
+    document.querySelectorAll('.analysis-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation(); // prevent other click events
+
+            // Gather all input values
+            const inputs = {};
+            document.querySelectorAll('.sheet-input').forEach(input => {
+                if (input.id) {
+                    // Save both value and the 'prev' data attribute for comparison if needed
+                    inputs[input.id] = input.value;
+                }
+            });
+
+            // Save to localStorage
+            localStorage.setItem('bizExInputs', JSON.stringify(inputs));
+
+            // Navigate
+            window.location.href = 'simulation.html';
+        });
+    });
+
     // Initialize progress with animation
     setTimeout(() => {
         // Overall Progress Bar Animation

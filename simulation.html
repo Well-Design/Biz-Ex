@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>経営シミュレーション | Biz-Ex Super</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Simulation Page Specific Styles */
+        .sim-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+            color: white;
+        }
+
+        .sim-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #00bcd4;
+            padding-bottom: 15px;
+        }
+
+        .sim-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00e5ff;
+            text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back:hover {
+            background: rgba(0, 188, 212, 0.2);
+            border-color: #00bcd4;
+        }
+
+        .sim-panel {
+            background: rgba(20, 30, 40, 0.8);
+            border: 1px solid rgba(0, 188, 212, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .sim-panel-header {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sim-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .sim-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sim-stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00e5ff;
+            margin: 10px 0;
+            font-family: 'Consolas', monospace;
+        }
+
+        .sim-stat-label {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .sim-action-area {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .btn-run-sim {
+            background: linear-gradient(135deg, #0097a7, #006064);
+            color: white;
+            border: 2px solid #00bcd4;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 188, 212, 0.5);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-run-sim:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 188, 212, 0.8);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sim-container">
+        <header class="sim-header">
+            <div class="sim-title">
+                <i class="fa-solid fa-calculator"></i> 経営シミュレーション・詳細分析
+            </div>
+            <a href="MAIN.html" class="btn-back">
+                <i class="fa-solid fa-arrow-left"></i> 意思決定画面に戻る
+            </a>
+        </header>
+
+        <!-- Input Summary Panel -->
+        <div class="sim-panel">
+            <div class="sim-panel-header">
+                <i class="fa-solid fa-list-check"></i> 現在の入力パラメータ（意思決定シートからのデータ）
+            </div>
+            <div class="sim-grid" id="input-summary-grid">
+                <!-- Javascript will populate this from localStorage or inputs -->
+                <div class="sim-card">
+                    <div class="sim-stat-label">販売計画（合計）</div>
+                    <div class="sim-stat-value" id="disp-total-sales-qty">-</div>
+                </div>
+                <div class="sim-card">
+                    <div class="sim-stat-label">製造計画（合計）</div>
+                    <div class="sim-stat-value" id="disp-total-mfg-qty">-</div>
+                </div>
+                <div class="sim-card">
+                    <div class="sim-stat-label">販促・広告費計</div>
+                    <div class="sim-stat-value" id="disp-total-promo">-</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Simulation Result Panel -->
+        <div class="sim-panel" style="border-color: #ffd700;">
+            <div class="sim-panel-header">
+                <i class="fa-solid fa-chart-line"></i> シミュレーション結果（マクロ演算結果）
+            </div>
+            <div class="sim-grid">
+                <div class="sim-card" style="background: rgba(0,0,0,0.3);">
+                    <div class="sim-stat-label">予想売上高</div>
+                    <div class="sim-stat-value" id="sim-result-sales" style="color: #ffeb3b;">-</div>
+                </div>
+                <div class="sim-card" style="background: rgba(0,0,0,0.3);">
+                    <div class="sim-stat-label">予想営業利益</div>
+                    <div class="sim-stat-value" id="sim-result-profit" style="color: #ff9800;">-</div>
+                </div>
+                <div class="sim-card" style="background: rgba(0,0,0,0.3);">
+                    <div class="sim-stat-label">当期純利益</div>
+                    <div class="sim-stat-value" id="sim-result-netEstimate" style="color: #69f0ae;">-</div>
+                </div>
+                <div class="sim-card" style="background: rgba(0,0,0,0.3);">
+                    <div class="sim-stat-label">ROI (投資対効果)</div>
+                    <div class="sim-stat-value" id="sim-result-roi">-</div>
+                </div>
+            </div>
+
+            <div class="sim-action-area">
+                <button class="btn-run-sim" id="btn-run-macro">
+                    <i class="fa-solid fa-play"></i> 演算実行（Excelロジック）
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script for this page -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("Simulation Page Loaded");
+
+            // --- Load Data from LocalStorage ---
+            const inputs = JSON.parse(localStorage.getItem('bizExInputs') || '{}');
+
+            // Helper to safe parse float
+            const val = (key) => parseFloat(inputs[key] || 0);
+
+            // 1. Calculate and Display Sale Plan Summary
+            const totalSalesQty = val('input-sales-qty-std') + val('input-sales-qty-mid') + val('input-sales-qty-high');
+            document.getElementById('disp-total-sales-qty').textContent = totalSalesQty.toLocaleString() + " 台";
+
+            // 2. Calculate and Display Mfg Plan Summary
+            const totalMfgQty = val('input-mfg-qty-std') + val('input-mfg-qty-mid') + val('input-mfg-qty-high');
+            document.getElementById('disp-total-mfg-qty').textContent = totalMfgQty.toLocaleString() + " 台";
+
+            // 3. Calculate Promo + Ad Summary (Unit: Million Yen)
+            const totalPromo = val('input-promo-std') + val('input-promo-mid') + val('input-promo-high');
+            const totalAd = val('input-ad-total');
+            const totalMarketing = totalPromo + totalAd;
+            document.getElementById('disp-total-promo').textContent = totalMarketing.toLocaleString() + " 百万円";
+
+
+            // --- Button Event ---
+            const btnRun = document.getElementById('btn-run-macro');
+
+            btnRun.addEventListener('click', () => {
+                btnRun.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 計算中...';
+
+                setTimeout(() => {
+                    // --- Standard Business Logic Implementation ---
+
+                    // 1. Revenue (Sales)
+                    const salesStd = val('input-sales-qty-std') * val('input-sales-price-std');
+                    const salesMid = val('input-sales-qty-mid') * val('input-sales-price-mid');
+                    const salesHigh = val('input-sales-qty-high') * val('input-sales-price-high');
+                    const totalRevenue = salesStd + salesMid + salesHigh;
+
+                    // 2. Direct Costs (Variable Costs)
+                    // Assumption: Material Cost Ratio (Can be tuned)
+                    // Std: 40%, Mid: 35%, High: 30% (Higher margin for high-end) (? Just an assumption)
+                    // Or fixed cost per unit. Let's use simplified fixed cost per unit for now based on typical ratio.
+                    const costUnitStd = 20000;
+                    const costUnitMid = 30000;
+                    const costUnitHigh = 45000;
+
+                    const materialCost = (val('input-mfg-qty-std') * costUnitStd) +
+                        (val('input-mfg-qty-mid') * costUnitMid) +
+                        (val('input-mfg-qty-high') * costUnitHigh);
+
+                    // 3. Manufacturing Expenses (Fixed Costs)
+                    const mfgFixedCost = (val('input-mfg-cost-maint') * 1000000) +
+                        (val('input-mfg-cost-qc') * 1000000);
+                    // Depreciation (Assumption: 5% of expansion cost? or just treat expansion as Capex and ignore dep for now?)
+                    // Let's treat expansion as pure cash out, not expense in PL for this simple version.
+
+                    // Manufacturing Labor
+                    // Base staff: 50 people. New hires added.
+                    const mfgStaff = 50 + val('input-hr-hire-mfg');
+                    const mfgLaborCost = mfgStaff * (val('input-hr-salary-mfg') * 1000);
+
+                    const mfgMgrStaff = 5 + val('input-hr-hire-mfg-mgr');
+                    const mfgMgrCost = mfgMgrStaff * (val('input-hr-salary-mfg-mgr') * 1000);
+
+                    const totalMfgCost = materialCost + mfgFixedCost + mfgLaborCost + mfgMgrCost;
+
+                    // 4. Gross Profit
+                    const grossProfit = totalRevenue - totalMfgCost;
+
+                    // 5. SG&A Expenses
+                    // Sales Labor
+                    const salesStaff = 30 + val('input-hr-hire-sales');
+                    const salesLaborCost = salesStaff * (val('input-hr-salary-sales') * 1000);
+
+                    const salesMgrStaff = 5 + val('input-hr-hire-sales-mgr');
+                    const salesMgrCost = salesMgrStaff * (val('input-hr-salary-sales-mgr') * 1000);
+
+                    // Marketing
+                    const promoCost = (val('input-promo-std') + val('input-promo-mid') + val('input-promo-high')) * 1000000;
+                    const adCost = val('input-ad-total') * 1000000;
+
+                    // Education
+                    const eduCost = (val('input-mfg-cost-edu') + val('input-hr-edu-sales') + val('input-hr-edu-mfg')) * 1000000;
+
+                    const totalSGA = salesLaborCost + salesMgrCost + promoCost + adCost + eduCost;
+
+                    // 6. Operating Profit
+                    const operatingProfit = grossProfit - totalSGA;
+
+                    // 7. Net Income (Estimate)
+                    // Tax ~30%, Interest ~5% of loans
+                    const loans = (val('input-fin-short-loan') + val('input-fin-long-loan')) * 1000000;
+                    const interest = loans * 0.02; // 2% interest assumption
+                    const profitBeforeTax = operatingProfit - interest;
+                    const tax = profitBeforeTax > 0 ? profitBeforeTax * 0.3 : 0;
+                    const netIncome = profitBeforeTax - tax;
+
+                    // 8. ROI Calculation
+                    // ROI = Net Income / Total Investment (or Equity). 
+                    // Let's use (Operating Profit / Sales) * 100 (ROS actually, but often used as simple KPI)
+                    // Or simple ROI = Net Income / (Capital + Loans)
+                    const investment = loans + (val('input-fin-capital') * 1000000) + 100000000; // Base capital assumption
+                    const roi = investment > 0 ? (netIncome / investment) * 100 : 0;
+
+
+                    // --- Display Results (Convert to Millions for display) ---
+                    const toMillion = (num) => Math.round(num / 1000000).toLocaleString();
+
+                    document.getElementById('sim-result-sales').textContent = toMillion(totalRevenue) + " 百万円";
+                    document.getElementById('sim-result-sales').style.color = '#00e5ff';
+
+                    const opElem = document.getElementById('sim-result-profit');
+                    opElem.textContent = toMillion(operatingProfit) + " 百万円";
+                    opElem.style.color = operatingProfit >= 0 ? '#ffeb3b' : '#ff5252';
+
+                    const netElem = document.getElementById('sim-result-netEstimate');
+                    netElem.textContent = toMillion(netIncome) + " 百万円";
+                    netElem.style.color = netIncome >= 0 ? '#69f0ae' : '#ff5252';
+
+                    const roiElem = document.getElementById('sim-result-roi');
+                    roiElem.textContent = roi.toFixed(1) + " %";
+                    roiElem.style.color = roi >= 0 ? '#fff' : '#ff5252';
+
+                    btnRun.innerHTML = '<i class="fa-solid fa-check"></i> 計算完了';
+                    setTimeout(() => {
+                        btnRun.innerHTML = '<i class="fa-solid fa-play"></i> 演算実行（Excelロジック）';
+                    }, 2000);
+                }, 800);
+            });
+        });
+    </script>
+</body>
+
+</html>
