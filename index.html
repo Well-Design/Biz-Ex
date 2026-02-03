@@ -143,17 +143,590 @@
                 <div style="padding:40px; color:white; text-align:center;">
                     <i class="fa-solid fa-chart-pie" style="font-size:4rem; margin-bottom:20px; color:#00bcd4;"></i>
                     <h2>意思決定</h2>
-                    <p>財務状況を分析し、戦略を立ててください。</p>
+                    <p>当面の分析ツールは「経営理念・戦略策定」パネル内に移動しました。<br>そちらの「組織分析」「氷山モデル分析」項目をご確認ください。</p>
                 </div>
             </div>
 
-            <!-- View: Closing Summary (Placeholder) -->
+            <!-- View: Closing Summary -->
             <div id="view-closing" class="info-view">
-                <div style="padding:40px; color:white; text-align:center;">
-                    <i class="fa-solid fa-file-invoice-dollar"
-                        style="font-size:4rem; margin-bottom:20px; color:#00bcd4;"></i>
-                    <h2>決算サマリー</h2>
-                    <p>前期の業績結果を確認し、今期の目標を設定してください。</p>
+                <div class="closing-summary-container">
+                    <div class="closing-header">
+                        <span class="term-badge">第14期</span>
+                        <h2>決算サマリー</h2>
+                    </div>
+
+                    <!-- Market Overview Graphs (Moved to Top) -->
+                    <div class="closing-graphs-section">
+                        <div class="closing-graph-card">
+                            <div class="closing-graph-header">
+                                <h3><i class="fa-solid fa-chart-line"></i> 市場規模推移</h3>
+                                <div class="chart-switch" data-chart="market-trend">
+                                    <button class="switch-btn" data-mode="volume">台数</button>
+                                    <button class="switch-btn active" data-mode="sales">売上</button>
+                                </div>
+                            </div>
+                            <div class="closing-chart-container">
+                                <canvas id="chart-closing-profitability"></canvas>
+                            </div>
+                        </div>
+                        <div class="closing-graph-card">
+                            <div class="closing-graph-header">
+                                <h3><i class="fa-solid fa-chart-pie"></i> 市場シェア</h3>
+                                <div class="chart-switch" data-chart="market-share">
+                                    <button class="switch-btn" data-mode="volume">台数</button>
+                                    <button class="switch-btn active" data-mode="sales">売上</button>
+                                </div>
+                            </div>
+                            <div class="closing-chart-container">
+                                <canvas id="chart-closing-assets"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Results Table -->
+                    <div class="summary-table-wrapper">
+                        <table class="biz-summary-table">
+                            <thead>
+                                <tr>
+                                    <th>会社名</th>
+                                    <th>売上<br>(億円)</th>
+                                    <th>売上シェア<br>(%)</th>
+                                    <th>原価率<br>(%)</th>
+                                    <th>純利益<br>(億円)</th>
+                                    <th>純資産<br>(億円)</th>
+                                    <th>現預金<br>(億円)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="highlight-row">
+                                    <td>DEMO</td>
+                                    <td>167</td>
+                                    <td>20.0</td>
+                                    <td>68.6</td>
+                                    <td>4</td>
+                                    <td>45</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <td>キス</td>
+                                    <td>167</td>
+                                    <td>20.0</td>
+                                    <td>68.6</td>
+                                    <td>4</td>
+                                    <td>45</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <td>リオ</td>
+                                    <td>167</td>
+                                    <td>20.0</td>
+                                    <td>68.6</td>
+                                    <td>4</td>
+                                    <td>45</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <td>G-DASH</td>
+                                    <td>167</td>
+                                    <td>20.0</td>
+                                    <td>68.6</td>
+                                    <td>4</td>
+                                    <td>45</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <td>ユア・サポート</td>
+                                    <td>167</td>
+                                    <td>20.0</td>
+                                    <td>68.6</td>
+                                    <td>4</td>
+                                    <td>45</td>
+                                    <td>6</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Competitiveness Analysis Table -->
+                    <div class="summary-table-wrapper">
+                        <table class="biz-analysis-table">
+                            <thead>
+                                <tr>
+                                    <th class="analysis-label-col">競争力分析</th>
+                                    <th>DEMO</th>
+                                    <th>キス</th>
+                                    <th>リオ</th>
+                                    <th>G-DASH</th>
+                                    <th>ユア・サポート</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="analysis-label-cell">商品力 (品質指数)</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                </tr>
+                                <tr>
+                                    <td class="analysis-label-cell">価格力 (販売価格)</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                </tr>
+                                <tr>
+                                    <td class="analysis-label-cell">流通力 (販売網指数)</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                </tr>
+                                <tr>
+                                    <td class="analysis-label-cell">広告力 (企業イメージ指数)</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                </tr>
+                                <tr>
+                                    <td class="analysis-label-cell">営業力 (営業意欲指数)</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- NEW: Financial Statements Analysis Table -->
+                    <div class="summary-table-wrapper">
+                        <table class="biz-statements-table">
+                            <thead>
+                                <tr>
+                                    <th class="statements-label-col">財務諸表分析</th>
+                                    <th>DEMO</th>
+                                    <th>キス</th>
+                                    <th>リオ</th>
+                                    <th>G-DASH</th>
+                                    <th>ユア・サポート</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>売上高 (億円)</td>
+                                    <td>167</td>
+                                    <td>167</td>
+                                    <td>167</td>
+                                    <td>167</td>
+                                    <td>167</td>
+                                </tr>
+                                <tr>
+                                    <td>売上高総利益率 (%)</td>
+                                    <td>31.4</td>
+                                    <td>31.4</td>
+                                    <td>31.4</td>
+                                    <td>31.4</td>
+                                    <td>31.4</td>
+                                </tr>
+                                <tr>
+                                    <td>営業利益率 (%)</td>
+                                    <td>10.0</td>
+                                    <td>10.0</td>
+                                    <td>10.0</td>
+                                    <td>10.0</td>
+                                    <td>10.0</td>
+                                </tr>
+                                <tr>
+                                    <td>経常利益率 (%)</td>
+                                    <td>4.4</td>
+                                    <td>4.4</td>
+                                    <td>4.4</td>
+                                    <td>4.4</td>
+                                    <td>4.4</td>
+                                </tr>
+                                <tr>
+                                    <td>当期純利益率 (%)</td>
+                                    <td>2.2</td>
+                                    <td>2.2</td>
+                                    <td>2.2</td>
+                                    <td>2.2</td>
+                                    <td>2.2</td>
+                                </tr>
+                                <tr>
+                                    <td>資産額 (億円)</td>
+                                    <td>175</td>
+                                    <td>175</td>
+                                    <td>175</td>
+                                    <td>175</td>
+                                    <td>175</td>
+                                </tr>
+                                <tr>
+                                    <td>負債額 (億円)</td>
+                                    <td>130</td>
+                                    <td>130</td>
+                                    <td>130</td>
+                                    <td>130</td>
+                                    <td>130</td>
+                                </tr>
+                                <tr>
+                                    <td>有利子負債 (億円)</td>
+                                    <td>80</td>
+                                    <td>80</td>
+                                    <td>80</td>
+                                    <td>80</td>
+                                    <td>80</td>
+                                </tr>
+                                <tr>
+                                    <td>純資産額 (億円)</td>
+                                    <td>45</td>
+                                    <td>45</td>
+                                    <td>45</td>
+                                    <td>45</td>
+                                    <td>45</td>
+                                </tr>
+                                <tr>
+                                    <td>現預金 (億円)</td>
+                                    <td>6</td>
+                                    <td>6</td>
+                                    <td>6</td>
+                                    <td>6</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <td>自己資本比率 (%)</td>
+                                    <td>25.6</td>
+                                    <td>25.6</td>
+                                    <td>25.6</td>
+                                    <td>25.6</td>
+                                    <td>25.6</td>
+                                </tr>
+                                <tr>
+                                    <td>ROA (%)</td>
+                                    <td>2.1</td>
+                                    <td>2.1</td>
+                                    <td>2.1</td>
+                                    <td>2.1</td>
+                                    <td>2.1</td>
+                                </tr>
+                                <tr>
+                                    <td>ROE (%)</td>
+                                    <td>8.2</td>
+                                    <td>8.2</td>
+                                    <td>8.2</td>
+                                    <td>8.2</td>
+                                    <td>8.2</td>
+                                </tr>
+                                <tr>
+                                    <td>営業CF (億円)</td>
+                                    <td style="color:#ff5252;">▲ 8</td>
+                                    <td style="color:#ff5252;">▲ 8</td>
+                                    <td style="color:#ff5252;">▲ 8</td>
+                                    <td style="color:#ff5252;">▲ 8</td>
+                                    <td style="color:#ff5252;">▲ 8</td>
+                                </tr>
+                                <tr>
+                                    <td>投資CF (億円)</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>財務CF (億円)</td>
+                                    <td>9</td>
+                                    <td>9</td>
+                                    <td>9</td>
+                                    <td>9</td>
+                                    <td>9</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- NEW: Sales Analysis Table -->
+                    <div class="summary-table-wrapper">
+                        <table class="biz-statements-table">
+                            <thead>
+                                <tr>
+                                    <th class="statements-label-col">販売分析</th>
+                                    <th>DEMO</th>
+                                    <th>キス</th>
+                                    <th>リオ</th>
+                                    <th>G-DASH</th>
+                                    <th>ユア・サポート</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>市場規模 (億円)</td>
+                                    <td>834</td>
+                                    <td>834</td>
+                                    <td>834</td>
+                                    <td>834</td>
+                                    <td>834</td>
+                                </tr>
+                                <tr>
+                                    <td>台数シェア (%)</td>
+                                    <td>20.0</td>
+                                    <td>20.0</td>
+                                    <td>20.0</td>
+                                    <td>20.0</td>
+                                    <td>20.0</td>
+                                </tr>
+                                <tr>
+                                    <td>普及機販売台数 (台)</td>
+                                    <td>24,000</td>
+                                    <td>24,000</td>
+                                    <td>24,000</td>
+                                    <td>24,000</td>
+                                    <td>24,000</td>
+                                </tr>
+                                <tr>
+                                    <td>中級機販売台数 (台)</td>
+                                    <td>12,000</td>
+                                    <td>12,000</td>
+                                    <td>12,000</td>
+                                    <td>12,000</td>
+                                    <td>12,000</td>
+                                </tr>
+                                <tr>
+                                    <td>高級機販売台数 (台)</td>
+                                    <td>6,000</td>
+                                    <td>6,000</td>
+                                    <td>6,000</td>
+                                    <td>6,000</td>
+                                    <td>6,000</td>
+                                </tr>
+                                <tr>
+                                    <td>1人当販売上限 (台)</td>
+                                    <td>400</td>
+                                    <td>400</td>
+                                    <td>400</td>
+                                    <td>400</td>
+                                    <td>400</td>
+                                </tr>
+                                <tr>
+                                    <td>販売員稼働率 (%)</td>
+                                    <td>61.8</td>
+                                    <td>61.8</td>
+                                    <td>61.8</td>
+                                    <td>61.8</td>
+                                    <td>61.8</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- NEW: Manufacturing Analysis Table -->
+                    <div class="summary-table-wrapper">
+                        <table class="biz-statements-table">
+                            <thead>
+                                <tr>
+                                    <th class="statements-label-col">製造分析</th>
+                                    <th>DEMO</th>
+                                    <th>キス</th>
+                                    <th>リオ</th>
+                                    <th>G-DASH</th>
+                                    <th>ユア・サポート</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>原価率 (%)</td>
+                                    <td>68.6</td>
+                                    <td>68.6</td>
+                                    <td>68.6</td>
+                                    <td>68.6</td>
+                                    <td>68.6</td>
+                                </tr>
+                                <tr>
+                                    <td>普及機原価率 (%)</td>
+                                    <td>65.0</td>
+                                    <td>65.0</td>
+                                    <td>65.0</td>
+                                    <td>65.0</td>
+                                    <td>65.0</td>
+                                </tr>
+                                <tr>
+                                    <td>中級機原価率 (%)</td>
+                                    <td>70.0</td>
+                                    <td>70.0</td>
+                                    <td>70.0</td>
+                                    <td>70.0</td>
+                                    <td>70.0</td>
+                                </tr>
+                                <tr>
+                                    <td>高級機原価率 (%)</td>
+                                    <td>75.0</td>
+                                    <td>75.0</td>
+                                    <td>75.0</td>
+                                    <td>75.0</td>
+                                    <td>75.0</td>
+                                </tr>
+                                <tr>
+                                    <td>1人当製造上限 (台)</td>
+                                    <td>111</td>
+                                    <td>111</td>
+                                    <td>111</td>
+                                    <td>111</td>
+                                    <td>111</td>
+                                </tr>
+                                <tr>
+                                    <td>製造員稼働率 (%)</td>
+                                    <td>90.8</td>
+                                    <td>90.8</td>
+                                    <td>90.8</td>
+                                    <td>90.8</td>
+                                    <td>90.8</td>
+                                </tr>
+                                <tr>
+                                    <td>生産設備上限 (台)</td>
+                                    <td>42,000</td>
+                                    <td>42,000</td>
+                                    <td>42,000</td>
+                                    <td>42,000</td>
+                                    <td>42,000</td>
+                                </tr>
+                                <tr>
+                                    <td>翌期生産設備上限 (台)</td>
+                                    <td>42,000</td>
+                                    <td>42,000</td>
+                                    <td>42,000</td>
+                                    <td>42,000</td>
+                                    <td>42,000</td>
+                                </tr>
+                                <tr>
+                                    <td>設備稼働率 (%)</td>
+                                    <td>94.8</td>
+                                    <td>94.8</td>
+                                    <td>94.8</td>
+                                    <td>94.8</td>
+                                    <td>94.8</td>
+                                </tr>
+                                <tr>
+                                    <td>普及機在庫 (台)</td>
+                                    <td>25,278</td>
+                                    <td>25,278</td>
+                                    <td>25,278</td>
+                                    <td>25,278</td>
+                                    <td>25,278</td>
+                                </tr>
+                                <tr>
+                                    <td>中級機在庫 (台)</td>
+                                    <td>8,112</td>
+                                    <td>8,112</td>
+                                    <td>8,112</td>
+                                    <td>8,112</td>
+                                    <td>8,112</td>
+                                </tr>
+                                <tr>
+                                    <td>高級機在庫 (台)</td>
+                                    <td>5,153</td>
+                                    <td>5,153</td>
+                                    <td>5,153</td>
+                                    <td>5,153</td>
+                                    <td>5,153</td>
+                                </tr>
+                                <tr>
+                                    <td>部品品質</td>
+                                    <td>中高高中中</td>
+                                    <td>中高高中中</td>
+                                    <td>中高高中中</td>
+                                    <td>中高高中中</td>
+                                    <td>中高高中中</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- NEW: HR Analysis Table -->
+                    <div class="summary-table-wrapper">
+                        <table class="biz-statements-table">
+                            <thead>
+                                <tr>
+                                    <th class="statements-label-col">人事分析</th>
+                                    <th>DEMO</th>
+                                    <th>キス</th>
+                                    <th>リオ</th>
+                                    <th>G-DASH</th>
+                                    <th>ユア・サポート</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>平均給料 (千円)</td>
+                                    <td>3,554</td>
+                                    <td>3,554</td>
+                                    <td>3,554</td>
+                                    <td>3,554</td>
+                                    <td>3,554</td>
+                                </tr>
+                                <tr>
+                                    <td>販売員退職率 (%)</td>
+                                    <td>5.1</td>
+                                    <td>5.1</td>
+                                    <td>5.1</td>
+                                    <td>5.1</td>
+                                    <td>5.1</td>
+                                </tr>
+                                <tr>
+                                    <td>販売管理者退職率 (%)</td>
+                                    <td>2.5</td>
+                                    <td>2.5</td>
+                                    <td>2.5</td>
+                                    <td>2.5</td>
+                                    <td>2.5</td>
+                                </tr>
+                                <tr>
+                                    <td>1人当販売教育費 (円)</td>
+                                    <td>33,702</td>
+                                    <td>33,702</td>
+                                    <td>33,702</td>
+                                    <td>33,702</td>
+                                    <td>33,702</td>
+                                </tr>
+                                <tr>
+                                    <td>製造員退職率 (%)</td>
+                                    <td>15.0</td>
+                                    <td>15.0</td>
+                                    <td>15.0</td>
+                                    <td>15.0</td>
+                                    <td>15.0</td>
+                                </tr>
+                                <tr>
+                                    <td>製造管理者退職率 (%)</td>
+                                    <td>2.5</td>
+                                    <td>2.5</td>
+                                    <td>2.5</td>
+                                    <td>2.5</td>
+                                    <td>2.5</td>
+                                </tr>
+                                <tr>
+                                    <td>1人当製造教育費 (円)</td>
+                                    <td>38,583</td>
+                                    <td>38,583</td>
+                                    <td>38,583</td>
+                                    <td>38,583</td>
+                                    <td>38,583</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div class="closing-footer">
+                        <button class="back-btn-mini"
+                            onclick="document.querySelector('[data-view=\'view-gathering\']').click()"><i
+                                class="fa-solid fa-reply"></i> 戻る</button>
+                    </div>
                 </div>
             </div>
 
@@ -588,6 +1161,14 @@
                                     <i class="fa-solid fa-chevron-up toggle-icon"></i>
                                 </div>
                                 <div class="card-body">
+                                    <div class="plan-period-container">
+                                        <label class="plan-period-label">計画期間設定 :</label>
+                                        <select class="plan-period-select">
+                                            <option value="term_16">単年度計画（第16期）</option>
+                                            <option value="term_3_years">中期経営計画（3カ年）</option>
+                                            <option value="term_5_years">長期経営計画（5カ年）</option>
+                                        </select>
+                                    </div>
                                     <div class="plan-grid">
                                         <!-- Market Size (Visual Selection) -->
                                         <div class="plan-card">
@@ -660,72 +1241,199 @@
                                                     id="input-profit">
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <!-- NEW: Mid-to-Long Term Management Plan Charts -->
-                                    <div class="midterm-plan-section">
-                                        <h3 class="midterm-title">
-                                            <div class="midterm-title-text"><i class="fa-solid fa-chart-line"></i>
-                                                中長期経営計画</div>
-                                            <div class="midterm-time-slider-wrapper">
-                                                <span class="slider-label">期間設定 (5-100年):</span>
-                                                <div class="slider-control">
-                                                    <input type="range" id="midterm-range-slider" min="5" max="100"
-                                                        step="1" value="5">
-                                                    <span id="midterm-range-display">5年</span>
+                                        <!-- NEW: Mid-to-Long Term Management Plan Charts -->
+                                        <div class="midterm-plan-section">
+                                            <h3 class="midterm-title"><i class="fa-solid fa-chart-line"></i> 中長期経営計画
+                                            </h3>
+                                            <div class="midterm-grid">
+                                                <div class="midterm-chart-card">
+                                                    <div class="midterm-chart-label">
+                                                        <span><i class="fa-solid fa-earth-americas"></i> 市場規模予測
+                                                            (億円)</span>
+                                                    </div>
+                                                    <div class="midterm-canvas-container">
+                                                        <canvas id="chart-midterm-market"></canvas>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </h3>
-                                        <div class="midterm-grid">
-                                            <div class="midterm-chart-card">
-                                                <div class="midterm-chart-label">
-                                                    <span><i class="fa-solid fa-earth-americas"></i> 市場規模予測 (億円)</span>
+                                                <div class="midterm-chart-card">
+                                                    <div class="midterm-chart-label">
+                                                        <span><i class="fa-solid fa-cart-shopping"></i> 目標売上 (億円)</span>
+                                                    </div>
+                                                    <div class="midterm-canvas-container">
+                                                        <canvas id="chart-midterm-sales"></canvas>
+                                                    </div>
                                                 </div>
-                                                <div class="midterm-canvas-container">
-                                                    <canvas id="chart-midterm-market"></canvas>
+                                                <div class="midterm-chart-card">
+                                                    <div class="midterm-chart-label">
+                                                        <span><i class="fa-solid fa-sack-dollar"></i> 目標利益額 (億円)</span>
+                                                    </div>
+                                                    <div class="midterm-canvas-container">
+                                                        <canvas id="chart-midterm-profit"></canvas>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="midterm-chart-card">
-                                                <div class="midterm-chart-label">
-                                                    <span><i class="fa-solid fa-cart-shopping"></i> 目標売上 (億円)</span>
-                                                </div>
-                                                <div class="midterm-canvas-container">
-                                                    <canvas id="chart-midterm-sales"></canvas>
-                                                </div>
-                                            </div>
-                                            <div class="midterm-chart-card">
-                                                <div class="midterm-chart-label">
-                                                    <span><i class="fa-solid fa-sack-dollar"></i> 目標利益額 (億円)</span>
-                                                </div>
-                                                <div class="midterm-canvas-container">
-                                                    <canvas id="chart-midterm-profit"></canvas>
-                                                </div>
-                                            </div>
-                                            <div class="midterm-chart-card">
-                                                <div class="midterm-chart-label">
-                                                    <span><i class="fa-solid fa-building-columns"></i> 純資産目標 (億円)</span>
-                                                </div>
-                                                <div class="midterm-canvas-container">
-                                                    <canvas id="chart-midterm-assets"></canvas>
+                                                <div class="midterm-chart-card">
+                                                    <div class="midterm-chart-label">
+                                                        <span><i class="fa-solid fa-building-columns"></i> 純資産目標
+                                                            (億円)</span>
+                                                    </div>
+                                                    <div class="midterm-canvas-container">
+                                                        <canvas id="chart-midterm-assets"></canvas>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Moved Organization Model -->
+                            <div class="strategy-card collapsible-card collapsed">
+                                <div class="card-header-toggle">
+                                    <div class="header-content">
+                                        <h3><i class="fa-solid fa-sitemap"></i> 組織分析（現状分析モデル）</h3>
+                                        <div class="card-progress-wrapper">
+                                            <div class="card-progress-bar-bg">
+                                                <div class="card-progress-fill" style="width: 100%;"></div>
+                                            </div>
+                                            <span class="card-progress-label" style="color: #00bcd4;">分析ツール</span>
+                                        </div>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-up toggle-icon"></i>
+                                </div>
+                                <div class="card-body">
+                                    <div class="finance-analysis-container" style="padding: 20px 0;">
+                                        <div class="nadler-model-wrapper">
+                                            <!-- Inputs -->
+                                            <div class="nt-column nt-col-input">
+                                                <div class="nt-box-title">入力 (Input)</div>
+                                                <button class="nt-box nt-input-box">
+                                                    <span class="nt-text">環境</span>
+                                                    <span class="nt-sep"></span>
+                                                    <span class="nt-text">資源</span>
+                                                    <span class="nt-sep"></span>
+                                                    <span class="nt-text">歴史</span>
+                                                </button>
+                                            </div>
+
+                                            <div class="nt-arrow-strategy">
+                                                <div class="arrow-shape">
+                                                    <span class="arrow-text">戦略</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="nt-column nt-col-center">
+                                                <div class="nt-box-title">変換プロセス</div>
+                                                <div class="nt-diamond-grid">
+                                                    <button class="nt-box nt-process-box nt-top">非公式組織</button>
+                                                    <div class="nt-mid-row">
+                                                        <button class="nt-box nt-process-box nt-left">タスク</button>
+                                                        <div class="nt-cross">
+                                                            <i class="fa-solid fa-arrows-up-down-left-right"></i>
+                                                        </div>
+                                                        <button
+                                                            class="nt-box nt-process-box nt-right">公式組織の<br>取り決め</button>
+                                                    </div>
+                                                    <button class="nt-box nt-process-box nt-bottom">人間</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="nt-arrow-output">
+                                                <i class="fa-solid fa-caret-right"></i>
+                                            </div>
+
+                                            <div class="nt-column nt-col-output">
+                                                <div class="nt-box-title">出力 (Output)</div>
+                                                <button class="nt-box nt-output-box">
+                                                    <span class="nt-text">組織</span>
+                                                    <span class="nt-sep"></span>
+                                                    <span class="nt-text">集団</span>
+                                                    <span class="nt-sep"></span>
+                                                    <span class="nt-text">個人</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="nt-feedback-line"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Moved Iceberg Model -->
+                            <div class="strategy-card collapsible-card collapsed">
+                                <div class="card-header-toggle">
+                                    <div class="header-content">
+                                        <h3><i class="fa-solid fa-gem"></i> 資本の氷山モデル分析</h3>
+                                        <div class="card-progress-wrapper">
+                                            <div class="card-progress-bar-bg">
+                                                <div class="card-progress-fill" style="width: 100%;"></div>
+                                            </div>
+                                            <span class="card-progress-label" style="color: #00bcd4;">分析ツール</span>
+                                        </div>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-up toggle-icon"></i>
+                                </div>
+                                <div class="card-body">
+                                    <div class="iceberg-section" style="margin: 20px 0; padding: 20px 0;">
+                                        <div class="iceberg-container" style="transform: scale(0.9);">
+                                            <!-- Above Water -->
+                                            <div class="iceberg-top">
+                                                <div class="capital-box financial">
+                                                    <div class="c-title">財務的・経済的資本</div>
+                                                    <div class="c-sub">Financial Capital</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="iceberg-water-line">
+                                                <span class="water-label">海面</span>
+                                            </div>
+
+                                            <!-- Below Water Level 1 -->
+                                            <div class="iceberg-mid-split">
+                                                <div class="capital-box technological">
+                                                    <div class="c-title">技術的資本</div>
+                                                    <div class="c-sub">Technological Capital</div>
+                                                </div>
+                                                <div class="capital-box intellectual">
+                                                    <div class="c-title">知的資本</div>
+                                                    <div class="c-sub">Intellectual Capital</div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Below Water Level 2 -->
+                                            <div class="iceberg-social">
+                                                <div class="capital-box social">
+                                                    <div class="c-title">社会関係資本</div>
+                                                    <div class="c-sub">Social Capital</div>
+                                                    <div class="c-desc">（人と人との関係）</div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Below Water Level 3 -->
+                                            <div class="iceberg-bottom">
+                                                <div class="capital-box ideological">
+                                                    <div class="c-title">アイディロジカル資本</div>
+                                                    <div class="c-sub">Ideological Capital</div>
+                                                    <div class="c-desc">（らしさ・社風・伝統）</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="iceberg-shape-bg"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- View: Knowledge Box (Placeholder) -->
-            <div id="view-knowledge" class="info-view">
-                <div style="padding:40px; color:white; text-align:center;">
-                    <i class="fa-solid fa-chart-column" style="font-size:4rem; margin-bottom:20px; color:#00bcd4;"></i>
-                    <h2>レポート</h2>
-                    <p>経営分析レポートや各種データを確認できます。</p>
-                </div>
-            </div>
+                    <!-- View: Knowledge Box (Placeholder) -->
+                    <div id="view-knowledge" class="info-view">
+                        <div style="padding:40px; color:white; text-align:center;">
+                            <i class="fa-solid fa-chart-column"
+                                style="font-size:4rem; margin-bottom:20px; color:#00bcd4;"></i>
+                            <h2>レポート</h2>
+                            <p>経営分析レポートや各種データを確認できます。</p>
+                        </div>
+                    </div>
         </aside>
 
         <!-- Right Column: Integrated Decision Panel -->
@@ -735,11 +1443,7 @@
                     <div class="top-bar-left">
                         <span class="sheet-title-text"><i class="fa-solid fa-pen-to-square"></i> 意思決定シート</span>
                         <!-- Sheet Switcher Tabs Under Title -->
-                        <nav class="sheet-switcher">
-                            <button class="switcher-btn" data-sheet="goal">目標</button>
-                            <button class="switcher-btn active" data-sheet="decision">意思</button>
-                            <button class="switcher-btn" data-sheet="forecast">予想</button>
-                        </nav>
+
                     </div>
                     <div class="top-bar-right">
                         <button id="final-decision-btn" class="btn-decision-submit" disabled>
@@ -788,9 +1492,7 @@
 
                 <!-- Scrollable Decision Sheet Content -->
                 <div class="decision-sheet">
-                    <div class="sheet-header-info">
-                        <div class="sheet-term-badge">１５期</div>
-                    </div>
+
 
                     <!-- 目標・意思・予想 Sheets Container -->
                     <div id="sheet-content-goal" class="sheet-type-container" style="display: none;">
@@ -884,24 +1586,27 @@
                             </div>
 
                             <div class="decision-group">
-                                <div class="group-title">販売計画（単位：台） <button class="group-chart-btn"
-                                        data-trend="sales_plan"><i class="fa-solid fa-chart-line"></i> 推移</button></div>
+                                <div class="group-title">販売計画（単位：台） <button class="analysis-btn"><i
+                                            class="fa-solid fa-magnifying-glass-chart"></i> 経営分析</button></div>
                                 <div class="input-grid">
                                     <div class="input-item">
                                         <span class="input-label">普及機</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="500">
+                                        <input type="number" id="input-sales-qty-std" class="sheet-input"
+                                            placeholder="0" data-prev="500">
                                         <div class="prev-value">前期：<span class="base-val">500</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">中級機</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="200">
+                                        <input type="number" id="input-sales-qty-mid" class="sheet-input"
+                                            placeholder="0" data-prev="200">
                                         <div class="prev-value">前期：<span class="base-val">200</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">高級機</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="100">
+                                        <input type="number" id="input-sales-qty-high" class="sheet-input"
+                                            placeholder="0" data-prev="100">
                                         <div class="prev-value">前期：<span class="base-val">100</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
@@ -909,25 +1614,28 @@
                             </div>
 
                             <div class="decision-group">
-                                <div class="group-title">販売価格（単位：円） <button class="group-chart-btn"
-                                        data-trend="sales_price"><i class="fa-solid fa-chart-line"></i> 推移</button>
+                                <div class="group-title">販売価格（単位：円） <button class="analysis-btn"><i
+                                            class="fa-solid fa-magnifying-glass-chart"></i> 経営分析</button>
                                 </div>
                                 <div class="input-grid">
                                     <div class="input-item">
                                         <span class="input-label">普及機</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="45000">
+                                        <input type="number" id="input-sales-price-std" class="sheet-input"
+                                            placeholder="0" data-prev="45000">
                                         <div class="prev-value">前期：<span class="base-val">45,000</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">中級機</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="80000">
+                                        <input type="number" id="input-sales-price-mid" class="sheet-input"
+                                            placeholder="0" data-prev="80000">
                                         <div class="prev-value">前期：<span class="base-val">80,000</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">高級機</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="120000">
+                                        <input type="number" id="input-sales-price-high" class="sheet-input"
+                                            placeholder="0" data-prev="120000">
                                         <div class="prev-value">前期：<span class="base-val">120,000</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
@@ -935,24 +1643,27 @@
                             </div>
 
                             <div class="decision-group">
-                                <div class="group-title">販促費（単位：百万円） <button class="group-chart-btn"
-                                        data-trend="promo"><i class="fa-solid fa-chart-line"></i> 推移</button></div>
+                                <div class="group-title">販促費（単位：百万円） <button class="analysis-btn"><i
+                                            class="fa-solid fa-magnifying-glass-chart"></i> 経営分析</button></div>
                                 <div class="input-grid">
                                     <div class="input-item">
                                         <span class="input-label">普及機</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="5">
+                                        <input type="number" id="input-promo-std" class="sheet-input" placeholder="0"
+                                            data-prev="5">
                                         <div class="prev-value">前期：<span class="base-val">5</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">中級機</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="8">
+                                        <input type="number" id="input-promo-mid" class="sheet-input" placeholder="0"
+                                            data-prev="8">
                                         <div class="prev-value">前期：<span class="base-val">8</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">高級機</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="10">
+                                        <input type="number" id="input-promo-high" class="sheet-input" placeholder="0"
+                                            data-prev="10">
                                         <div class="prev-value">前期：<span class="base-val">10</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
@@ -960,12 +1671,13 @@
                             </div>
 
                             <div class="decision-group">
-                                <div class="group-title">広告宣伝費（単位：百万円） <button class="group-chart-btn"
-                                        data-trend="ad"><i class="fa-solid fa-chart-line"></i> 推移</button></div>
+                                <div class="group-title">広告宣伝費（単位：百万円） <button class="analysis-btn"><i
+                                            class="fa-solid fa-magnifying-glass-chart"></i> 経営分析</button></div>
                                 <div class="input-grid">
                                     <div class="input-item">
                                         <span class="input-label">広告宣伝費</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="15">
+                                        <input type="number" id="input-ad-total" class="sheet-input" placeholder="0"
+                                            data-prev="15">
                                         <div class="prev-value">前期：<span class="base-val">15</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
@@ -982,8 +1694,8 @@
                             </div>
 
                             <div class="decision-group">
-                                <div class="group-title">部品グレード <button class="group-chart-btn"
-                                        data-trend="parts_grade"><i class="fa-solid fa-chart-line"></i> 推移</button>
+                                <div class="group-title">部品グレード <button class="analysis-btn"><i
+                                            class="fa-solid fa-magnifying-glass-chart"></i> 経営分析</button>
                                 </div>
                                 <div class="input-grid" style="grid-template-columns: repeat(5, 1fr);">
                                     <div class="input-item">
@@ -997,7 +1709,7 @@
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">部品 2</span>
-                                        <select class="sheet-input">
+                                        <select id="select-mfg-parts-2" class="sheet-input">
                                             <option value="high">高</option>
                                             <option value="medium">中</option>
                                             <option value="normal" selected>並</option>
@@ -1006,7 +1718,7 @@
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">部品 3</span>
-                                        <select class="sheet-input">
+                                        <select id="select-mfg-parts-3" class="sheet-input">
                                             <option value="high">高</option>
                                             <option value="medium">中</option>
                                             <option value="normal" selected>並</option>
@@ -1015,7 +1727,7 @@
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">部品 4</span>
-                                        <select class="sheet-input">
+                                        <select id="select-mfg-parts-4" class="sheet-input">
                                             <option value="high">高</option>
                                             <option value="medium">中</option>
                                             <option value="normal" selected>並</option>
@@ -1024,7 +1736,7 @@
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">部品 5</span>
-                                        <select class="sheet-input">
+                                        <select id="select-mfg-parts-5" class="sheet-input">
                                             <option value="high">高</option>
                                             <option value="medium">中</option>
                                             <option value="normal" selected>並</option>
@@ -1035,24 +1747,27 @@
                             </div>
 
                             <div class="decision-group">
-                                <div class="group-title">製造計画（単位：台） <button class="group-chart-btn"
-                                        data-trend="mfg_plan"><i class="fa-solid fa-chart-line"></i> 推移</button></div>
+                                <div class="group-title">製造計画（単位：台） <button class="analysis-btn"><i
+                                            class="fa-solid fa-magnifying-glass-chart"></i> 経営分析</button></div>
                                 <div class="input-grid">
                                     <div class="input-item">
                                         <span class="input-label">普及機</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="400">
+                                        <input type="number" id="input-mfg-qty-std" class="sheet-input" placeholder="0"
+                                            data-prev="400">
                                         <div class="prev-value">前期：<span class="base-val">400</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">中級機</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="150">
+                                        <input type="number" id="input-mfg-qty-mid" class="sheet-input" placeholder="0"
+                                            data-prev="150">
                                         <div class="prev-value">前期：<span class="base-val">150</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">高級機</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="80">
+                                        <input type="number" id="input-mfg-qty-high" class="sheet-input" placeholder="0"
+                                            data-prev="80">
                                         <div class="prev-value">前期：<span class="base-val">80</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
@@ -1065,28 +1780,32 @@
                                 <div class="input-grid">
                                     <div class="input-item">
                                         <span class="input-label">設備保守</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="5">
+                                        <input type="number" id="input-mfg-cost-maint" class="sheet-input"
+                                            placeholder="0" data-prev="5">
                                         <span class="input-unit">百万円</span>
                                         <div class="prev-value">前期：<span class="base-val">5</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">品質管理</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="3">
+                                        <input type="number" id="input-mfg-cost-qc" class="sheet-input" placeholder="0"
+                                            data-prev="3">
                                         <span class="input-unit">百万円</span>
                                         <div class="prev-value">前期：<span class="base-val">3</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">設備増設</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="0">
+                                        <input type="number" id="input-mfg-cost-expansion" class="sheet-input"
+                                            placeholder="0" data-prev="0">
                                         <span class="input-unit">台</span>
                                         <div class="prev-value">前期：<span class="base-val">0</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">教育・福利厚生</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="2">
+                                        <input type="number" id="input-mfg-cost-edu" class="sheet-input" placeholder="0"
+                                            data-prev="2">
                                         <span class="input-unit">百万円</span>
                                         <div class="prev-value">前期：<span class="base-val">2</span><span
                                                 class="diff-percent"></span></div>
@@ -1102,32 +1821,37 @@
                                 ● 人事関係
                             </div>
                             <div class="decision-group">
-                                <div class="group-title">製造人件費</div>
+                                <div class="group-title">製造人件費 <button class="analysis-btn"><i
+                                            class="fa-solid fa-magnifying-glass-chart"></i> 経営分析</button></div>
                                 <div class="input-grid">
                                     <div class="input-item">
                                         <span class="input-label">製造員採用</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="0">
+                                        <input type="number" id="input-hr-hire-mfg" class="sheet-input" placeholder="0"
+                                            data-prev="0">
                                         <span class="input-unit">人</span>
                                         <div class="prev-value">前期：<span class="base-val">0</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">製造管理者採用</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="0">
+                                        <input type="number" id="input-hr-hire-mfg-mgr" class="sheet-input"
+                                            placeholder="0" data-prev="0">
                                         <span class="input-unit">人</span>
                                         <div class="prev-value">前期：<span class="base-val">0</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">製造員給与</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="4000">
+                                        <input type="number" id="input-hr-salary-mfg" class="sheet-input"
+                                            placeholder="0" data-prev="4000">
                                         <span class="input-unit">千円/年</span>
                                         <div class="prev-value">前期：<span class="base-val">4,000</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">製造管理者給与</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="6000">
+                                        <input type="number" id="input-hr-salary-mfg-mgr" class="sheet-input"
+                                            placeholder="0" data-prev="6000">
                                         <span class="input-unit">千円/年</span>
                                         <div class="prev-value">前期：<span class="base-val">6,000</span><span
                                                 class="diff-percent"></span></div>
@@ -1135,32 +1859,37 @@
                                 </div>
                             </div>
                             <div class="decision-group">
-                                <div class="group-title">販売人件費</div>
+                                <div class="group-title">販売人件費 <button class="analysis-btn"><i
+                                            class="fa-solid fa-magnifying-glass-chart"></i> 経営分析</button></div>
                                 <div class="input-grid">
                                     <div class="input-item">
                                         <span class="input-label">販売員採用</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="0">
+                                        <input type="number" id="input-hr-hire-sales" class="sheet-input"
+                                            placeholder="0" data-prev="0">
                                         <span class="input-unit">人</span>
                                         <div class="prev-value">前期：<span class="base-val">0</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">販売管理者採用</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="0">
+                                        <input type="number" id="input-hr-hire-sales-mgr" class="sheet-input"
+                                            placeholder="0" data-prev="0">
                                         <span class="input-unit">人</span>
                                         <div class="prev-value">前期：<span class="base-val">0</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">販売員給与</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="3500">
+                                        <input type="number" id="input-hr-salary-sales" class="sheet-input"
+                                            placeholder="0" data-prev="3500">
                                         <span class="input-unit">千円/年</span>
                                         <div class="prev-value">前期：<span class="base-val">3,500</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">販売管理者給与</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="5500">
+                                        <input type="number" id="input-hr-salary-sales-mgr" class="sheet-input"
+                                            placeholder="0" data-prev="5500">
                                         <span class="input-unit">千円/年</span>
                                         <div class="prev-value">前期：<span class="base-val">5,500</span><span
                                                 class="diff-percent"></span></div>
@@ -1168,18 +1897,21 @@
                                 </div>
                             </div>
                             <div class="decision-group">
-                                <div class="group-title">教育費・福利厚生</div>
+                                <div class="group-title">教育費・福利厚生 <button class="analysis-btn"><i
+                                            class="fa-solid fa-magnifying-glass-chart"></i> 経営分析</button></div>
                                 <div class="input-grid">
                                     <div class="input-item">
                                         <span class="input-label">販売部門</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="3">
+                                        <input type="number" id="input-hr-edu-sales" class="sheet-input" placeholder="0"
+                                            data-prev="3">
                                         <span class="input-unit">百万円</span>
                                         <div class="prev-value">前期：<span class="base-val">3</span><span
                                                 class="diff-percent"></span></div>
                                     </div>
                                     <div class="input-item">
                                         <span class="input-label">製造部門</span>
-                                        <input type="number" class="sheet-input" placeholder="0" data-prev="2">
+                                        <input type="number" id="input-hr-edu-mfg" class="sheet-input" placeholder="0"
+                                            data-prev="2">
                                         <span class="input-unit">百万円</span>
                                         <div class="prev-value">前期：<span class="base-val">2</span><span
                                                 class="diff-percent"></span></div>
@@ -1192,48 +1924,55 @@
                         <div class="sheet-section" id="section-finance">
                             <div class="section-title">
                                 <i class="fa-solid fa-coins" style="color: #f57c00;"></i>
-                                ● 財務関係
+                                ● 財務関係 <button class="analysis-btn" style="margin-left: auto; font-size: 0.9rem;"><i
+                                        class="fa-solid fa-magnifying-glass-chart"></i> 経営分析</button>
                             </div>
 
                             <div class="input-grid">
                                 <div class="input-item">
                                     <span class="input-label">短期借入金</span>
-                                    <input type="number" class="sheet-input" placeholder="0" data-prev="50">
+                                    <input type="number" id="input-fin-short-loan" class="sheet-input" placeholder="0"
+                                        data-prev="50">
                                     <span class="input-unit">百万円</span>
                                     <div class="prev-value">前期：<span class="base-val">50</span><span
                                             class="diff-percent"></span></div>
                                 </div>
                                 <div class="input-item">
                                     <span class="input-label">長期借入金</span>
-                                    <input type="number" class="sheet-input" placeholder="0" data-prev="200">
+                                    <input type="number" id="input-fin-long-loan" class="sheet-input" placeholder="0"
+                                        data-prev="200">
                                     <span class="input-unit">百万円</span>
                                     <div class="prev-value">前期：<span class="base-val">200</span><span
                                             class="diff-percent"></span></div>
                                 </div>
                                 <div class="input-item">
                                     <span class="input-label">前期分長借返済</span>
-                                    <input type="number" class="sheet-input" placeholder="0" data-prev="20">
+                                    <input type="number" id="input-fin-repay-long-1" class="sheet-input" placeholder="0"
+                                        data-prev="20">
                                     <span class="input-unit">百万円</span>
                                     <div class="prev-value">前期：<span class="base-val">20</span><span
                                             class="diff-percent"></span></div>
                                 </div>
                                 <div class="input-item">
                                     <span class="input-label">前々期分長借返済</span>
-                                    <input type="number" class="sheet-input" placeholder="0" data-prev="20">
+                                    <input type="number" id="input-fin-repay-long-2" class="sheet-input" placeholder="0"
+                                        data-prev="20">
                                     <span class="input-unit">百万円</span>
                                     <div class="prev-value">前期：<span class="base-val">20</span><span
                                             class="diff-percent"></span></div>
                                 </div>
                                 <div class="input-item">
                                     <span class="input-label">増資</span>
-                                    <input type="number" class="sheet-input" placeholder="0" data-prev="0">
+                                    <input type="number" id="input-fin-capital" class="sheet-input" placeholder="0"
+                                        data-prev="0">
                                     <span class="input-unit">百万円</span>
                                     <div class="prev-value">前期：<span class="base-val">0</span><span
                                             class="diff-percent"></span></div>
                                 </div>
                                 <div class="input-item">
                                     <span class="input-label">株配当</span>
-                                    <input type="number" class="sheet-input" placeholder="0" data-prev="10">
+                                    <input type="number" id="input-fin-dividend" class="sheet-input" placeholder="0"
+                                        data-prev="10">
                                     <span class="input-unit">円</span>
                                     <div class="prev-value">前期：<span class="base-val">10</span><span
                                             class="diff-percent"></span></div>
@@ -1249,9 +1988,24 @@
                             <h3>予想決定シート</h3>
                             <p>現在の意思決定に基づいたシミュレーション結果です。</p>
                             <div class="mini-grid-placeholder">
-                                <div class="mini-box-placeholder">予想売上高</div>
-                                <div class="mini-box-placeholder">予想利益</div>
-                                <div class="mini-box-placeholder">資金繰り予想</div>
+                                <div class="mini-box-placeholder">
+                                    <div class="forecast-label">予想売上高</div>
+                                    <div class="forecast-value" id="val-forecast-sales"
+                                        style="font-size: 1.5rem; font-weight: bold; color: #00e5ff;">-</div>
+                                    <div class="forecast-unit" style="font-size: 0.8rem; color: #aaa;">百万円</div>
+                                </div>
+                                <div class="mini-box-placeholder">
+                                    <div class="forecast-label">予想営業利益</div>
+                                    <div class="forecast-value" id="val-forecast-profit"
+                                        style="font-size: 1.5rem; font-weight: bold; color: #ffeb3b;">-</div>
+                                    <div class="forecast-unit" style="font-size: 0.8rem; color: #aaa;">百万円</div>
+                                </div>
+                                <div class="mini-box-placeholder">
+                                    <div class="forecast-label">期末現預金(概算)</div>
+                                    <div class="forecast-value" id="val-forecast-cash"
+                                        style="font-size: 1.5rem; font-weight: bold; color: #00bcd4;">-</div>
+                                    <div class="forecast-unit" style="font-size: 0.8rem; color: #aaa;">百万円</div>
+                                </div>
                             </div>
                         </div>
                     </div>
