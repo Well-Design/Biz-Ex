@@ -1,24 +1,115 @@
-function switchTab(tabName, element) {
-    document.getElementById('mission-content').style.display = 'none';
-    document.getElementById('list-content').style.display = 'none';
-    const tabs = document.querySelectorAll('.panel-tab');
-    tabs.forEach(tab => tab.classList.remove('active'));
-    document.getElementById(tabName + '-content').style.display = 'block';
-    element.classList.add('active');
+// --- Translation Dictionary ---
+const translations = {
+    ja: {
+        diagram_title: "市場形成メカニズム：人間のフロー",
+        world_population: "世界人口",
+        promotion: "広告宣伝・認知",
+        potential_customer: "潜在顧客",
+        potential_customer_alt: "潜在顧客",
+        advantage: "優位性",
+        customer: "顧客",
+        market_decline: "市場魅力度の低下",
+        non_customer: "非顧客層",
+        stock_label: "時価総額",
+        billion_yen: "億円",
+        term_text: "第15期",
+        expiry_label: "有効期限：",
+        memo_btn: "メモ",
+        calc_btn: "電卓",
+        lang_settings: "言語設定 / Language Settings",
+        search_placeholder: "言語を検索 / Search language...",
+        apply_btn: "適用 / Apply",
+        apply_success: "適用完了！"
+    },
+    en: {
+        diagram_title: "Market Formation Mechanism: Human Flow",
+        world_population: "World Population",
+        promotion: "Advertising & Recognition",
+        potential_customer: "Potential Customers",
+        potential_customer_alt: "Potential Customers",
+        advantage: "Competitive Advantage",
+        customer: "Active Customers",
+        market_decline: "Decrease in Market Attractiveness",
+        non_customer: "Non-customer Segment",
+        stock_label: "Market Cap",
+        billion_yen: "Billion Yen",
+        term_text: "Term 15",
+        expiry_label: "Expiry Date:",
+        memo_btn: "Memo",
+        calc_btn: "Calc",
+        lang_settings: "Language Settings",
+        search_placeholder: "Search language...",
+        apply_btn: "Apply",
+        apply_success: "Applied!"
+    },
+    zh: {
+        diagram_title: "市场形成机制：人员流向",
+        world_population: "世界人口",
+        promotion: "广告宣传与认知",
+        potential_customer: "潜在客户",
+        potential_customer_alt: "潜在客户",
+        advantage: "竞争优势",
+        customer: "正式客户",
+        market_decline: "市场吸引力下降",
+        non_customer: "非客户群",
+        stock_label: "市值",
+        billion_yen: "亿日元",
+        term_text: "第15期",
+        expiry_label: "有效期：",
+        memo_btn: "备忘録",
+        calc_btn: "计算器",
+        lang_settings: "语言设置",
+        search_placeholder: "搜索语言...",
+        apply_btn: "应用",
+        apply_success: "应用成功！"
+    },
+    ko: {
+        diagram_title: "시장 형성 메커니즘: 인적 흐름",
+        world_population: "세계 인구",
+        promotion: "광고 홍보 및 인지도",
+        potential_customer: "잠재 고객",
+        potential_customer_alt: "잠재 고객",
+        advantage: "우위성",
+        customer: "고객",
+        market_decline: "시장 매력도 저하",
+        non_customer: "비고객층",
+        stock_label: "시가총액",
+        billion_yen: "억 엔",
+        term_text: "제15기",
+        expiry_label: "유효 기간:",
+        memo_btn: "메모",
+        calc_btn: "계산기",
+        lang_settings: "언어 설정",
+        search_placeholder: "언어 검색...",
+        apply_btn: "적용",
+        apply_success: "적용 완료!"
+    }
+};
+
+function updateTranslations(langCode) {
+    const lang = langCode.startsWith('zh') ? 'zh' : (translations[langCode] ? langCode : 'en');
+    const dict = translations[lang] || translations['en'];
+
+    document.querySelectorAll('[data-t]').forEach(el => {
+        const key = el.dataset.t;
+        if (dict[key]) {
+            el.textContent = dict[key];
+        }
+    });
+
+    // Update global lang attribute
+    document.documentElement.lang = lang;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Initial translation load
+    const savedLang = localStorage.getItem('biz_ex_selected_language') || 'ja';
+    updateTranslations(savedLang);
     let manualScale = 1.0;
     let autoScale = 1.0;
 
     // --- Fixed Resolution Scaler (Zoom Method) ---
     function adjustZoom() {
-        // Mobile layout logic: disable zoom calculation and reset
-        if (window.innerWidth <= 1024) {
-            document.body.style.zoom = 1.0;
-            return;
-        }
-
         const targetWidth = 1920;
         const targetHeight = 1080;
         const windowWidth = window.innerWidth;
@@ -70,9 +161,137 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-
     window.addEventListener('resize', adjustZoom);
     adjustZoom(); // Initial call
+
+    // --- Audio System initialization ---
+    console.log('Biz-Ex Audio System Initializing...');
+    const bgm = document.getElementById('home-bgm');
+    const bgmBtn = document.getElementById('bgm-toggle');
+    const seBtn = document.getElementById('se-toggle');
+
+    let audioCtx;
+    let isBgmEnabled = localStorage.getItem('bgm_enabled') !== 'false';
+    let isSeEnabled = localStorage.getItem('se_enabled') !== 'false';
+    let audioStarted = false;
+
+    function initAudioContext() {
+        if (!audioCtx) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (AudioContext) {
+                audioCtx = new AudioContext();
+                console.log('AudioContext Created');
+            }
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+        return audioCtx;
+    }
+
+    function playClickSound() {
+        if (!isSeEnabled) return;
+        const ctx = initAudioContext();
+        if (!ctx) return;
+        try {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(2500, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.05);
+            gain.gain.setValueAtTime(0.2, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.05);
+        } catch (e) { console.error(e); }
+    }
+
+    const handleInteraction = () => {
+        initAudioContext();
+        if (!audioStarted && bgm && isBgmEnabled) {
+            bgm.volume = 0.3;
+            bgm.play().then(() => {
+                audioStarted = true;
+                updateAudioButtonsUI();
+            }).catch(() => { });
+        }
+    };
+
+    function updateAudioButtonsUI() {
+        if (bgmBtn) {
+            if (isBgmEnabled) {
+                bgmBtn.innerHTML = '<i class="fa-solid fa-music"></i> BGM ON';
+                bgmBtn.style.background = 'linear-gradient(to bottom, #00897b, #004d40)';
+                bgmBtn.style.borderColor = '#80cbc4';
+            } else {
+                bgmBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> BGM OFF';
+                bgmBtn.style.background = '';
+                bgmBtn.style.borderColor = '';
+            }
+        }
+        if (seBtn) {
+            if (isSeEnabled) {
+                seBtn.innerHTML = '<i class="fa-solid fa-bell"></i> SE ON';
+                seBtn.style.background = 'linear-gradient(to bottom, #f57c00, #e65100)';
+                seBtn.style.borderColor = '#ffcc80';
+            } else {
+                seBtn.innerHTML = '<i class="fa-solid fa-bell-slash"></i> SE OFF';
+                seBtn.style.background = '';
+                seBtn.style.borderColor = '';
+            }
+        }
+    }
+
+    document.addEventListener('click', (e) => {
+        handleInteraction();
+        const trigger = e.target.closest('button, a, .menu-item, .stakeholder-card, .f-btn, .panel-tab, .btn-action');
+        if (trigger) {
+            const isNavLink = trigger.tagName === 'A' && trigger.getAttribute('href') && !trigger.getAttribute('href').startsWith('javascript:');
+            if (isNavLink) {
+                e.preventDefault();
+                const url = trigger.getAttribute('href');
+                playClickSound();
+                setTimeout(() => { window.location.href = url; }, 100);
+            } else {
+                playClickSound();
+            }
+        }
+    }, true);
+
+    document.addEventListener('keydown', handleInteraction);
+
+    if (bgmBtn && bgm) {
+        bgmBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!bgm.paused) {
+                bgm.pause();
+                isBgmEnabled = false;
+            } else {
+                initAudioContext();
+                bgm.play().catch(() => { });
+                isBgmEnabled = true;
+                audioStarted = true;
+            }
+            localStorage.setItem('bgm_enabled', isBgmEnabled);
+            updateAudioButtonsUI();
+        });
+    }
+
+    if (seBtn) {
+        seBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            isSeEnabled = !isSeEnabled;
+            localStorage.setItem('se_enabled', isSeEnabled);
+            updateAudioButtonsUI();
+            if (isSeEnabled) playClickSound();
+        });
+    }
+
+    updateAudioButtonsUI();
 
     // --- Quick Input Popover Logic ---
     const quickPopover = document.getElementById('quick-input-popover');
@@ -291,9 +510,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    trendCloseBtn.addEventListener('click', () => {
-        trendWindow.style.display = 'none';
-    });
+    if (trendCloseBtn) {
+        trendCloseBtn.addEventListener('click', () => {
+            trendWindow.style.display = 'none';
+        });
+    }
 
     document.addEventListener('mouseout', (e) => {
         const input = e.target.closest('.sheet-input');
@@ -302,156 +523,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    quickPopover.addEventListener('mouseenter', () => {
-        if (hideTimeout) clearTimeout(hideTimeout);
-    });
+    if (quickPopover) {
+        quickPopover.addEventListener('mouseenter', () => {
+            if (hideTimeout) clearTimeout(hideTimeout);
+        });
 
-    quickPopover.addEventListener('mouseleave', () => {
-        hidePopover();
-    });
-
-    console.log('Biz-Ex Audio System Initializing...');
-
-    let audioCtx;
-    const bgm = document.getElementById('home-bgm');
-    const bgmBtn = document.getElementById('bgm-toggle');
-    const seBtn = document.getElementById('se-toggle');
-
-    // Load states from localStorage (default to ON if never set)
-    let isBgmEnabled = localStorage.getItem('bgm_enabled') !== 'false';
-    let isSeEnabled = localStorage.getItem('se_enabled') !== 'false';
-    let audioStarted = false;
-
-    // --- Core Sound Engine ---
-    function initAudioContext() {
-        if (!audioCtx) {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            audioCtx = new AudioContext();
-            console.log('AudioContext Created');
-        }
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
-            console.log('AudioContext Resumed');
-        }
-        return audioCtx;
-    }
-
-    function playClickSound() {
-        if (!isSeEnabled) return; // Respect SE setting
-        const ctx = initAudioContext();
-        if (!ctx) return;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(2500, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.05);
-        gain.gain.setValueAtTime(0.2, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.05);
-    }
-
-    // --- Unified User Interaction Handler ---
-    const handleInteraction = () => {
-        initAudioContext();
-
-        // Start BGM if enabled and not already started
-        if (!audioStarted && bgm && isBgmEnabled) {
-            bgm.volume = 0.3;
-            bgm.play().then(() => {
-                audioStarted = true;
-                updateAudioButtonsUI();
-                console.log('BGM Started based on saved state');
-            }).catch(err => console.log('Waiting for interaction to play BGM...'));
-        }
-    };
-
-    document.addEventListener('click', (e) => {
-        handleInteraction();
-        // Play Click SE if interactive element
-        const trigger = e.target.closest('button, a, .menu-item, .stakeholder-card, .f-btn, .panel-tab, .btn-action');
-
-        if (trigger) {
-            // Check if it's a navigation link that needs a delay to play sound
-            const isNavLink = trigger.tagName === 'A' && trigger.getAttribute('href') && !trigger.getAttribute('href').startsWith('javascript:');
-
-            if (isNavLink) {
-                // Prevent immediate navigation to let sound play
-                e.preventDefault();
-                const url = trigger.getAttribute('href');
-                playClickSound();
-                console.log('Navigating with sound delay:', url);
-                setTimeout(() => {
-                    window.location.href = url;
-                }, 100); // 100ms is enough for sound trigger and barely felt as lag
-            } else {
-                playClickSound();
-                console.log('SE Triggered on:', trigger.className || trigger.tagName);
-            }
-        }
-    }, true);
-
-    document.addEventListener('keydown', handleInteraction);
-
-    // --- Audio Control Buttons ---
-    if (bgmBtn && bgm) {
-        bgmBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (!bgm.paused) {
-                bgm.pause();
-                isBgmEnabled = false;
-            } else {
-                initAudioContext();
-                bgm.play();
-                isBgmEnabled = true;
-                audioStarted = true;
-            }
-            localStorage.setItem('bgm_enabled', isBgmEnabled);
-            updateAudioButtonsUI();
+        quickPopover.addEventListener('mouseleave', () => {
+            hidePopover();
         });
     }
 
-    if (seBtn) {
-        seBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            isSeEnabled = !isSeEnabled;
-            localStorage.setItem('se_enabled', isSeEnabled);
-            updateAudioButtonsUI();
-            if (isSeEnabled) playClickSound(); // Feedback
-        });
-    }
-
-    function updateAudioButtonsUI() {
-        if (bgmBtn) {
-            if (isBgmEnabled) {
-                bgmBtn.innerHTML = '<i class="fa-solid fa-music"></i> BGM ON';
-                bgmBtn.style.background = 'linear-gradient(to bottom, #00897b, #004d40)';
-                bgmBtn.style.borderColor = '#80cbc4';
-            } else {
-                bgmBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> BGM OFF';
-                bgmBtn.style.background = '';
-                bgmBtn.style.borderColor = '';
-            }
-        }
-        if (seBtn) {
-            if (isSeEnabled) {
-                seBtn.innerHTML = '<i class="fa-solid fa-bell"></i> SE ON';
-                seBtn.style.background = 'linear-gradient(to bottom, #f57c00, #e65100)';
-                seBtn.style.borderColor = '#ffcc80';
-            } else {
-                seBtn.innerHTML = '<i class="fa-solid fa-bell-slash"></i> SE OFF';
-                seBtn.style.background = '';
-                seBtn.style.borderColor = '';
-            }
-        }
-    }
-
-    // Initialize UI state immediately
-    updateAudioButtonsUI();
 
     // --- Existing UI Logic ---
     const secretaryAvatar = document.querySelector('.secretary-avatar');
@@ -692,6 +773,41 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
+
+    // --- Transition to Processing Scene ---
+    const finalDecisionBtn = document.getElementById('final-decision-btn');
+    if (finalDecisionBtn) {
+        finalDecisionBtn.addEventListener('click', () => {
+            // Even if disabled for logic, we can allow for demo if desired, 
+            // but usually we check if it's disabled.
+            if (!finalDecisionBtn.hasAttribute('disabled')) {
+                window.location.href = 'processing.html';
+            }
+        });
+    }
+
+    // --- Auto-fill for 100% Progress Demonstration ---
+    function autoFillDecisionSheet() {
+        const sheetInputs = document.querySelectorAll('.sheet-input');
+        sheetInputs.forEach(input => {
+            if (input.tagName === 'SELECT') {
+                // Keep default or set to first option if needed
+            } else {
+                const prevVal = input.getAttribute('data-prev');
+                if (prevVal) {
+                    input.value = prevVal;
+                } else if (!input.value) {
+                    input.value = "0";
+                }
+            }
+            // Trigger input event to update calculations and progress
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+        console.log("Decision Sheet auto-filled for 100% progress.");
+    }
+
+    // Run auto-fill on load
+    autoFillDecisionSheet();
 
     // --- Real-time Forecast Calculation System (Excel Logic Port) ---
     const calcInputs = [
@@ -1013,6 +1129,106 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('mouseup', () => {
         isDragging = false;
         memoWindow.style.opacity = "1";
+    });
+});
+
+// --- Language Selection Logic ---
+document.addEventListener('DOMContentLoaded', () => {
+    const langWindow = document.getElementById('draggable-lang');
+    const langTrigger = document.getElementById('lang-trigger');
+    const langClose = document.getElementById('lang-close');
+    const langSearch = document.getElementById('lang-search');
+    const langList = document.getElementById('lang-list');
+    const langSave = document.getElementById('lang-save');
+    const langHeader = document.querySelector('.lang-header');
+
+    if (!langWindow || !langTrigger) return;
+
+    // Load saved language
+    const savedLang = localStorage.getItem('biz_ex_selected_language') || 'ja';
+    const savedLangName = localStorage.getItem('biz_ex_selected_language_name') || '日本語';
+
+    // Update button text if needed
+    if (savedLang !== 'ja') {
+        langTrigger.innerHTML = `<i class="fa-solid fa-globe"></i> ${savedLangName} / Language`;
+    }
+
+    // Toggle
+    langTrigger.addEventListener('click', () => {
+        langWindow.style.display = langWindow.style.display === 'flex' ? 'none' : 'flex';
+        langWindow.style.zIndex = "1015";
+    });
+
+    langClose.addEventListener('click', () => {
+        langWindow.style.display = 'none';
+    });
+
+    // Search Filtering
+    langSearch.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        const items = langList.getElementsByClassName('lang-item');
+        Array.from(items).forEach(item => {
+            const text = item.textContent.toLowerCase();
+            item.style.display = text.includes(term) ? 'block' : 'none';
+        });
+    });
+
+    // Selection
+    langList.addEventListener('click', (e) => {
+        if (e.target.classList.contains('lang-item')) {
+            const items = langList.getElementsByClassName('lang-item');
+            Array.from(items).forEach(item => item.classList.remove('active'));
+            e.target.classList.add('active');
+        }
+    });
+
+    // Save/Apply
+    langSave.addEventListener('click', () => {
+        const activeItem = langList.querySelector('.lang-item.active');
+        if (activeItem) {
+            const langCode = activeItem.dataset.lang;
+            const langName = activeItem.textContent.split(' (')[0]; // Get display name
+            localStorage.setItem('biz_ex_selected_language', langCode);
+            localStorage.setItem('biz_ex_selected_language_name', langName);
+
+            langTrigger.innerHTML = `<i class="fa-solid fa-globe"></i> ${langName} / Language`;
+
+            // Trigger UI translation update
+            updateTranslations(langCode);
+
+            // Show feedback
+            langSave.textContent = 'Apply Success!';
+            setTimeout(() => {
+                langSave.textContent = '適用 / Apply';
+                langWindow.style.display = 'none';
+            }, 800);
+        }
+    });
+
+    // Dragging
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    langHeader.addEventListener('mousedown', (e) => {
+        if (e.target.closest('.lang-close')) return;
+        isDragging = true;
+        offsetX = e.clientX - langWindow.offsetLeft;
+        offsetY = e.clientY - langWindow.offsetTop;
+        langWindow.style.opacity = "0.9";
+        langWindow.style.zIndex = "1015";
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        langWindow.style.left = (e.clientX - offsetX) + 'px';
+        langWindow.style.top = (e.clientY - offsetY) + 'px';
+        langWindow.style.bottom = 'auto';
+        langWindow.style.right = 'auto';
+    });
+
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+        langWindow.style.opacity = "1";
     });
 });
 

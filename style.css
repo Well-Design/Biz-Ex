@@ -18,13 +18,14 @@
 }
 
 body {
+  min-width: 1920px;
   background-color: #0d1b2a;
   background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('background.png');
   background-size: cover;
   background-position: center;
   color: var(--text-white);
   height: 100vh;
-  overflow: hidden;
+  overflow: auto;
   display: flex;
   flex-direction: column;
 }
@@ -130,7 +131,7 @@ body {
   height: 8px;
   background: #e0e0e0;
   border-radius: 4px;
-  overflow: hidden;
+  overflow: auto;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
@@ -257,7 +258,7 @@ body {
   gap: 2px 40px;
   padding: 20px 30px;
   flex: 1;
-  overflow: hidden;
+  overflow: auto;
   position: relative;
   z-index: 10;
   height: calc(100vh - 90px);
@@ -336,7 +337,8 @@ body {
 }
 
 .widget-progress::before {
-  content: "意思決定進捗";
+  content: "意思決定進捁E;
+
 }
 
 .progress-value {
@@ -402,6 +404,7 @@ body {
 }
 
 .panel-body {
+  min-width: 1920px;
   padding: 50px 40px;
   /* More padding */
   min-height: 400px;
@@ -477,7 +480,7 @@ body {
   border: 4px solid rgba(0, 188, 212, 0.4);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: auto;
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
   height: 100%;
 }
@@ -541,7 +544,7 @@ body {
   transition: all 0.2s;
   text-decoration: none;
   position: relative;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .menu-item::before {
@@ -705,7 +708,7 @@ body {
   /* Slightly thinner */
   background: rgba(0, 0, 0, 0.5);
   border-radius: 7px;
-  overflow: hidden;
+  overflow: auto;
   border: 1px solid rgba(255, 255, 255, 0.3);
   position: relative;
 }
@@ -848,7 +851,7 @@ body {
   transition: transform 0.2s;
   text-align: center;
   position: relative;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .f-btn::after {
@@ -882,7 +885,7 @@ body {
 
 /* Left Panel Tuning */
 .left-panel-narrow {
-  overflow: hidden;
+  overflow: auto;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -1202,7 +1205,7 @@ body {
   background: rgba(255, 255, 255, 0.05);
   /* Very subtle background */
   border-radius: 6px;
-  overflow: hidden;
+  overflow: auto;
   border: 1px solid rgba(255, 255, 255, 0.1);
   height: 22px;
   /* Ultra-thin version */
@@ -1417,7 +1420,7 @@ body {
   height: 14px;
   background: rgba(0, 0, 0, 0.3);
   border-radius: 7px;
-  overflow: hidden;
+  overflow: auto;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -1512,7 +1515,7 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .brand-option-item:hover {
@@ -1558,7 +1561,7 @@ body {
   height: 4px;
   background: rgba(0, 0, 0, 0.3);
   border-radius: 2px;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .equity-bar-fill {
@@ -1817,13 +1820,15 @@ body {
 }
 
 .card-body {
-  overflow: hidden;
+  min-width: 1920px;
+  overflow: auto;
   transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
   max-height: 3000px;
   opacity: 1;
 }
 
 .collapsible-card.collapsed .card-body {
+  min-width: 1920px;
   max-height: 0;
   opacity: 0;
 }
@@ -2182,7 +2187,7 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: hidden;
+  overflow: auto;
   width: 100%;
   height: 100%;
   /* Stretch to fill row height */
@@ -2327,7 +2332,7 @@ body {
   display: none;
   /* Hidden by default */
   flex-direction: column;
-  overflow: hidden;
+  overflow: auto;
   user-select: none;
 }
 
@@ -2372,7 +2377,7 @@ body {
   font-size: 2rem;
   font-weight: bold;
   font-family: 'Consolas', monospace;
-  overflow: hidden;
+  overflow: auto;
   text-overflow: ellipsis;
 }
 
@@ -2432,7 +2437,7 @@ body {
   z-index: 999;
   display: none;
   flex-direction: column;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .memo-header {
@@ -2457,6 +2462,7 @@ body {
 }
 
 .memo-body {
+  min-width: 1920px;
   flex: 1;
   padding: 10px;
   display: flex;
@@ -2616,7 +2622,7 @@ body {
   z-index: 12000;
   display: none;
   flex-direction: column;
-  overflow: hidden;
+  overflow: auto;
   animation: modalFadeIn 0.3s ease-out;
 }
 
@@ -2648,6 +2654,7 @@ body {
 }
 
 .trend-body {
+  min-width: 1920px;
   flex: 1;
   padding: 20px;
   background: #fff;
@@ -2684,7 +2691,7 @@ body {
   z-index: 1100;
   display: none;
   flex-direction: column;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .chart-header {
@@ -2752,6 +2759,7 @@ body {
 }
 
 .chart-body {
+  min-width: 1920px;
   flex: 1;
   padding: 30px;
   background: #fff;
@@ -2768,9 +2776,10 @@ body {
 /* Desktop Mode: Fixed 1920x1080 with JS Zoom support */
 @media (min-width: 1025px) {
   body {
+    min-width: 1920px;
     width: 1920px;
     height: 1080px;
-    overflow: hidden;
+    overflow: auto;
     transform-origin: top left;
     margin: 0;
     padding: 0;
@@ -2789,7 +2798,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow: auto;
   }
 }
 
@@ -2798,6 +2807,7 @@ body {
 
   html,
   body {
+    min-width: 1920px;
     width: 100%;
     height: auto;
     overflow-y: auto;
@@ -3011,7 +3021,7 @@ html {
 
 .zoom-panel {
   width: 0;
-  overflow: hidden;
+  overflow: auto;
   background: rgba(38, 50, 56, 0.95);
   border: 1px solid #00bcd4;
   border-right: none;
@@ -3206,7 +3216,7 @@ html {
   margin-left: auto;
   /* Push to right if in flex container */
   position: relative;
-  overflow: hidden;
+  overflow: auto;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   z-index: 1;
 }
@@ -3706,7 +3716,7 @@ html {
   background-position: center;
   height: 100vh;
   position: relative;
-  overflow: hidden;
+  overflow: auto;
 }
 
 #view-closing::before {
@@ -3817,7 +3827,7 @@ html {
   border-radius: 12px;
   padding: 2px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
+  overflow: auto;
 }
 
 /* Staggered animation for wrappers */
@@ -3914,7 +3924,7 @@ html {
   border-radius: 16px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
   position: relative;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .closing-graph-card::before {
@@ -4024,3 +4034,264 @@ html {
 .back-btn-mini i {
   font-size: 1rem;
 }
+
+/* Financial Card (Collapsible) */
+.financial-card {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  margin-bottom: 15px;
+  overflow: auto;
+  transition: all 0.3s ease;
+}
+
+.financial-card .card-header-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.financial-card .card-header-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.financial-card h3 {
+  margin: 0 !important;
+  /* Override existing margins */
+  font-size: 1.1rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.financial-card .toggle-icon {
+  font-size: 1rem;
+  color: #00bcd4;
+  transition: transform 0.3s;
+}
+
+/* Compact Table Style */
+.compact-table th,
+.compact-table td {
+  padding: 8px 10px !important;
+  font-size: 0.95rem !important;
+}
+
+.compact-table th {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+/* Remove wrapper style when inside card to avoid double-boxing */
+.financial-card .summary-table-wrapper {
+  margin-bottom: 0;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  padding: 10px;
+  overflow-x: auto;
+  /* Enable horizontal scrolling */
+  width: 100%;
+}
+
+/* Ensure table doesn't shrink too much */
+.financial-card .biz-statements-table {
+  min-width: 1200px;
+  /* Force width to trigger scroll for many columns */
+}
+
+/* Excel List Styles */
+.excel-list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 15px;
+  padding: 20px;
+}
+
+.excel-term-btn {
+  background: linear-gradient(to bottom, #2e7d32, #1b5e20);
+  /* Excel Green */
+  border: 1px solid #43a047;
+  color: white;
+  padding: 12px 15px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.excel-term-btn:hover {
+  background: linear-gradient(to bottom, #388e3c, #2e7d32);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.excel-term-btn i {
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
+
+/* Language Window Styles */
+.lang-window {
+  position: fixed;
+  bottom: 80px;
+  right: 520px;
+  width: 400px;
+  height: 500px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(30, 136, 229, 0.4);
+  border-radius: 12px;
+  display: none;
+  flex-direction: column;
+  z-index: 1005;
+  box-shadow: 0 10px 40px rgba(30, 136, 229, 0.2);
+  overflow: hidden;
+  animation: slideInUp 0.3s ease-out;
+}
+
+.lang-header {
+  background: linear-gradient(135deg, #1e88e5, #0d47a1);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: move;
+  color: white;
+  font-weight: bold;
+}
+
+.lang-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.lang-body {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 48px);
+}
+
+.lang-search-container {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.lang-search-container i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #90caf9;
+}
+
+#lang-search {
+  width: 100%;
+  padding: 10px 10px 10px 35px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(144, 202, 249, 0.3);
+  border-radius: 6px;
+  color: white;
+  outline: none;
+}
+
+#lang-search:focus {
+  border-color: #64b5f6;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.lang-list {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.lang-item {
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #cfd8dc;
+}
+
+.lang-item:hover {
+  background: rgba(30, 136, 229, 0.1);
+  color: white;
+}
+
+.lang-item.active {
+  background: rgba(30, 136, 229, 0.2);
+  color: #90caf9;
+  border-left: 4px solid #1e88e5;
+}
+
+.lang-footer {
+  padding-top: 10px;
+  text-align: center;
+}
+
+.lang-footer p {
+  font-size: 0.8rem;
+  color: #90caf9;
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
+
+.lang-save-btn {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, #1e88e5, #1565c0);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+#philosophy-memo:focus {
+  border-color: #e91e63;
+}. l a n g - s a v e - b t n : h o v e r  
+   > >   s t y l e . c s s  
+ e c h o       t r a n s f o r m :   s c a l e ( 1 . 0 2 ) ;   > >   s t y l e . c s s  
+ e c h o       b o x - s h a d o w :   0   4 p x   1 5 p x   r g b a ( 3 0 ,   1 3 6 ,   2 2 9 ,   0 . 3 ) ;   > >   s t y l e . c s s  
+ e c h o    
+ / *  
+ C u s t o m  
+ S c r o l l b a r  
+ f o r  
+ L a n g  
+ L i s t  
+ * /  
+ . l a n g - l i s t : : - w e b k i t - s c r o l l b a r  
+   > >   s t y l e . c s s  
+ e c h o       w i d t h :   6 p x ;   > >   s t y l e . c s s  
+ e c h o    
+ . l a n g - l i s t : : - w e b k i t - s c r o l l b a r - t r a c k  
+   > >   s t y l e . c s s  
+ e c h o       b a c k g r o u n d :   r g b a ( 0 ,   0 ,   0 ,   0 . 1 ) ;   > >   s t y l e . c s s  
+ e c h o    
+ . l a n g - l i s t : : - w e b k i t - s c r o l l b a r - t h u m b  
+   > >   s t y l e . c s s  
+ e c h o       b a c k g r o u n d :   r g b a ( 3 0 ,   1 3 6 ,   2 2 9 ,   0 . 3 ) ;   > >   s t y l e . c s s  
+ e c h o       b o r d e r - r a d i u s :   3 p x ;   > >   s t y l e . c s s  
+ e c h o    
+ 
